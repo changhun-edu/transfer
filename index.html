@@ -201,6 +201,7 @@ input[type=text],input[type=search],input[type=date],select{border:1px solid var
 .achips::-webkit-scrollbar{display:none}
 .achip{flex:0 0 auto;border:0;background:#191d26;color:#fff;border-radius:99px;padding:4px 10px;font-size:12.5px;font-weight:700;white-space:nowrap}
 .achip:after{content:" ×";opacity:.7}
+.fpanel.flashp{animation:flash 1.2s}
 .fpanel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:12px}
 .frow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:4px 0}
 .frow + .frow{border-top:1px dashed var(--line);padding-top:8px;margin-top:4px}
@@ -250,24 +251,55 @@ details.mini p{margin:6px 0 0}
   #p-map[data-v=list] #mapWrap{display:none}
   .mapbox{height:min(64vh,560px)}
   .ph .safe span{display:none}
+  .quick .more{display:none}
+  .stepper button{font-size:11.5px;padding:7px 6px}
+  .stepper button b{font-size:13px}
 }
 @media (max-width:380px){.seg button{padding:5px 7px;font-size:12.5px}.seg .lb{padding-left:8px}.fl{width:26px}}
+/* ---- 처음 사용자 안내 ---- */
+.stepper{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:0 0 12px}
+.stepper button{border:1px solid var(--line);background:#fff;border-radius:12px;padding:8px 6px;text-align:left;font-size:12.5px;font-weight:700;color:var(--sub);line-height:1.3;position:relative}
+.stepper button b{display:block;font-size:14px;color:var(--ink);margin-top:1px}
+.stepper button.on{border-color:#1f4fbf;background:#eaf0fd;color:#1f4fbf}
+.stepper button.on b{color:#1f4fbf}
+.stepper button.done{border-color:#bfe5d2}
+.stepper button.done:after{content:"✓";position:absolute;right:8px;top:6px;color:var(--ok);font-weight:900}
+.quick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.quick .chip.on{background:#1f4fbf;border-color:#1f4fbf}
+.quick .more{border:0;background:none;color:#1f4fbf;font-weight:800;font-size:13px;padding:5px 4px}
+.legend-l{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12px;color:var(--sub);margin:0 0 10px;align-items:center}
+.legend-l span{display:inline-flex;align-items:center;gap:4px}
+.linkbtn{border:0;background:none;color:#1f4fbf;font-weight:700;font-size:12.5px;padding:0;text-decoration:underline}
+.multirow{display:none;margin:0 0 12px}
+.multirow.on{display:block}
+.multirow textarea{width:100%;min-height:70px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;font-size:14px}
+.zcard .pv{font-size:12px;color:var(--faint);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
+.zcard:not(.closed) .pv{display:none}
+.zcard > button{min-width:0}
+.tilehint{position:absolute;left:10px;bottom:10px;z-index:6;background:rgba(255,255,255,.95);border-radius:9px;padding:5px 9px;font-size:12px;font-weight:700;color:var(--sub);display:none}
+.mapbox.tiles .tilehint{display:block}
+.toast.top{bottom:auto;top:64px}
+.tip{position:fixed;left:50%;transform:translateX(-50%);bottom:136px;z-index:56;background:#ffd78a;color:#191d26;border-radius:12px;padding:10px 14px;font-size:13.5px;font-weight:800;box-shadow:0 6px 16px rgba(0,0,0,.2);max-width:calc(100vw - 32px);display:none;text-align:center}
+.tip.on{display:block}
+.tip:after{content:"";position:absolute;bottom:-7px;right:44px;border:7px solid transparent;border-top-color:#ffd78a;border-bottom:0}
+.tray .go.dim{background:rgba(255,255,255,.25);color:#fff}
+.tray .go.full{background:#ffd78a}
 /* 담은 학교 띠 */
 .tray{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;z-index:55;width:min(calc(100vw - 20px),calc(var(--w) - 24px));background:#191d26;color:#fff;border-radius:16px;padding:8px 8px 8px 12px;display:flex;align-items:center;gap:8px;box-shadow:0 8px 22px rgba(0,0,0,.28)}
-.tray .cnt{flex:0 0 auto;font-weight:800;font-size:13px;color:#ffd78a;min-width:38px}
+.tray .cnt{flex:0 0 auto;font-weight:800;font-size:13px;color:#ffd78a;min-width:30px}
 .tray .chips{flex:1;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;min-width:0}
 .tray .chips::-webkit-scrollbar{display:none}
 .tray .tc{flex:0 0 auto;border:0;background:rgba(255,255,255,.13);color:#fff;border-radius:99px;padding:5px 10px 5px 5px;font-size:13px;font-weight:700;display:inline-flex;gap:5px;align-items:center;white-space:nowrap}
 .tray .tc i{font-style:normal;background:#ffd78a;color:#191d26;border-radius:99px;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:800}
 .tray .tc:after{content:"×";opacity:.6;margin-left:2px}
-.tray .empty{font-size:13px;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tray .empty{font-size:13px;opacity:.8;line-height:1.3}
 .tray .go{flex:0 0 auto;border:0;background:#fff;color:#191d26;border-radius:11px;padding:8px 12px;font-weight:800;font-size:13.5px}
 .tray.bump .cnt{animation:bump .3s}
 /* 학교 버튼: 누르면 담기, ⓘ는 정보 */
 .sitem{display:inline-flex;align-items:stretch;border:1px solid var(--line);border-radius:9px;background:#fff;overflow:hidden}
 .sitem.hz{border-color:#e6b35c;background:#fffaf0}
 .sitem .sb{border:0;background:none;padding:5px 4px 5px 9px;font-size:13.5px;display:inline-flex;align-items:center;gap:4px}
-.sitem .si{border:0;border-left:1px solid var(--line);background:none;padding:0 8px;color:var(--faint);font-size:13px;font-weight:800}
+.sitem .si{border:0;border-left:1px solid var(--line);background:none;padding:0 10px;min-width:36px;color:var(--faint);font-size:14px;font-weight:800}
 .sitem.wished{background:#191d26;border-color:#191d26}
 .sitem.wished .sb{color:#fff}
 .sitem.wished .si{color:#c8ccd4;border-left-color:#3a404c}
@@ -488,6 +520,18 @@ table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align
 <section class="page" id="p-map">
   <div class="ph"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div><div style="flex:1"><h2>인사구역 학교 지도</h2></div><span class="safe" title="입력한 정보는 이 기기 밖으로 전송되지 않아요"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없음</span></div>
 
+  <div class="stepper" id="stepper">
+    <button data-st="1">① 조건 고르기<b>집 근처·규모</b></button>
+    <button data-st="2">② 학교 담기<b id="stW">0 / 10곳</b></button>
+    <button data-st="3">③ 순서·엑셀<b>희망 내신 정리</b></button>
+  </div>
+  <div class="quick" id="quick">
+    <button class="chip" data-q="near">집 근처 2km</button>
+    <button class="chip" data-q="big">큰 학교 (24학급+)</button>
+    <button class="chip" data-q="small">작은 학교 (12학급 이하)</button>
+    <button class="chip" data-q="inn"><i class="d inn"></i>혁신학교</button>
+    <button class="more" id="qMore">필터 더 보기 ›</button>
+  </div>
   <div class="vsw" id="vsw"><button data-v="map" class="on">지도</button><button data-v="list">목록 <span id="vswCnt"></span></button></div>
 
   <div class="fbar" id="fbar"><button class="chip" id="fBtn">필터 <span class="n" id="fCnt"></span> ▾</button><div class="achips" id="aChips"></div></div>
@@ -521,6 +565,7 @@ table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align
     <div id="map"></div>
     <div class="tilemap" id="tilemap"></div>
     <div class="mode-pick" id="pickHint">지도에서 집 위치를 눌러 주세요</div>
+    <div class="tilehint">구역을 누르면 학교가 나와요</div>
     <button class="locbtn" id="locBtn" aria-label="내 위치 정하기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><circle cx="12" cy="12" r="8"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></svg><span>내 위치</span></button>
     <button class="hometag hide" id="homeTag"></button>
     <div class="legend-ov"><span><i class="d inn"></i>혁신</span><span><i class="d tg"></i>특구</span><span><i class="d ru"></i>농촌</span><span><i class="d kr"></i>한국어</span></div>
@@ -533,8 +578,10 @@ table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align
       <h3 style="margin:0">학교 목록 <span class="small muted" id="listCnt"></span></h3>
       <span class="row" style="gap:6px"><select class="sortsel" id="sortSel" aria-label="정렬"><option value="zone">구역별</option><option value="big">학급 많은 순</option><option value="small">학급 적은 순</option><option value="near">가까운 순</option></select><button class="btn sm" id="autoFill">가까운 순 채우기</button><button class="btn sm" id="zToggle">모두 펼치기</button></span>
     </div>
-    <div class="qadd"><input type="search" id="sQ" placeholder="학교 이름 (여러 곳은 쉼표로)" enterkeyhint="done"><button class="btn sm" id="sAdd">담기</button></div>
-    <p class="small faint" style="margin:-6px 0 10px">누르면 담기 · 다시 누르면 빼기 · ⓘ 정보</p>
+    <div class="qadd"><input type="search" id="sQ" placeholder="학교 이름 검색 (예: 수완)" enterkeyhint="search" aria-label="학교 이름 검색"></div>
+    <div class="row" style="justify-content:space-between;margin:-4px 0 8px"><span class="small faint">학교를 누르면 담기 · 다시 누르면 빼기</span><button class="linkbtn" id="multiBtn">여러 곳 한 번에 넣기</button></div>
+    <div class="multirow" id="multiRow"><textarea id="multiTa" placeholder="학교 이름을 쉼표나 줄바꿈으로 나열하세요&#10;예: 첨단, 봉산, 수완, 광주남"></textarea><div class="row" style="margin-top:6px"><button class="btn sm pri" id="multiGo">순서대로 담기</button><button class="btn sm" id="multiX">닫기</button></div></div>
+    <div class="legend-l"><span><i class="d inn"></i>혁신</span><span><i class="d tg"></i>인사특구</span><span><i class="d ru"></i>농촌</span><span><i class="d kr"></i>한국어학급</span><span>· 숫자 = 학급 수</span><span>· ⓘ 학교 정보</span></div>
     <div id="schoolList"></div>
     <p class="small faint" style="margin:6px 0 0">학급 수·재임 예상 연령대·만료자 현황은 공지 후 반영</p>
   </div>
@@ -829,6 +876,7 @@ table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align
 
 <div class="tray" id="tray"><span class="cnt" id="trayCnt">0/10</span><div class="chips" id="trayChips"></div><button class="go" id="trayGo">정리 ›</button></div>
 <div class="toast" id="toast"></div>
+<div class="tip" id="tip"></div>
 <button class="rbar hide" id="rbar"></button>
 <div class="sheet-bg" id="sheetBg"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true"><div class="grip"></div><div id="sheetBody"></div></div>
@@ -969,6 +1017,35 @@ function initNav(){
 
 document.querySelectorAll('.chip.sz').forEach(b=>b.onclick=()=>{ const z=b.dataset.sz; st.sizes.has(z)?st.sizes.delete(z):st.sizes.add(z); refresh(); });
 ['S','M','L','XL'].forEach(z=>{ const el=document.getElementById('sz'+z); if(el) el.textContent=SCHOOLS.filter(s=>s.cls&&sizeBand(s.cls.g)===z).length; });
+/* ---------- 빠른 조건 ---------- */
+let pendingRadius=0;
+const isBig=()=>st.sizes.has('L')&&st.sizes.has('XL')&&!st.sizes.has('S')&&!st.sizes.has('M');
+const isSmall=()=>st.sizes.has('S')&&st.sizes.size===1;
+function renderQuick(){
+  const on={near:!!(st.home&&st.radius===2), big:isBig(), small:isSmall(), inn:st.types.has('inn')};
+  document.querySelectorAll('#quick .chip').forEach(b=>b.classList.toggle('on',on[b.dataset.q]));
+}
+document.querySelectorAll('#quick .chip').forEach(b=>b.onclick=()=>{
+  const q=b.dataset.q;
+  if(q==='near'){ if(st.home&&st.radius===2){ st.radius=0; drawRadius(false); } else if(st.home){ st.radius=2; drawRadius(true); } else { pendingRadius=2; toast('집 위치를 정하면 2km 이내만 보여 드려요'); openHome(); return; } }
+  if(q==='big'){ if(isBig()) st.sizes.clear(); else { st.sizes=new Set(['L','XL']); } }
+  if(q==='small'){ if(isSmall()) st.sizes.clear(); else { st.sizes=new Set(['S']); } }
+  if(q==='inn'){ st.types.has('inn')?st.types.delete('inn'):st.types.add('inn'); }
+  refresh();
+});
+$('#qMore').onclick=()=>{ const fp=$('#fpanel'); fp.classList.add('open'); fp.scrollIntoView({behavior:'smooth',block:'center'}); fp.classList.remove('flashp'); void fp.offsetWidth; fp.classList.add('flashp'); };
+function renderStepper(){
+  const n=st.wish.length, cond=activeFilters().length>0||!!st.home;
+  const cur= n>=10?3 : (n>0||cond)?2 : 1;
+  document.querySelectorAll('#stepper button').forEach(b=>{ const k=+b.dataset.st; b.classList.toggle('on',k===cur); b.classList.toggle('done', (k===1&&cond) || (k===2&&n>=10)); });
+  $('#stW').textContent=`${n} / 10곳`;
+}
+document.querySelectorAll('#stepper button').forEach(b=>b.onclick=()=>{
+  const k=+b.dataset.st;
+  if(k===1){ $('#quick').scrollIntoView({behavior:'smooth',block:'center'}); }
+  if(k===2){ setView('list'); setTimeout(()=>{ $('#sQ').focus(); $('#listCard').scrollIntoView({behavior:'smooth',block:'start'}); },60); }
+  if(k===3){ openWish(); }
+});
 /* ---------- 지도|목록 전환 (스마트폰) ---------- */
 function setView(v){ $('#p-map').dataset.v=v; document.querySelectorAll('#vsw button').forEach(b=>b.classList.toggle('on',b.dataset.v===v)); if(v==='map'&&map) setTimeout(()=>map.relayout(),50); }
 document.querySelectorAll('#vsw button').forEach(b=>b.onclick=()=>{ setView(b.dataset.v); window.scrollTo({top:0}); });
@@ -1044,7 +1121,7 @@ function renderTiles(){
     const vis=SCHOOLS.filter(s=>s.zone===z.id&&visible(s));
     const off = !vis.length;
     const sub=[]; const c=k=>all.filter(s=>s[k]).length;
-    if(c('inn')) sub.push('혁 '+c('inn')); if(c('tg')) sub.push('특구 '+c('tg')); if(c('ru')) sub.push('농촌 '+c('ru')); if(c('kr')) sub.push('한국어 '+c('kr'));
+    if(c('inn')) sub.push('혁신 '+c('inn')); if(c('tg')) sub.push('인사특구 '+c('tg')); if(c('ru')) sub.push('농촌 '+c('ru')); if(c('kr')) sub.push('한국어학급 '+c('kr'));
     return `<button class="tile ${off?'dim':''} ${st.homeZone===z.id?'hz':''}" style="grid-area:${z.area};background:${z.color}" data-z="${z.id}">
       <span><span class="zn">${z.id}</span><span class="of">${z.office}</span></span>
       <span class="ct"><b>${vis.length}</b>교${sub.length?`<span class="sub">${sub.join(' · ')}</span>`:''}</span></button>`;
@@ -1090,7 +1167,7 @@ function renderList(){
     const w=arr.filter(s=>st.wish.includes(s.id)).length;
     const auto= narrowed || st.allOpen || z.id===st.homeZone || w>0;
     const open= st.zManual.has(z.id)? st.zManual.get(z.id) : auto;
-    html+=`<div class="zcard ${open?'':'closed'}" style="--zc:${z.color}"><button data-z="${z.id}" aria-expanded="${open}"><span class="ar">${open?'−':'+'}</span><span class="zn">${z.id}</span><span class="zc">${z.office} · ${arr.length}교</span><span class="zx">${st.homeZone===z.id?'<span class="h">거주</span>':''}${w?`<span class="w">담음 ${w}</span>`:''}</span></button><div class="zb"><div class="slist">`+
+    html+=`<div class="zcard ${open?'':'closed'}" style="--zc:${z.color}"><button data-z="${z.id}" aria-expanded="${open}"><span class="ar">${open?'−':'+'}</span><span class="zn">${z.id}</span><span class="zc">${arr.length}교</span><span class="pv">${arr.slice(0,3).map(x=>x.name.replace(/초$|학교$/,'')).join('·')}${arr.length>3?` 외 ${arr.length-3}곳`:''}</span><span class="zx">${st.homeZone===z.id?'<span class="h">거주</span>':''}${w?`<span class="w">담음 ${w}</span>`:''}</span></button><div class="zb"><div class="slist">`+
       arr.map(sitem).join('')+`</div></div></div>`;
   });
   $('#schoolList').innerHTML = html || '<p class="muted small">조건에 맞는 학교가 없어요.</p>';
@@ -1145,7 +1222,7 @@ function selectSchool(id, pan){
 }
 
 /* ---------- 희망 목록 ---------- */
-let lastUndo=null;
+let lastUndo=null, tipShown=false;
 function toggleWish(id, notify){
   const i=st.wish.indexOf(id); const nm=SCHOOLS[id].name;
   if(i>=0){ st.wish.splice(i,1); lastUndo={id,add:false,i}; }
@@ -1153,6 +1230,7 @@ function toggleWish(id, notify){
   $('#tray').classList.remove('bump'); void $('#tray').offsetWidth; $('#tray').classList.add('bump');
   refresh();
   if(notify) toast(`${st.wish.length}/10 · ${nm} ${i>=0?'뺐어요':'담았어요'}`, true);
+  if(i<0 && !tipShown && curTab==='map'){ tipShown=true; const tp=$('#tip'); tp.textContent='담은 학교는 아래 띠에 모여요. 다 고르면 ‘다음’에서 순서를 정하고 엑셀로 받으세요'; tp.classList.add('on'); setTimeout(()=>tp.classList.remove('on'),4500); }
 }
 function undoWish(){
   if(!lastUndo) return; const u=lastUndo; lastUndo=null;
@@ -1160,12 +1238,15 @@ function undoWish(){
   refresh(); toast('되돌렸어요');
 }
 function renderTray(){
-  $('#trayCnt').textContent=st.wish.length+'/10';
+  const n=st.wish.length;
+  $('#trayCnt').textContent=n+'곳';
+  const g=$('#trayGo'); g.classList.toggle('dim',n===0); g.classList.toggle('full',n>=10);
+  g.textContent= n===0? '다음 ›' : n>=10? '10곳 완료 · 순서·엑셀 ›' : '다음: 순서·엑셀 ›';
   $('#trayChips').innerHTML= st.wish.length? st.wish.map((id,i)=>`<button class="tc" data-rm="${id}" aria-label="${esc(SCHOOLS[id].name)} 빼기"><i>${i+1}</i>${esc(SCHOOLS[id].name.replace(/초$/,''))}</button>`).join('')
-    : '<span class="empty">학교를 누르면 여기에 담겨요</span>';
+    : '<span class="empty">학교를 눌러 담으세요 (최대 10곳)</span>';
   $('#trayChips').querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>toggleWish(+b.dataset.rm,true));
 }
-$('#trayGo').onclick=()=>openWish();
+$('#trayGo').onclick=()=>{ if(!st.wish.length){ toast('먼저 지도나 목록에서 학교를 눌러 담으세요'); return; } openWish(); };
 $('#sortSel').onchange=e=>{ const v=e.target.value; if(v==='near'&&!st.home){ toast('가까운 순은 집 위치를 정하면 쓸 수 있어요'); e.target.value=st.sort; goHomeCard(); return; } st.sort=v; renderList(); };
 $('#zToggle').onclick=()=>{ st.allOpen=!st.allOpen; st.zManual.clear(); if(!st.allOpen){ ZONES.forEach(z=>st.zManual.set(z.id,false)); } renderList(); };
 /* 이름으로 담기 (쉼표·줄바꿈으로 여러 곳) */
@@ -1191,8 +1272,14 @@ function quickAdd(){
   if(miss.length) m+=` · 못 찾음: ${miss.join(', ')}`;
   toast(m); $('#sQ').value=[...many,...miss.filter(x=>!x.includes('초과'))].join(', '); st.q=''; renderList();
 }
-$('#sAdd').onclick=quickAdd;
-$('#sQ').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); quickAdd(); } });
+$('#sQ').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault();
+    if(/[,\n]/.test($('#sQ').value)){ quickAdd(); return; }
+    const vis=[...document.querySelectorAll('#schoolList [data-add]')];
+    if(vis.length===1){ toggleWish(+vis[0].dataset.add,true); $('#sQ').value=''; st.q=''; renderList(); }
+    else if(vis.length>1) toast(`${vis.length}곳이 검색됐어요. 목록에서 눌러 담으세요`); else toast('검색된 학교가 없어요'); } });
+$('#multiBtn').onclick=()=>{ $('#multiRow').classList.toggle('on'); if($('#multiRow').classList.contains('on')) $('#multiTa').focus(); };
+$('#multiX').onclick=()=>$('#multiRow').classList.remove('on');
+$('#multiGo').onclick=()=>{ const v=$('#multiTa').value; const keep=$('#sQ').value; $('#sQ').value=v; quickAdd(); $('#multiTa').value=$('#sQ').value; $('#sQ').value=keep; };
 $('#sQ').addEventListener('paste',e=>{ const t=(e.clipboardData||window.clipboardData).getData('text'); if(/[,\n]/.test(t)){ e.preventDefault(); $('#sQ').value=t; quickAdd(); } });
 /* 가까운 순 채우기 */
 $('#autoFill').onclick=()=>{
@@ -1229,6 +1316,7 @@ function setHome(lat,lng,label,method){
   if(map){ const p=new kakao.maps.LatLng(lat,lng);
     if(homeOv) homeOv.setMap(null);
     homeOv=new kakao.maps.CustomOverlay({position:p,content:'<div class="homepin">집</div>',yAnchor:1.3,zIndex:20}); homeOv.setMap(map); map.panTo(p); }
+  if(pendingRadius){ st.radius=pendingRadius; pendingRadius=0; }
   refresh(); drawRadius(!!st.radius);
 }
 function clearHome(){ st.home=null; st.radius=0; drawRadius(false); if(homeOv){homeOv.setMap(null);homeOv=null;} $('#zconf').innerHTML=''; renderHomeStat(); refresh(); }
@@ -1401,7 +1489,7 @@ function doHomeSearch(){
   });
 }
 
-function refresh(){ renderFilters(); renderTiles(); renderList(); drawMarkers(); renderTray(); renderHomeTag(); }
+function refresh(){ renderFilters(); renderTiles(); renderList(); drawMarkers(); renderTray(); renderHomeTag(); renderQuick(); renderStepper(); }
 
 /* ---------- 관리자: 좌표 만들기 (?admin=1) ---------- */
 const isAdmin=new URL(location.href).searchParams.get('admin')==='1';
@@ -1711,7 +1799,7 @@ const TPL_B64='UEsDBBQAAAAIAMV1dF1Gx01IlwAAAM0AAAAQAAAAZG9jUHJvcHMvYXBwLnhtbE2PT
 /* =========================================================
    희망 내신 정리 → 엑셀 (서버 없이 브라우저 안에서 생성)
    ========================================================= */
-function toast(m, undo){ const t=$('#toast'); t.textContent=m; if(undo&&lastUndo){ const b=document.createElement('button'); b.textContent='되돌리기'; b.onclick=()=>{t.classList.remove('on'); undoWish();}; t.appendChild(b); } t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'), undo?3200:2600); }
+function toast(m, undo){ const t=$('#toast'); t.classList.toggle('top',$('#sheet').classList.contains('on')); t.textContent=m; if(undo&&lastUndo){ const b=document.createElement('button'); b.textContent='되돌리기'; b.onclick=()=>{t.classList.remove('on'); undoWish();}; t.appendChild(b); } t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'), undo?3200:2600); }
 const PREF_CLAUSES=[['제9조 제①항 제1호','1호 국가·독립·5·18 유공자'],['제9조 제①항 제2호','2호 교육행정기관 등 2년 이상 근무·파견'],['제9조 제①항 제3호','3호 국민권익위원회 요구'],['제9조 제①항 제4호','4호 중증장애인'],['제9조 제②항','제9조 ②항'],['제9조 제③항','제9조 ③항'],['제26조(영양교사)','영양교사 우선 전보'],['제28조 제②항(전문상담교사)','전문상담교사 우선 전보']];
 const DEFER_HO=[1,2,3,4,5,6,7,8,10,12];
 const ROLE_INFO={el:['초등','교사(초등)'],he:['보건','교사(보건)'],li:['사서','교사(사서)'],nu:['영양','교사(영양)'],co:['상담','교사(상담)'],sp:['특수','교사(특수)']};
