@@ -284,6 +284,13 @@ details.mini p{margin:6px 0 0}
 .tip:after{content:"";position:absolute;bottom:-7px;right:44px;border:7px solid transparent;border-top-color:#ffd78a;border-bottom:0}
 .tray .go.dim{background:rgba(255,255,255,.25);color:#fff}
 .tray .go.full{background:#ffd78a}
+.locban{display:flex;align-items:center;gap:12px;background:#eaf0fd;border:1px solid #cddafa;border-radius:14px;padding:12px 14px;margin:0 0 12px}
+.locban .ic2{width:38px;height:38px;border-radius:50%;background:#1f4fbf;color:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.locban .ic2 svg{width:20px;height:20px}
+.locban .tx{flex:1;min-width:0;font-size:12.5px;color:var(--sub);line-height:1.45}
+.locban .tx b{display:block;font-size:14.5px;color:#1c3a85}
+.locban .x{border:0;background:none;color:var(--faint);font-size:12.5px;font-weight:700;padding:4px}
+@media (max-width:520px){.locban{flex-wrap:wrap}.locban .tx{flex:1 1 calc(100% - 52px)}.locban .btn{flex:1}}
 /* 담은 학교 띠 */
 .tray{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;z-index:55;width:min(calc(100vw - 20px),calc(var(--w) - 24px));background:#191d26;color:#fff;border-radius:16px;padding:8px 8px 8px 12px;display:flex;align-items:center;gap:8px;box-shadow:0 8px 22px rgba(0,0,0,.28)}
 .tray .cnt{flex:0 0 auto;font-weight:800;font-size:13px;color:#ffd78a;min-width:30px}
@@ -521,9 +528,15 @@ table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align
   <div class="ph"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div><div style="flex:1"><h2>인사구역 학교 지도</h2></div><span class="safe" title="입력한 정보는 이 기기 밖으로 전송되지 않아요"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없음</span></div>
 
   <div class="stepper" id="stepper">
-    <button data-st="1">① 조건 고르기<b>집 근처·규모</b></button>
-    <button data-st="2">② 학교 담기<b id="stW">0 / 10곳</b></button>
+    <button data-st="1">① 내 위치 정하기<b id="stH">먼저 집 위치</b></button>
+    <button data-st="2">② 조건·학교 담기<b id="stW">0 / 10곳</b></button>
     <button data-st="3">③ 순서·엑셀<b>희망 내신 정리</b></button>
+  </div>
+  <div class="locban" id="locBan">
+    <div class="ic2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><circle cx="12" cy="12" r="8"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></svg></div>
+    <div class="tx"><b>먼저 내 위치를 정해 주세요</b><span>집에서 가까운 학교·거리순 정렬·반경 보기가 켜져요. 위치는 이 화면에서만 써요.</span></div>
+    <button class="btn pri" id="locBanGo">내 위치 정하기</button>
+    <button class="x" id="locBanX" aria-label="나중에">나중에</button>
   </div>
   <div class="quick" id="quick">
     <button class="chip" data-q="near">집 근처 2km</button>
@@ -596,12 +609,9 @@ table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align
     </div>
     <div class="hpane" id="hpane"></div>
     <div id="zconf"></div>
-    <div class="homebar" style="margin-top:12px">
-      <label for="homeZone">내 거주지 구역</label>
-      <select id="homeZone"></select>
-    </div>
-    <details class="mini"><summary>ⓘ 거주지 구역·개인정보</summary>
-      <p>육아·다자녀 동점자 우선은 거주지 구역 학교를 희망할 때만 적용돼요. 위치로 추정한 구역은 참고용이에요.<span class="ref">기준 제19조 6항</span></p>
+    <div class="homebar hide"><select id="homeZone"></select></div>
+    <details class="mini"><summary>ⓘ 개인정보·동점자 안내</summary>
+      <p>육아·다자녀 동점자 우선은 거주지 인사구역 학교를 희망할 때만 적용돼요. 집 위치로 가까운 학교들의 구역을 추정해 안내에 참고로만 써요.<span class="ref">기준 제19조 6항</span></p>
       <p><span class="safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없음</span> 현재 위치·지도 찍기·학교 기준은 아무것도 밖으로 보내지 않아요. 주소 검색만 검색어가 카카오맵으로 전달돼요.</p>
     </details>
   </div>
@@ -1034,18 +1044,23 @@ document.querySelectorAll('#quick .chip').forEach(b=>b.onclick=()=>{
   refresh();
 });
 $('#qMore').onclick=()=>{ const fp=$('#fpanel'); fp.classList.add('open'); fp.scrollIntoView({behavior:'smooth',block:'center'}); fp.classList.remove('flashp'); void fp.offsetWidth; fp.classList.add('flashp'); };
+let locBanHidden=false;
 function renderStepper(){
-  const n=st.wish.length, cond=activeFilters().length>0||!!st.home;
-  const cur= n>=10?3 : (n>0||cond)?2 : 1;
-  document.querySelectorAll('#stepper button').forEach(b=>{ const k=+b.dataset.st; b.classList.toggle('on',k===cur); b.classList.toggle('done', (k===1&&cond) || (k===2&&n>=10)); });
+  const n=st.wish.length, hasHome=!!st.home;
+  const cur= n>=10?3 : (!hasHome && n===0)?1 : 2;
+  document.querySelectorAll('#stepper button').forEach(b=>{ const k=+b.dataset.st; b.classList.toggle('on',k===cur); b.classList.toggle('done', (k===1&&hasHome) || (k===2&&n>=10)); });
+  $('#stH').textContent= hasHome? st.home.label : '먼저 집 위치';
+  $('#locBan').classList.toggle('hide', hasHome || locBanHidden);
   $('#stW').textContent=`${n} / 10곳`;
 }
 document.querySelectorAll('#stepper button').forEach(b=>b.onclick=()=>{
   const k=+b.dataset.st;
-  if(k===1){ $('#quick').scrollIntoView({behavior:'smooth',block:'center'}); }
+  if(k===1){ openHome(); }
   if(k===2){ setView('list'); setTimeout(()=>{ $('#sQ').focus(); $('#listCard').scrollIntoView({behavior:'smooth',block:'start'}); },60); }
   if(k===3){ openWish(); }
 });
+$('#locBanGo').onclick=()=>openHome();
+$('#locBanX').onclick=()=>{ locBanHidden=true; renderStepper(); toast('필요할 때 지도 위 ‘내 위치’나 ① 단계를 누르세요'); };
 /* ---------- 지도|목록 전환 (스마트폰) ---------- */
 function setView(v){ $('#p-map').dataset.v=v; document.querySelectorAll('#vsw button').forEach(b=>b.classList.toggle('on',b.dataset.v===v)); if(v==='map'&&map) setTimeout(()=>map.relayout(),50); }
 document.querySelectorAll('#vsw button').forEach(b=>b.onclick=()=>{ setView(b.dataset.v); window.scrollTo({top:0}); });
@@ -1122,7 +1137,7 @@ function renderTiles(){
     const off = !vis.length;
     const sub=[]; const c=k=>all.filter(s=>s[k]).length;
     if(c('inn')) sub.push('혁신 '+c('inn')); if(c('tg')) sub.push('인사특구 '+c('tg')); if(c('ru')) sub.push('농촌 '+c('ru')); if(c('kr')) sub.push('한국어학급 '+c('kr'));
-    return `<button class="tile ${off?'dim':''} ${st.homeZone===z.id?'hz':''}" style="grid-area:${z.area};background:${z.color}" data-z="${z.id}">
+    return `<button class="tile ${off?'dim':''}" style="grid-area:${z.area};background:${z.color}" data-z="${z.id}">
       <span><span class="zn">${z.id}</span><span class="of">${z.office}</span></span>
       <span class="ct"><b>${vis.length}</b>교${sub.length?`<span class="sub">${sub.join(' · ')}</span>`:''}</span></button>`;
   }).join('');
@@ -1142,7 +1157,7 @@ function dots(s){ return (s.inn?'<i class="d inn" title="혁신학교"></i>':'')
 function rankMeta(s){ const d=distKm(st.home,s); return `<span class="meta">${s.zone}${s.cls?' · '+s.cls.g+'학급':''}${d!=null?' · '+fmtKm(d):''}</span>`; }
 function sitem(s){
   const k=st.wish.indexOf(s.id);
-  return `<span class="sitem ${st.homeZone===s.zone?'hz':''} ${k>=0?'wished':''} ${s.closed?'closed':''}"><button class="sb" data-add="${s.id}" aria-label="${esc(s.name)} ${k>=0?'빼기':'담기'}">${k>=0?`<span class="ord">${k+1}</span>`:''}${esc(s.name)}${dots(s)}${s.closed?' <span class="cn">휴교</span>':(s.cls&&st.sort==='zone')?`<span class="cn" title="일반학급 수">${s.cls.g}</span>`:''}${st.sort!=='zone'?rankMeta(s):''}</button><button class="si" data-info="${s.id}" aria-label="${esc(s.name)} 정보">ⓘ</button></span>`;
+  return `<span class="sitem ${k>=0?'wished':''} ${s.closed?'closed':''}"><button class="sb" data-add="${s.id}" aria-label="${esc(s.name)} ${k>=0?'빼기':'담기'}">${k>=0?`<span class="ord">${k+1}</span>`:''}${esc(s.name)}${dots(s)}${s.closed?' <span class="cn">휴교</span>':(s.cls&&st.sort==='zone')?`<span class="cn" title="일반학급 수">${s.cls.g}</span>`:''}${st.sort!=='zone'?rankMeta(s):''}</button><button class="si" data-info="${s.id}" aria-label="${esc(s.name)} 정보">ⓘ</button></span>`;
 }
 function bindItems(root, pan){
   root.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>toggleWish(+b.dataset.add,true));
@@ -1167,7 +1182,7 @@ function renderList(){
     const w=arr.filter(s=>st.wish.includes(s.id)).length;
     const auto= narrowed || st.allOpen || z.id===st.homeZone || w>0;
     const open= st.zManual.has(z.id)? st.zManual.get(z.id) : auto;
-    html+=`<div class="zcard ${open?'':'closed'}" style="--zc:${z.color}"><button data-z="${z.id}" aria-expanded="${open}"><span class="ar">${open?'−':'+'}</span><span class="zn">${z.id}</span><span class="zc">${arr.length}교</span><span class="pv">${arr.slice(0,3).map(x=>x.name.replace(/초$|학교$/,'')).join('·')}${arr.length>3?` 외 ${arr.length-3}곳`:''}</span><span class="zx">${st.homeZone===z.id?'<span class="h">거주</span>':''}${w?`<span class="w">담음 ${w}</span>`:''}</span></button><div class="zb"><div class="slist">`+
+    html+=`<div class="zcard ${open?'':'closed'}" style="--zc:${z.color}"><button data-z="${z.id}" aria-expanded="${open}"><span class="ar">${open?'−':'+'}</span><span class="zn">${z.id}</span><span class="zc">${arr.length}교</span><span class="pv">${arr.slice(0,3).map(x=>x.name.replace(/초$|학교$/,'')).join('·')}${arr.length>3?` 외 ${arr.length-3}곳`:''}</span><span class="zx">${w?`<span class="w">담음 ${w}</span>`:''}</span></button><div class="zb"><div class="slist">`+
       arr.map(sitem).join('')+`</div></div></div>`;
   });
   $('#schoolList').innerHTML = html || '<p class="muted small">조건에 맞는 학교가 없어요.</p>';
@@ -1207,7 +1222,7 @@ function selectSchool(id, pan){
     <div class="row" style="gap:4px;margin-top:8px">${s.inn?'<span class="tag inn">혁신학교</span>':''}${s.tg?'<span class="tag tg">인사특구</span>':''}${s.ru?'<span class="tag ru">농촌학교</span>':''}${s.kr?'<span class="tag kr">한국어학급</span>':''}${s.tgSoon?`<span class="tag soon">${s.tgSoon.label}부터 인사특구</span>`:''}${s.sp?'<span class="tag sp">특수학교</span>':''}</div>
     <dl class="kv">
       <dt>학교 유형</dt><dd>${typeNote(s)}</dd>
-      <dt>거주지 구역</dt><dd>${st.homeZone? (st.homeZone===s.zone?'<b style="color:var(--ok)">거주지 구역 학교</b> · 육아·다자녀 동점자 적용 가능':'거주지 구역 밖') : '<span class="muted">거주지 구역을 고르면 표시돼요</span>'}</dd>
+      ${(tieSt[3]===true||tieSt[4]===true)&&st.homeZone?`<dt>동점자 3·4번</dt><dd>${st.homeZone===s.zone?'<b style="color:var(--ok)">거주지 구역(추정) 학교</b> · 적용 가능':'거주지 구역(추정) 밖 · 적용 안 될 수 있음'}</dd>`:''}
       ${d!=null?`<dt>집에서 거리</dt><dd>직선 ${fmtKm(d)}</dd>`:''}
       <dt>학급 수</dt><dd>${s.closed?`<b style="color:var(--bad)">휴교</b> <span class="faint small">(${CLS_DATE}자)</span>`: s.cls?`일반 <b>${s.cls.g}</b>${s.cls.kr?` (한국어학급 ${s.cls.kr} 포함)`:''} · 특수 ${s.cls.sp} <span class="faint small">(${CLS_DATE}자)</span>${s.note?`<br><span class="faint small">충효분교 일반 6학급 별도</span>`:''}${sizeNote(s)}`:'<span class="muted">자료 없음</span>'}</dd>
       <dt>학교 현황</dt><dd class="muted">재임 예상 연령대·만료자 현황은 공지 후 반영</dd>
@@ -1309,10 +1324,8 @@ function setHome(lat,lng,label,method){
   if(method==='school'){ const sc=SCHOOLS.find(x=>x.name===label); if(sc) guess=sc.zone; }
   homeMode=''; renderHomePane();
   renderHomeStat();
-  if(guess){ st.homeZone=guess; $('#homeZone').value=guess;
-    $('#zconf').innerHTML=`<div class="zconf">추정 거주지 구역 <b>${guess}</b> ${near.length?`<span class="faint small">(가까운 학교: ${near.slice(0,3).map(n=>esc(n.s.name)+' '+fmtKm(n.d)).join(', ')})</span>`:''}<button class="btn sm pri" id="zOk">맞아요</button><button class="btn sm" id="zNo">다른 구역</button></div>`;
-    $('#zOk').onclick=()=>{$('#zconf').innerHTML=''; toast(`거주지 구역을 ${st.homeZone}로 정했어요`); if(sheetKind==='home') closeSheet();};
-    $('#zNo').onclick=()=>{$('#zconf').innerHTML=''; $('#homeZone').focus(); toast('아래에서 거주지 구역을 골라 주세요');}; }
+  if(guess){ st.homeZone=guess; $('#homeZone').value=guess; }
+  if(sheetKind==='home') setTimeout(()=>{ closeSheet(); toast(`집 위치를 정했어요: ${label}${st.radius?` · ${st.radius}km 이내만 보기`:''}`); },250);
   if(map){ const p=new kakao.maps.LatLng(lat,lng);
     if(homeOv) homeOv.setMap(null);
     homeOv=new kakao.maps.CustomOverlay({position:p,content:'<div class="homepin">집</div>',yAnchor:1.3,zIndex:20}); homeOv.setMap(map); map.panTo(p); }
@@ -1321,7 +1334,7 @@ function setHome(lat,lng,label,method){
 }
 function clearHome(){ st.home=null; st.radius=0; drawRadius(false); if(homeOv){homeOv.setMap(null);homeOv=null;} $('#zconf').innerHTML=''; renderHomeStat(); refresh(); }
 $('#homeClear').onclick=clearHome;
-function renderHomeTag(){ const t=$('#homeTag'); if(st.home){ t.textContent=`집 · ${st.home.label}${st.homeZone?' · '+st.homeZone:''} ✎`; t.classList.remove('hide'); } else if(st.homeZone){ t.textContent=`거주지 구역 ${st.homeZone} ✎`; t.classList.remove('hide'); } else t.classList.add('hide'); }
+function renderHomeTag(){ const t=$('#homeTag'); if(st.home){ t.textContent=`집 · ${st.home.label} ✎`; t.classList.remove('hide'); } else t.classList.add('hide'); }
 function renderHomeStat(){
   if(st.home){ $('#hsT').textContent='집 위치: '+st.home.label; $('#hsM').textContent=(METHOD_LABEL[st.home.method]||'')+(st.home.method?'로 정함 · ':'')+'반경 보기·거리순 정렬·가까운 순 채우기를 쓸 수 있어요'; $('#homeClear').classList.remove('hide'); }
   else { $('#hsT').textContent='집 위치: 아직 정하지 않았어요'; $('#hsM').textContent='집 위치를 정하면 반경 보기·거리순 정렬·가까운 순 채우기를 쓸 수 있어요'; $('#homeClear').classList.add('hide'); }
@@ -1370,7 +1383,7 @@ function renderHomePane(){
     $('#nearSch').onchange=e=>{ if(e.target.value==='') return; const s=SCHOOLS[+e.target.value];
       if(s.lat!=null) setHome(s.lat,s.lng,s.name,'school');
       else if(mapState==='ok'){ toast('학교 위치를 찾는 중…'); searchSchool(s,r=>{ if(r){ s.lat=r.lat; s.lng=r.lng; setHome(s.lat,s.lng,s.name,'school'); } else toast('학교 위치를 찾지 못했어요'); }); }
-      else { st.homeZone=s.zone; $('#homeZone').value=s.zone; homeMode=''; renderHomePane(); refresh(); toast(`학교 좌표가 아직 없어 거주지 구역만 ${s.zone}로 정했어요`); } };
+      else { toast('지도가 연결되지 않아 학교 위치를 알 수 없어요. ‘현재 위치’를 써 주세요'); } };
   }
 }
 document.querySelectorAll('#hm button').forEach(b=>b.onclick=()=>{ const m=b.dataset.m; if(homeMode==='pick'&&m!=='pick'){ st.picking=false; $('#pickHint').style.display='none'; } homeMode= homeMode===m?'':m; renderHomePane(); });
@@ -1589,7 +1602,7 @@ function renderTie(){
   });
 }
 function zoneHint(){
-  return `<div class="small" style="margin-top:6px">${st.homeZone?`지도 탭에서 고른 거주지 구역은 <b>${st.homeZone}</b>이에요. 희망학교가 이 구역 학교여야 적용됩니다.`:'지도 탭에서 거주지 구역을 고르면 해당 구역 학교를 표시해 드려요.'}</div>`;
+  return `<div class="small" style="margin-top:6px">${st.homeZone?`집 위치로 추정한 거주지 구역은 <b>${st.homeZone}</b>이에요(참고용). 희망학교가 거주지 인사구역 학교여야 적용됩니다.`:'지도 탭에서 내 위치를 정하면, 희망학교가 거주지 구역 안인지 참고로 알려 드려요.'}</div>`;
 }
 function tieCollect(){
   const hit=[], ev=[];
@@ -1608,8 +1621,8 @@ function renderTieResult(){
   const wz=st.wish.length&&st.homeZone? st.wish.filter(id=>SCHOOLS[id].zone===st.homeZone).length : null;
   let warn='';
   if(tieSt[3]===true||tieSt[4]===true){
-    warn = !st.homeZone? `<div class="note">3·4번은 거주지 구역 학교를 희망할 때만 적용돼요. 지도 탭에서 거주지 구역을 골라 두면 희망 목록과 비교해 드려요.</div>`
-      : `<div class="note">거주지 구역은 <b>${st.homeZone}</b>입니다. ${wz==null?'희망 목록이 비어 있어요.':`희망 목록 ${st.wish.length}교 중 ${wz}교가 이 구역 학교예요. 나머지 학교에서는 3·4번이 적용되지 않아요.`}</div>`;
+    warn = !st.homeZone? `<div class="note">3·4번은 거주지 인사구역 학교를 희망할 때만 적용돼요. 지도 탭에서 내 위치를 정하면 희망 목록과 비교해 드려요.</div>`
+      : `<div class="note">집 위치로 추정한 거주지 구역은 <b>${st.homeZone}</b>입니다(참고용). ${wz==null?'희망 목록이 비어 있어요.':`희망 목록 ${st.wish.length}교 중 ${wz}교가 이 구역 학교예요. 나머지 학교에서는 3·4번이 적용되지 않아요.`}</div>`;
   }
   $('#tieResult').innerHTML=`<h3>나의 동점자 체크 결과</h3>`+
     (hit.length?`<ul class="clean">${hit.map(h=>`<li>${h}</li>`).join('')}</ul>`:'<p class="muted" style="margin:0">아직 고른 항목이 없어요. 7번(교육경력)과 10번(생년월일)은 모두에게 자동 적용됩니다.</p>')+
@@ -1840,7 +1853,7 @@ function openWish(){
 }
 function wishWarn(s){
   const w=[];
-  if((tieSt[3]===true||tieSt[4]===true) && st.homeZone && s.zone!==st.homeZone) w.push('거주지 구역 밖 → 동점자 3·4번 미적용');
+  if((tieSt[3]===true||tieSt[4]===true) && st.homeZone && s.zone!==st.homeZone) w.push('거주지 구역(추정) 밖 → 동점자 3·4번 미적용 가능');
   if(plan.kind==='우대' && plan.prefC==='제9조 제①항 제2호' && s.ru && !s.name.startsWith('광주북')) w.push('농촌학교 → 우대(파견) 우선 전보 대상 아님');
   if(s.sp && plan.role!=='sp') w.push('특수학교');
   if(tieSt[2]===true && plan.role==='el' && s.cls && s.cls.g<20) w.push(`${s.cls.g}학급 → 동점자 2번(중증장애) 미적용(20학급 이상만)`);
