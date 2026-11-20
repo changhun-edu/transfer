@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>전보 한눈에 – 광주 초등</title>
+<meta name="description" content="광주 동·서부교육지원청 초등교사 전보 안내(비공식). 인사구역 지도, 동점자 체크, 전보 유예 자가진단.">
+<style>
+:root{
+  --bg:#f5f6f8; --card:#fff; --ink:#191d26; --sub:#5d6573; --faint:#8b93a1; --line:#e4e7ec;
+  --accent:#1f4fbf; --accent-soft:#eaf0fd;
+  --ok:#047857; --bad:#b91c1c; --warn-soft:#fff7e8; --warn-line:#f2dcb0; --warn-ink:#6b4300;
+  --radius:14px; --w:720px;
+}
+body[data-tab=map]{--accent:#1f4fbf;--accent-soft:#eaf0fd}
+body[data-tab=score]{--accent:#6d28d9;--accent-soft:#f1ebfd}
+body[data-tab=defer]{--accent:#0f766e;--accent-soft:#e5f5f2}
+body[data-tab=age]{--accent:#c2410c;--accent-soft:#fdeee5}
+body[data-tab=changes]{--accent:#be185d;--accent-soft:#fcebf3}
+body[data-tab=roles]{--accent:#334155;--accent-soft:#edf0f4}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕","Noto Sans KR",sans-serif;
+  background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6;word-break:keep-all;-webkit-text-size-adjust:100%}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--accent)}
+.wrap{max-width:var(--w);margin:0 auto;padding:0 16px}
+.hide{display:none!important}
+
+/* 고지 띠: 한 줄 */
+.ribbon{background:#262a33;color:#e9ebef;font-size:12.5px}
+.ribbon .wrap{padding-top:5px;padding-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ribbon b{color:#ffd78a;font-weight:700}
+
+/* 헤더 + 탭 (함께 고정) */
+.topbar{position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;justify-content:space-between;height:48px}
+.logo{display:flex;align-items:baseline;gap:7px;background:none;border:0;padding:0}
+.logo .t{font-size:18.5px;font-weight:800;letter-spacing:-.4px}
+.logo .t em{font-style:normal;color:#1f4fbf}
+.logo .s{font-size:12.5px;color:var(--sub);font-weight:700}
+.yr{font-size:12px;color:var(--sub)}
+.tabs{display:flex;gap:2px}
+.tabs button{flex:1 1 0;border:0;background:none;padding:6px 2px 7px;color:var(--faint);font-weight:700;font-size:14px;
+  display:flex;align-items:center;justify-content:center;gap:6px;border-bottom:3px solid transparent;white-space:nowrap}
+.tabs button svg{width:17px;height:17px;flex:0 0 auto}
+.tabs button.on{color:var(--accent);border-bottom-color:var(--accent)}
+.tabs .short{display:none}
+@media (max-width:600px){
+  .tabs button{flex-direction:column;gap:1px;font-size:11.5px;padding:5px 0 6px}
+  .tabs .long{display:none} .tabs .short{display:inline}
+  .logo .t{font-size:17.5px}
+}
+
+main{padding:16px 0 110px}
+section.page{display:none}
+section.page.on{display:block}
+
+/* 페이지 머리 */
+.ph{display:flex;gap:12px;align-items:center;margin:2px 0 14px}
+.ph .ic{width:40px;height:40px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.ph .ic svg{width:22px;height:22px}
+.ph h2{font-size:19px;margin:0;letter-spacing:-.3px;line-height:1.3}
+.ph p{margin:1px 0 0;color:var(--sub);font-size:13.5px;line-height:1.45}
+
+h3{font-size:16px;margin:0 0 8px;letter-spacing:-.2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+.muted{color:var(--sub)} .faint{color:var(--faint)}
+.small{font-size:13px}
+.ref{display:inline-block;font-size:11px;font-weight:600;color:#6b7280;background:#f0f2f5;border-radius:5px;padding:0 6px;margin-left:4px;white-space:nowrap;vertical-align:1px;line-height:18px}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;vertical-align:1px;white-space:nowrap}
+.tag.inn{background:#e6f5ee;color:#047857}
+.tag.tg{background:#e6effd;color:#1d4ed8}
+.tag.ru{background:#f6eedc;color:#8a5a00}
+.tag.sp{background:#f1ecfb;color:#6d28d9}
+.tag.home{background:#fff1d6;color:#9a5b00}
+.tag.soon{background:#f1f3f5;color:#4b5563}
+.tag.new{background:#fde8e8;color:#b91c1c}
+.tag.mod{background:#e8eefc;color:#1d4ed8}
+.tag.del{background:#eef0f3;color:#4b5563}
+.tag.kr{background:#e0f4f7;color:#0e7490}
+.fm{display:inline-block;font-size:11px;font-weight:800;color:#6d28d9;background:#f1ebfd;border-radius:5px;padding:0 5px;margin-left:4px;white-space:nowrap;line-height:17px;vertical-align:1px}
+.chk-out{margin-top:10px}
+.chk-out li{margin:4px 0}
+.mini-t{font-weight:800;font-size:14px;margin:14px 0 6px}
+table.sub{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+table.sub th,table.sub td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top}
+table.sub th{background:#f7f8fa;color:var(--sub);font-weight:700}
+.case{padding:10px 0;border-top:1px solid var(--line)}
+.case:first-child{border-top:0;padding-top:0}
+.case b{display:block}
+.note{background:var(--warn-soft);border:1px solid var(--warn-line);border-radius:10px;padding:9px 12px;font-size:13.5px;color:var(--warn-ink);margin:10px 0}
+.info{background:var(--accent-soft);border-radius:10px;padding:10px 12px;font-size:13.5px;margin:10px 0}
+ul.clean,ol.clean{margin:6px 0 0;padding-left:18px}
+ul.clean li,ol.clean li{margin:3px 0}
+.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 13px;font-size:14px;font-weight:700}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.sm{padding:5px 10px;font-size:13px;border-radius:8px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input[type=text],input[type=search],input[type=date],select{border:1px solid var(--line);border-radius:10px;padding:8px 11px;background:#fff;min-width:0}
+
+/* ---------- 지도 페이지 ---------- */
+.toolbar{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0 10px;margin:0 -16px;padding-left:16px;padding-right:16px}
+.toolbar::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:99px;padding:5px 12px;font-size:13.5px;font-weight:700;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.chip .n{font-weight:600;opacity:.7;font-size:12.5px}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip.ty.inn.on{background:#047857;border-color:#047857}
+.chip.ty.tg.on{background:#1d4ed8;border-color:#1d4ed8}
+.chip.ty.ru.on{background:#8a5a00;border-color:#8a5a00}
+.chip.ty.kr.on{background:#0e7490;border-color:#0e7490}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:99px;overflow:hidden;flex:0 0 auto;background:#fff}
+.seg button{border:0;background:none;padding:5px 11px;font-size:13.5px;font-weight:700;color:var(--sub)}
+.seg button.on{background:var(--ink);color:#fff}
+.sep{width:1px;background:var(--line);flex:0 0 auto;margin:3px 2px}
+.zone-pop{display:none;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:-4px 0 10px}
+.zone-pop.on{display:block}
+.zone-pop .chips{display:flex;flex-wrap:wrap;gap:6px}
+.zone-pop .chip.off{opacity:.4;background:#f3f4f6}
+.sw{width:10px;height:10px;border-radius:50%;display:inline-block;flex:0 0 auto}
+
+.mapbox{position:relative;height:min(58vh,500px);min-height:320px;}
+.mapbox.tiles{height:auto;min-height:0}
+.mapbox{border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:#eef1f5}
+#map{position:absolute;inset:0}
+.mode-pick{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:#191d26;color:#fff;font-size:13px;padding:6px 12px;border-radius:99px;z-index:5;display:none}
+.maptag{font-size:12px;color:var(--faint);margin:6px 2px 0}
+
+/* 도식 지도 (키 없을 때) */
+.tilemap{position:relative;padding:10px;display:grid;gap:8px;grid-auto-rows:minmax(84px,auto);
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-areas:"s5 s5 d3 d5" "s4 s2 d4 d2" "s3 s2 d1 d2" "s6 s1 d1 d2"}
+.tile{border:0;border-radius:12px;color:#fff;text-align:left;padding:9px 10px;display:flex;flex-direction:column;justify-content:space-between;gap:6px;position:relative;min-width:0}
+.tile .zn{font-size:16px;font-weight:800;letter-spacing:-.3px;line-height:1.2}
+.tile .of{font-size:11px;opacity:.85;font-weight:600;margin-left:4px}
+.tile .ct{font-size:12px;font-weight:700;line-height:1.35}
+.tile .ct .sub{display:block;opacity:.88;font-weight:600;margin-top:1px}
+.tile .ct b{font-size:20px;line-height:1.1}
+.tile.dim{opacity:.22}
+.tile.hz::after{content:"거주";position:absolute;right:7px;top:7px;background:#fff;color:#9a5b00;font-size:10.5px;font-weight:800;border-radius:5px;padding:0 5px}
+@media (max-width:420px){.tilemap{gap:6px;padding:8px}.tile .ct{font-size:11px}.tile .ct b{font-size:17px}.tile{padding:7px 8px}.tile .zn{font-size:14.5px}.tile .of{display:block;margin-left:0}}
+
+.dot{width:20px;height:20px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.35);cursor:pointer;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;transition:transform .1s}
+.dot.sp{border-radius:5px}
+.dot.hl{transform:scale(1.25);box-shadow:0 0 0 3px var(--hl,#111),0 1px 3px rgba(0,0,0,.35)}
+.dot.hz{outline:2px dashed #e6a23c;outline-offset:1px}
+.dot.sel{transform:scale(1.5);z-index:9}
+.dot.wished{background:#191d26!important}
+.homepin{background:#191d26;color:#fff;font-size:12px;font-weight:800;padding:3px 7px;border-radius:8px;box-shadow:0 2px 5px rgba(0,0,0,.35);white-space:nowrap}
+.maplabel{background:#fff;border:1px solid #c9ced6;border-radius:7px;padding:2px 7px;font-size:12px;font-weight:700;white-space:nowrap;transform:translateY(-26px);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+
+.homebar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.homebar label{font-weight:800;font-size:14px}
+.typeinfo{font-size:13px;color:var(--sub);margin:0 0 10px;display:none}
+.typeinfo.on{display:block}
+
+.zone-block{margin-bottom:12px}
+.zone-h{display:flex;align-items:center;gap:8px;font-weight:800;margin:4px 0 6px;font-size:14.5px}
+.zone-h .cnt{font-weight:600;color:var(--sub);font-size:12.5px}
+.slist{display:flex;flex-wrap:wrap;gap:6px}
+.sbtn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:5px 9px;font-size:13.5px;display:inline-flex;align-items:center;gap:4px}
+.sbtn.hz{border-color:#e6b35c;background:#fffaf0}
+.sbtn.wished{background:#191d26;border-color:#191d26;color:#fff}
+.mk{font-size:10.5px;font-weight:800;border-radius:4px;padding:0 4px;line-height:16px}
+.mk.inn{background:#e6f5ee;color:#047857}.mk.tg{background:#e6effd;color:#1d4ed8}.mk.ru{background:#f6eedc;color:#8a5a00}.mk.sp{background:#f1ecfb;color:#6d28d9}.mk.kr{background:#e0f4f7;color:#0e7490}
+.sbtn.wished .mk{background:rgba(255,255,255,.18);color:#fff}
+
+/* 떠 있는 희망 버튼 */
+.fab{position:fixed;bottom:18px;right:max(16px,calc((100vw - var(--w))/2 + 16px));z-index:55;background:#191d26;color:#fff;border:0;border-radius:99px;padding:11px 16px;font-weight:800;font-size:14.5px;box-shadow:0 6px 18px rgba(0,0,0,.25);display:flex;gap:8px;align-items:center}
+.fab .c{background:#ffd78a;color:#191d26;border-radius:99px;min-width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;padding:0 6px}
+.fab.bump{animation:bump .3s}
+@keyframes bump{50%{transform:scale(1.12)}}
+
+/* 결과 막대 */
+.rbar{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:55;width:min(calc(100vw - 24px),calc(var(--w) - 32px));
+  background:var(--accent);color:#fff;border:0;border-radius:14px;padding:12px 16px;font-weight:800;font-size:14.5px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 6px 18px rgba(0,0,0,.22)}
+.rbar span.s{font-weight:600;opacity:.9;font-size:13px}
+
+/* 바텀시트 */
+.sheet-bg{position:fixed;inset:0;background:rgba(15,18,25,.38);z-index:80;opacity:0;pointer-events:none;transition:opacity .2s}
+.sheet-bg.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:50%;bottom:0;transform:translate(-50%,105%);width:min(100vw,var(--w));max-height:78vh;overflow:auto;background:#fff;z-index:81;
+  border-radius:18px 18px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.2);transition:transform .25s ease,visibility 0s .25s;padding:8px 18px 22px;visibility:hidden}
+.sheet.on{transform:translate(-50%,0);visibility:visible;transition:transform .25s ease}
+.grip{width:40px;height:5px;border-radius:9px;background:#d5d9e0;margin:2px auto 10px}
+.sh-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.sh-name{font-size:19px;font-weight:800;letter-spacing:-.3px}
+.kv{display:grid;grid-template-columns:96px 1fr;gap:6px 10px;font-size:14px;margin-top:10px}
+.kv dt{color:var(--sub)} .kv dd{margin:0}
+.wish ol{list-style:none;margin:0;padding:0}
+.wish li{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
+.wish li:last-child{border-bottom:0}
+.wish .no{width:24px;height:24px;border-radius:50%;background:#eef0f4;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.wish .nm{flex:1;font-weight:700;min-width:0}
+.wish .nm small{display:block;font-weight:500;color:var(--sub);font-size:12.5px}
+
+/* ---------- 서열·동점자 ---------- */
+.hero{background:var(--accent);color:#fff;border-radius:var(--radius);padding:16px;margin-bottom:12px}
+.hero .big{font-size:21px;font-weight:800;letter-spacing:-.4px}
+.hero .big em{font-style:normal;background:rgba(255,255,255,.18);border-radius:8px;padding:0 6px}
+.hero p{margin:4px 0 0;font-size:13.5px;opacity:.92}
+.hero .ref{background:rgba(255,255,255,.2);color:#fff}
+.q{border-top:1px solid var(--line);padding:13px 0}
+.q:first-child{border-top:0;padding-top:2px}
+.q .qh{display:flex;gap:10px;align-items:flex-start}
+.q .num{flex:0 0 auto;width:26px;height:26px;border-radius:8px;background:var(--accent-soft);color:var(--accent);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.q .num.auto{background:#eef0f3;color:var(--faint)}
+.q .qt{font-weight:700}
+.q .qd{font-size:13px;color:var(--sub);margin-top:2px}
+.q.deleted{padding:8px 0}
+.q.deleted .qt{color:var(--faint);font-weight:600;text-decoration:line-through}
+.opts{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0 36px}
+.opt{border:1px solid var(--line);background:#fff;border-radius:9px;padding:5px 11px;font-size:13.5px;font-weight:700;color:var(--sub)}
+.opt.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.opt.on::before{content:"✓ "}
+.sub-q{margin:8px 0 0 36px;padding:10px 12px;background:#f7f8fa;border-radius:10px;font-size:13.5px;display:none}
+.sub-q.on{display:block}
+.sub-q label{display:flex;gap:8px;align-items:flex-start;margin:5px 0;cursor:pointer}
+.sub-q input{margin-top:4px;accent-color:var(--accent);width:16px;height:16px;flex:0 0 auto}
+.result{border:2px solid var(--accent)}
+.result h3{color:var(--accent)}
+.ev{margin:6px 0 0;padding-left:18px}
+.ev li{margin:4px 0}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.split > div{border-radius:12px;padding:12px}
+.split .yes{background:#e9f7f0}.split .no{background:#fdeeee}
+.split h4{margin:0 0 4px;font-size:14px}
+.split .yes h4{color:var(--ok)}.split .no h4{color:var(--bad)}
+.split ul{margin:0;padding-left:17px;font-size:13.5px}
+@media (max-width:520px){.split{grid-template-columns:1fr}}
+details.acc{border:1px solid var(--line);border-radius:12px;background:#fff;margin-bottom:8px}
+details.acc summary{list-style:none;cursor:pointer;padding:12px 14px;font-weight:700;display:flex;justify-content:space-between;gap:10px;align-items:center}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary::after{content:"＋";color:var(--faint);font-weight:600}
+details.acc[open] summary::after{content:"－"}
+details.acc .body{padding:0 14px 14px;font-size:14px}
+.grp-t{font-size:13px;font-weight:800;color:var(--sub);margin:18px 2px 8px}
+
+/* ---------- 유예 ---------- */
+.rules{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+.rules div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;font-size:13px;line-height:1.45}
+.rules b{display:block;font-size:13.5px;color:var(--accent);margin-bottom:2px}
+@media (max-width:520px){.rules{grid-template-columns:1fr}}
+.verdict{border-radius:12px;padding:12px 14px;font-weight:700;margin-top:10px;font-size:14px}
+.verdict.no{background:#fdeeee;color:var(--bad)}
+.verdict.ok{background:#e9f7f0;color:var(--ok)}
+.di{display:flex;gap:10px;padding:12px 0;border-top:1px solid var(--line);cursor:pointer;align-items:flex-start}
+.di:first-child{border-top:0}
+.di input{width:18px;height:18px;margin-top:3px;flex:0 0 auto;accent-color:var(--accent)}
+.di .qt{font-weight:700}
+.di .qd{font-size:13px;color:var(--sub);margin-top:1px}
+.di .doc{font-size:12.5px;color:var(--accent);font-weight:700;margin-top:3px}
+.di.top{background:var(--accent-soft);border-radius:10px;padding:12px 10px;border-top:0;margin-bottom:4px}
+#deferList.blocked{opacity:.35;pointer-events:none}
+
+/* ---------- 연령대 ---------- */
+.band{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+.band div{border-radius:12px;padding:12px 8px;text-align:center;color:#fff;position:relative;transition:transform .15s}
+.band b{display:block;font-size:15px}
+.band span{font-size:11.5px;opacity:.95}
+.band small{display:block;font-size:20px;font-weight:800;margin-top:2px}
+.band div.me{transform:translateY(-3px);box-shadow:0 0 0 3px #fff,0 0 0 6px #191d26}
+.band div.me::after{content:"내 연령대";position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#191d26;color:#fff;font-size:11px;font-weight:800;border-radius:6px;padding:1px 7px;white-space:nowrap}
+.band div.dimmed{opacity:.35}
+@media (max-width:520px){.band{grid-template-columns:repeat(2,1fr);row-gap:14px}}
+.demo{background:#fbf7f4;border-radius:12px;padding:14px}
+.demo-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.demo-col{text-align:center;font-size:12px;font-weight:700;color:var(--sub)}
+.seats{display:flex;flex-direction:column-reverse;gap:4px;align-items:center;margin-bottom:6px;min-height:118px}
+.seat{width:34px;height:16px;border-radius:5px;border:2px dashed #e0c9b8;background:#fff}
+.seat.f{background:#c2410c;border:2px solid #c2410c}
+.demo-col.full .seats{outline:2px solid #b91c1c;outline-offset:4px;border-radius:6px}
+.demo-me{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.mecard{background:#191d26;color:#fff;border-radius:10px;padding:7px 11px;font-size:13px;font-weight:800}
+.demo-me .arrow{font-weight:800;color:var(--bad);font-size:13.5px}
+.fn{font-size:12px;color:var(--faint);margin-top:8px}
+
+/* ---------- 변경 ---------- */
+.chg{padding:13px 0;border-top:1px solid var(--line)}
+.chg:first-child{border-top:0;padding-top:2px}
+.chg .top{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:3px}
+.chg .tt{font-weight:800;font-size:15px}
+
+/* ---------- 직위 ---------- */
+.who{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.who .chip.on{background:var(--accent);border-color:var(--accent)}
+
+footer{border-top:1px solid var(--line);background:#fff;padding:22px 0 96px;font-size:13px;color:var(--sub);line-height:1.6}
+.ft-notice{background:#f5f6f8;border-radius:12px;padding:12px 14px;color:var(--ink);font-size:13px}
+.ft-notice b{display:block;margin-bottom:2px}
+.ft-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:22px;margin-top:18px}
+footer h4{margin:0 0 8px;font-size:12.5px;color:var(--ink);letter-spacing:.2px}
+footer p{margin:0 0 6px}
+.ft-src{list-style:none;margin:0;padding:0}
+.ft-src li{display:flex;gap:8px;align-items:baseline;padding:3px 0}
+.ft-src .ab{flex:0 0 auto;font-size:11px;font-weight:800;color:#4b5563;background:#eef0f3;border-radius:5px;padding:0 6px;line-height:18px}
+.ft-hint{font-size:12px;color:var(--faint);margin-top:8px!important}
+footer .credit{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-weight:700;color:var(--ink);text-align:center}
+footer .credit a{color:var(--ink)}
+@media (max-width:600px){.ft-grid{grid-template-columns:1fr;gap:16px}}
+
+#admin{display:none}
+#admin.on{display:block}
+#admin textarea{width:100%;height:150px;font-family:ui-monospace,Consolas,monospace;font-size:12px;border:1px solid var(--line);border-radius:10px;padding:8px}
+.flag{color:var(--bad);font-weight:700}
+table.t{width:100%;border-collapse:collapse;font-size:13px}
+table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top}
+
+#printArea{display:none}
+.safe{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:#047857;background:#e9f7f0;border-radius:99px;padding:2px 10px 2px 8px;line-height:1.5}
+.safe svg{width:13px;height:13px;flex:0 0 auto}
+.steps{display:flex;gap:4px;margin:10px 0 12px;background:#f1f3f6;border-radius:12px;padding:4px}
+.steps button{flex:1;border:0;background:none;border-radius:9px;padding:7px 2px;font-size:13px;font-weight:800;color:var(--sub);line-height:1.25}
+.steps button small{display:block;font-size:11px;font-weight:600}
+.steps button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.steps button.done small{color:var(--ok)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
+.fgrid label{display:flex;flex-direction:column;gap:3px;font-size:12.5px;font-weight:700;color:var(--sub)}
+.fgrid label.full{grid-column:1/-1}
+.fgrid input,.fgrid select{width:100%;font-weight:500;color:var(--ink)}
+.fgrid .ck{flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-weight:600}
+.fgrid .ck input{width:17px;height:17px}
+@media (max-width:520px){.fgrid{grid-template-columns:1fr}}
+.fsec{font-weight:800;font-size:14px;margin:16px 0 8px;padding-top:12px;border-top:1px solid var(--line)}
+.fsec:first-child{border-top:0;padding-top:0;margin-top:4px}
+.zpick{display:flex;flex-wrap:wrap;gap:6px}
+.zpick button{position:relative;border:2px solid transparent;color:#fff;font-weight:800;border-radius:10px;padding:8px 12px;font-size:14px;min-width:64px}
+.zpick button .o{position:absolute;top:-8px;right:-6px;background:#191d26;color:#fff;border-radius:99px;font-size:11px;min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.zpick button.off{opacity:.38}
+.zorder{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;font-size:13px}
+.zorder span{background:#f1f3f6;border-radius:7px;padding:2px 7px;font-weight:700}
+.warn-l{font-size:12px;color:#9a3412;font-weight:700;display:block}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:#191d26;color:#fff;font-size:13.5px;font-weight:700;padding:9px 14px;border-radius:10px;z-index:90;opacity:0;pointer-events:none;transition:opacity .2s;max-width:calc(100vw - 32px);text-align:center}
+.toast.on{opacity:1}
+.sumtbl{width:100%;border-collapse:collapse;font-size:13px}
+.sumtbl td{border-bottom:1px solid var(--line);padding:6px 4px;vertical-align:top}
+.sumtbl td:first-child{color:var(--sub);width:96px;font-weight:700}
+.ok-l{color:var(--ok);font-weight:700}.no-l{color:var(--bad);font-weight:700}
+.files li{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+@media print{
+  body > *:not(#printArea){display:none!important}
+  #printArea{display:block!important;padding:10px}
+  #printArea h2{margin:0 0 4px}
+  #printArea li{margin:6px 0;font-size:14px}
+}
+</style>
+</head>
+<body data-tab="map">
+
+<div class="ribbon"><div class="wrap"><b>비공식 사이트</b> · 최종 기준은 공문과 교육지원청 안내</div></div>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="hd">
+      <button class="logo" id="logo" aria-label="홈으로"><span class="t">전보 <em>한눈에</em></span><span class="s">광주 초등</span></button>
+      <span class="yr">2027. 3. 1.자 기준</span>
+    </div>
+    <nav class="tabs" id="tabbar" aria-label="메뉴">
+      <button data-tab="map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span class="long">학교 지도</span><span class="short">지도</span></button>
+      <button data-tab="score"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V10M12 20V4M19 20v-7"/></svg><span class="long">서열·동점자</span><span class="short">서열</span></button>
+      <button data-tab="defer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M10 9v6M14 9v6"/></svg><span class="long">전보 유예</span><span class="short">유예</span></button>
+      <button data-tab="age"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="4" height="16" rx="1"/><rect x="10" y="8" width="4" height="12" rx="1"/><rect x="17" y="12" width="4" height="8" rx="1"/></svg><span class="long">연령대 배치</span><span class="short">연령대</span></button>
+      <button data-tab="changes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"/></svg><span class="long">달라진 점</span><span class="short">변경</span></button>
+      <button data-tab="roles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg><span class="long">다른 직위</span><span class="short">직위</span></button>
+    </nav>
+  </div>
+</div>
+
+<main>
+<div class="wrap">
+
+<!-- ===================== 지도 ===================== -->
+<section class="page" id="p-map">
+  <div class="ph"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div>
+    <div><h2>인사구역 학교 지도</h2><p>초등 153교(특수 4교 별도) · 학교를 누르면 정보와 희망 담기</p></div></div>
+  <p style="margin:-6px 0 12px"><span class="safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없음 · 입력한 정보는 이 기기 밖으로 전송되지 않아요</span></p>
+
+  <div class="toolbar" id="toolbar">
+    <div class="seg" id="fOffice"></div>
+    <span class="sep"></span>
+    <button class="chip ty inn" data-ty="inn">혁신 <span class="n" id="cInn"></span></button>
+    <button class="chip ty tg" data-ty="tg">인사특구 <span class="n" id="cTg"></span></button>
+    <button class="chip ty ru" data-ty="ru">농촌 <span class="n" id="cRu"></span></button>
+    <button class="chip ty kr" data-ty="kr">한국어학급 <span class="n" id="cKr"></span></button>
+    <span class="sep"></span>
+    <button class="chip" id="fZoneBtn">구역 <span class="n" id="zoneCnt">전체</span> ▾</button>
+    <button class="chip" id="fSp">특수학교</button>
+  </div>
+  <div class="zone-pop" id="zonePop"><div class="chips" id="fZone"></div>
+    <div class="row" style="margin-top:8px"><button class="btn sm" id="zAll">모두 켜기</button><button class="btn sm" id="zClose">닫기</button></div></div>
+  <p class="typeinfo" id="typeInfo"></p>
+
+  <div class="mapbox">
+    <div id="map"></div>
+    <div class="tilemap" id="tilemap"></div>
+    <div class="mode-pick" id="pickHint">지도에서 집 위치를 눌러 주세요</div>
+  </div>
+  <div class="maptag" id="mapTag"></div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="homebar">
+      <label for="homeZone">내 거주지 구역</label>
+      <select id="homeZone"></select>
+      <span class="row" id="homeSearchRow" style="flex:1;min-width:220px">
+        <input type="search" id="homeQ" placeholder="또는 주소·아파트로 찾기" style="flex:1;min-width:120px">
+        <button class="btn sm" id="homeGo">찾기</button>
+        <button class="btn sm" id="homePick">지도에서 찍기</button>
+      </span>
+    </div>
+    <div id="homeInfo" class="small" style="margin-top:6px"></div>
+    <p class="small faint" style="margin:6px 0 0">육아·다자녀 동점자 우선은 거주지 구역 학교를 희망할 때만 적용돼요. 집 위치로 추정한 구역은 참고용이에요.<span class="ref">기준 제19조 6항</span></p>
+    <p style="margin:6px 0 0"><span class="safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없음 · 집 위치는 이 화면에서만 써요</span> <span class="small faint">주소 검색어는 카카오맵 검색에만 쓰여요.</span></p>
+  </div>
+
+  <div class="card">
+    <div class="row" style="justify-content:space-between;margin-bottom:10px">
+      <h3 style="margin:0">학교 목록 <span class="small muted" id="listCnt"></span></h3>
+      <input type="search" id="sQ" placeholder="학교 이름" style="width:150px">
+    </div>
+    <div id="schoolList"></div>
+    <p class="small faint" style="margin:6px 0 0">학급 수·재임 예상 연령대·만료자 현황은 교육지원청 공지 후 반영합니다.</p>
+  </div>
+
+  <div class="card" id="admin">
+    <h3>관리자: 학교 좌표 만들기</h3>
+    <p class="small muted">카카오 장소 검색으로 학교 좌표를 찾습니다. <span class="flag">확인</span> 표시는 검색 결과 이름이 학교명과 다르니 눈으로 확인하세요. 끝나면 아래 내용을 복사해 index.html의 <code>COORDS</code> 자리에 붙입니다.</p>
+    <div class="row"><button class="btn pri" id="adRun">좌표 찾기 시작</button><button class="btn" id="adCopy">결과 복사</button><span id="adStat" class="small muted"></span></div>
+    <div style="max-height:300px;overflow:auto;margin:10px 0"><table class="t" id="adTable"></table></div>
+    <textarea id="adOut" readonly></textarea>
+  </div>
+</section>
+
+<!-- ===================== 서열·동점자 ===================== -->
+<section class="page" id="p-score">
+  <div class="ph"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V10M12 20V4M19 20v-7"/></svg></div>
+    <div><h2>전보 서열과 동점자 순위</h2><p>해당 항목을 고르면 준비할 증빙서류를 정리해 드려요</p></div></div>
+
+  <div class="hero">
+    <div class="big">서열 점수 = 현임교 근무 <em>월 1점</em> · 최대 <em>48점</em></div>
+    <p>점수가 같으면 아래 동점자 순위를 1번부터 차례로 비교합니다.<span class="ref">기준 제19조 3·6항</span></p>
+  </div>
+
+  <div class="card" id="tieCard">
+    <div class="row" style="justify-content:space-between;margin-bottom:6px"><h3 style="margin:0">동점자 순위 체크</h3><span class="safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없음 · 전송 안 함</span></div>
+    <div id="tieQs"></div>
+  </div>
+
+  <div class="card result" id="tieResult"></div>
+
+  <div class="grp-t">서열 점수 자세히</div>
+  <details class="acc"><summary>근무 경력에 넣는 기간·빼는 기간<span class="ref">기준 제19조 5항 · 지침 6.다</span></summary><div class="body">
+    <div class="split">
+      <div class="yes"><h4>넣어요</h4><ul><li>현임교 실제 근무 기간</li><li>우리 교육청 소속 기관 파견(3호 파견, 예: AI교육원)</li></ul></div>
+      <div class="no"><h4>빼요</h4><ul><li>모든 휴직 기간</li><li>시·도 교류 파견(교환)</li><li>대학원 연수 파견(영어심화연수 포함)</li><li>타 지역·국가 파견</li><li>학습연구년 특별연수</li></ul></div>
+    </div>
+  </div></details>
+  <details class="acc"><summary>4년이 안 돼도 48점을 받는 경우<span class="ref">기준 제19조 7·14항 · 제31조 8항</span></summary><div class="body">
+    <ul class="clean">
+      <li>교권보호위원회에서 인정한 교권침해를 받은 교원 (차기 정기전보에 한함)</li>
+      <li>부부·친인척 관계 등으로 인한 전보 내신자</li>
+      <li>폐교·휴교·학급 감축으로 정원 조정이 불가피한 학교의 교사 (2027. 3. 1.자 전보부터)</li>
+      <li>보결전담 순회(겸임)교사 1년 근무 (2026학년도 선발에 한함, 동점자 6번 ‘6학년 담임’과 동순위)</li>
+      <li>늘봄지원연구사(임기제) 임기 종료 후 복귀 (동점자 6번 ‘보직교사 2년’과 동순위)</li>
+    </ul>
+    <p class="small muted" style="margin:8px 0 0">교사 전보 내신은 학교별 교사 정원의 50%를 넘을 수 없어요(만료자가 50%를 넘으면 예외). 정원 감축 학교의 복직(귀)자는 근무 1년 미만이면 복직자 배치 기준, 1년 이상 4년 미만이면 일반 희망 전보 기준을 적용합니다.<span class="ref">기준 제32조 3항 · 지침 6.카</span></p>
+  </div></details>
+
+  <div class="grp-t">함께 알아 둘 전보 규정</div>
+  <details class="acc"><summary>이런 경우는? (휴직·파견·교환·출산 예정 만료자)<span class="ref">2026 작성 요령</span></summary><div class="body">
+    <div class="case"><b>6개월 이상 휴직(연장) 예정인 만료자</b>별도정원으로 처리돼 만료자에서 빠지고 전보 내신 대상이 아니에요. 전보 서류를 내지 않고 학교에 남습니다(유예원도 내지 않음). 출산휴가에 이어 휴직하는 경우도 같아요. <span class="muted">단, 별도정원 처리가 없는 특수·보건·사서·영양·상담 교사는 전보되고, 전입한 학교에서 기간제 교사를 채용해요.</span></div>
+    <div class="case"><b>4호 파견(특별연수·대학원) 예정인 만료자</b>별도정원으로 처리하고 전보 내신 대상에서 빠져요. 공문으로 파견이 확정 안내된 경우에만 해당합니다.</div>
+    <div class="case"><b>출산휴가만 쓰는 만료자</b>전보일 기준 출산휴가 중이거나 출산예정일이 3개월 이내면 유예는 본인 선택이에요. 원하면 유예원을 냅니다.</div>
+    <div class="case"><b>타 시·도 교환이 확정된 만료자</b>전보 내신 대상자로서 전보 내신 서류를 내야 해요. 정원은 3. 1.자 전입 학교에서 관리합니다. 만료자 여부는 휴직·파견 기간을 모두 빼고도 현임교 4년 이상인지로 판단해요.</div>
+    <div class="note" style="margin-bottom:0"><b>농촌학교 근무 교사와 초빙교사</b>는 위의 휴직·파견·출산 예정인 경우라도 전보 조치돼요.</div>
+    <p class="small muted" style="margin:10px 0 0">현임교 근무에 포함되는 3호 파견 기관 예: 교육청, 교육지원청, 교육연구정보원, 창의융합교육원, 송정다가치문화도서관 등. 대학원·학습연구년·교원특별연수·영어심화연수 파견, 타 시·도 교환은 제외돼요.</p>
+  </div></details>
+  <details class="acc"><summary>우대 전보 (만료자 희망교 우선)<span class="ref">기준 제19조 8항</span></summary><div class="body">
+    <p style="margin-top:0">현임교 <b>만료자</b>로서 아래에 해당하면 희망 학교에 학교별 각 1인 이내, 연령대 배치 기준 안에서 우선 전보합니다. 경합하면 아래 순서대로예요.</p>
+    <ol class="clean">
+      <li>국가유공자·독립유공자·5·18민주유공자 예우법 제4조·제5조 해당 교사 (2012. 3. 1.자 인사부터 1회)</li>
+      <li>현임교 재직 중 교육행정기관·교육연구기관·학생야영장·영어센터·발명교육센터 등에 2년 이상 특수 목적 근무·파견 (총 재직 중 1회). <b>농촌소규모학교(광주북초 제외)는 우선 전보 대상 학교에서 제외</b> — 학교 지도의 ‘농촌’ 필터로 확인</li>
+      <li>국민권익위원회가 요구한 교사</li>
+      <li>중증장애인 교사 (초등교사는 12. 1.자 기준 일반학급 20학급 이상 학교 희망자에 한함)</li>
+    </ol>
+  </div></details>
+  <details class="acc"><summary>학교장 전입 요청<span class="ref">기준 제19조 9항</span></summary><div class="body">
+    정기전보 대상자 중 학교장이 필요하다고 인정하는 분야의 자격증 소지자 또는 연수·연구 실적이 객관적으로 입증된 교사를 전입자의 10% 이내에서 요청할 수 있어요. 초빙교사를 포함해 교사 정원의 10%를 넘을 수 없습니다(영어센터 운영학교는 센터 근무 교사의 1/3 이내). 교육장은 적격 여부를 심사하는 위원회를 운영합니다.
+  </div></details>
+  <details class="acc"><summary>초빙교사<span class="ref">기준 제27조</span></summary><div class="body">
+    <ul class="clean">
+      <li>교장이 요청하려면 학교운영위원회 심의를 거쳐야 해요.</li>
+      <li>만료자를 대상으로 하며, 초빙교사의 해당 학교 근무 기간은 4년입니다.</li>
+      <li>비율: 학교 교사 총 정원의 10% 이내(시행령 제105조 학교는 50% 이내), 해당 학년도 초빙은 전입교사 총 정원의 50% 이내</li>
+      <li>세부 사항은 「2027학년도 초등 초빙교사 임용 업무 처리 지침」을 따릅니다.</li>
+    </ul>
+  </div></details>
+  <details class="acc"><summary>같은 학교에 근무할 수 없는 관계<span class="ref">기준 제26조 8호</span></summary><div class="body">
+    부부, 본인 및 배우자의 직계 존·비속, 본인의 형제자매는 같은 학교에 배치하지 않아요. 근무 중에 이런 관계가 생기면 전보될 수 있고, 이때는 48점이 적용됩니다.
+  </div></details>
+  <details class="acc"><summary>비정기 전보 대상<span class="ref">기준 제26조</span></summary><div class="body">
+    <p style="margin-top:0">근속 기간이 짧아도 인사위원회 심의를 거쳐 전보할 수 있는 경우예요.</p>
+    <ul class="clean">
+      <li>직위해제 후 복직된 사람, 징계처분을 받은 사람, 감사 결과 인사조치 지시를 받은 사람</li>
+      <li>해당 학교 재직 중 3회 이상 주의·경고 처분, 직무수행 능력 부족·근무성적 극히 저조</li>
+      <li>교육공무원법 제10조의3 제1항 사유 관련 주의·경고 처분</li>
+      <li>교권침해 등으로 현 근무지 계속 근무가 교육상 부당한 경우 (본인 동의 시)</li>
+      <li>부부, 본인·배우자의 직계 존·비속, 형제자매가 같은 학교에 근무하게 된 경우</li>
+      <li>육아·다자녀 동점자 항목의 거주지 사실 허위자</li>
+      <li>성비위 징계 후 부가 조치(의무교육) 미이수자</li>
+      <li>학급 감축·복직 등으로 과원이 생겨 현임교에 배치할 수 없는 사람</li>
+    </ul>
+  </div></details>
+  <details class="acc"><summary>복직자 근무지 배치<span class="ref">지침 5.바</span></summary><div class="body">
+    <ol class="clean">
+      <li>현임교에 결원이 있으면 현임교 배치가 원칙이에요.</li>
+      <li>복직자가 결원보다 많으면 현임교 근무 경력이 짧은 사람 → 교육경력이 많은 사람 → 생년월일이 빠른 사람 순으로 현임교에 우선 배치할 수 있어요.</li>
+      <li>현임교 배치가 어려우면 근무 희망지나 인사구역 내 학교 등을 참작해 결원 학교에 배치합니다.</li>
+    </ol>
+  </div></details>
+  <details class="acc"><summary>타 시·도·국립·사립에서 전입하는 교원<span class="ref">기준 제19조 13항</span></summary><div class="body">
+    관내 교원 전보를 마친 뒤 결원이 있는 학교에 배치하되, 전입 교원의 일정 비율을 넘지 않아요(정원 조정이 불가피하면 예외). 타 시·도 파견(교환) 전입 교원은 파견(교환) 전출 교원이 있던 학교에 배치하는 것이 원칙입니다.
+  </div></details>
+
+  <div class="grp-t">내신 서류</div>
+  <details class="acc" id="docAcc"><summary>내신 서류 체크리스트<span class="ref">2026 작성 요령</span></summary><div class="body">
+    <p class="small muted" style="margin-top:0">직위와 해당 사항을 고르면 낼 서식이 정리돼요. 서식 번호는 2026학년도 전보서류 작성 요령 기준이라 2027 요령에서 바뀔 수 있어요.</p>
+    <div class="mini-t">직위</div>
+    <div class="row" id="docRole"></div>
+    <div class="mini-t">해당 사항</div>
+    <div id="docOpts"></div>
+    <div class="info chk-out" id="docOut"></div>
+
+    <div class="mini-t" style="margin-top:20px">교감(학교 담당자)용 제출 안내</div>
+    <table class="sub">
+      <tr><th style="width:38%">서류</th><th>제출 방법</th></tr>
+      <tr><td>교사 인사 내신 자료표 (서식2-1~2-4)</td><td>‘초등교원전보시스템’에서 작성·제출하고, 출력해 본인·교감 날인 후 인편 제출</td></tr>
+      <tr><td>명부 (서식1, 3, 4, 6, 11)</td><td>엑셀 파일로 작성해 공문 제출(한글 파일 작성 금지, PDF 불필요), 출력물은 날인해 인편 제출</td></tr>
+      <tr><td>서식5, 7, 8, 9, 10과 증빙자료</td><td>해당 서식만 작성·출력해 증빙자료와 함께 인편 제출</td></tr>
+    </table>
+    <ul class="clean small" style="margin-top:10px">
+      <li><b>편철 순서</b>: 직위별(초등·특수·비교과), 종류별(우대·만료·희망)로 ① 명부(엑셀 출력본) → ② 인사 내신 자료표 → ③ 증빙자료</li>
+      <li>전자문서는 <b>‘비공개 5호 및 6호, 직원열람제한 영구’</b>로 제출하고, 인편 제출 서류 목록은 공문 붙임에 모두 적어요.</li>
+      <li>모든 서류는 날인해 원본은 인편 제출, 사본은 학교 보관. 학교 보관 사본은 제출본을 복사해 원본대조필(출력일이 같아야 함).</li>
+      <li>작성자는 교감, 확인자는 교장. 모든 기재 내용은 NEIS 인사기록카드 원본과 같아야 해요.</li>
+      <li>해당자가 없어도 <b>“해당 없음”을 서면으로 보고</b>해요.</li>
+      <li>미리 파악할 것: 만료자 수, 퇴직 예정자, 전보 유예자, 초빙교사 수, 학급 증감(예정), 연령대별(현임교 4년 미만) 교사 수</li>
+      <li>교장·교감 전보 서류는 별도 공문으로 안내돼요.</li>
+    </ul>
+    <p class="small muted" style="margin:8px 0 0"><b>일정</b>: 2026. 3. 1.자 전보는 2025. 12. 26.~12. 30. 17:00까지 제출했어요. 2027 일정은 공문을 확인하세요.<br>
+    <b>문의</b>: 초등은 동·서부교육지원청 유초등교육지원과, 특수학교는 시교육청 중등특수교육과</p>
+  </div></details>
+  <details class="acc" id="mergeAcc"><summary>교감용: 여러 명 합쳐 학교 명부 만들기<span class="ref">엑셀</span></summary><div class="body">
+    <p style="margin-top:0"><span class="safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없음 · 파일은 이 기기 안에서만 읽어요</span></p>
+    <p class="small muted">선생님들이 ‘희망 내신 정리’에서 내려받은 엑셀 파일을 모두 고르면, 서식1(직위별)·3·4·6·11에 우대 → 만료 → 희망 순으로 채운 <b>학교 명부 한 파일</b>을 만들어요. 공식 ‘초등교원전보시스템’ 입력 전 학교 안에서 미리 취합·점검하는 용도예요.</p>
+    <label class="btn" style="display:inline-block;cursor:pointer">파일 고르기 (여러 개)<input type="file" id="mFiles" accept=".xlsx" multiple style="display:none"></label>
+    <ul class="files clean" id="mList" style="list-style:none;padding:0;margin:10px 0"></ul>
+    <div class="fgrid">
+      <label>교번<input type="text" id="mNo" placeholder="예: 서초○○"></label>
+      <label>현임교<select id="mSchool"></select></label>
+      <label>확인자(교장) 성명<input type="text" id="mHead"></label>
+      <label>작성자(교감) 성명<input type="text" id="mVice"></label>
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn pri" id="mGo" disabled>학교 명부 내려받기</button><span class="small muted" id="mStat"></span></div>
+    <p class="small faint" style="margin:8px 0 0">서식1은 30명, 서식3·4는 15명, 서식11은 10명까지 들어가요. 내려받은 뒤 공식 시스템에서 받은 파일·내신서와 꼭 대조하세요.</p>
+  </div></details>
+</section>
+
+<!-- ===================== 전보 유예 ===================== -->
+<section class="page" id="p-defer">
+  <div class="ph"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M10 9v6M14 9v6"/></svg></div>
+    <div><h2>전보 유예 자가진단</h2><p>만료자라도 사유에 해당하면 학교장 내신으로 전보를 미룰 수 있어요<span class="ref">기준 제25조</span></p></div></div>
+
+  <div class="rules">
+    <div><b>본인 동의 + 학교장 내신</b>둘 다 있어야 하고, 모든 사유에 <b>유예원(서식5)</b>을 내요.</div>
+    <div><b>농촌 지역 학교는 불가</b>승진가산점이 부여되는 농촌 지역 학교는 유예할 수 없어요.</div>
+    <div><b>학급 감축 등이면 불가</b>학급 감축 등 부득이한 사유가 생기면 유예할 수 없어요.</div>
+    <div><b>교차 유예 불가</b>사유를 바꿔 가며 이어서 유예할 수 없어요. 대부분 1년, 1회.</div>
+  </div>
+
+  <div class="card">
+    <h3>내 현임교</h3>
+    <div class="row"><select id="mySchool" style="flex:1;min-width:200px"></select></div>
+    <div id="schoolVerdict"></div>
+    <p class="small faint" style="margin:6px 0 0">학교를 고르면 농촌학교·혁신학교 여부를 자동으로 확인해요.</p><p style="margin:6px 0 0"><span class="safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없음 · 전송 안 함</span></p>
+  </div>
+
+  <div class="card">
+    <h3>해당하는 유예 사유</h3>
+    <div id="deferList"></div>
+  </div>
+  <div class="card result" id="deferResult"></div>
+</section>
+
+<!-- ===================== 연령대 ===================== -->
+<section class="page" id="p-age">
+  <div class="ph"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="4" height="16" rx="1"/><rect x="10" y="8" width="4" height="12" rx="1"/><rect x="17" y="12" width="4" height="8" rx="1"/></svg></div>
+    <div><h2>연령대별 배치</h2><p>점수가 높아도 원하는 학교에 못 가는 가장 큰 이유<span class="ref">기준 제19조 4항 · 지침 6.가</span></p></div></div>
+
+  <div class="card">
+    <h3>연령대 구분 <span class="small muted">(2027. 1. 1.자 기준)</span></h3>
+    <div class="band" id="bands">
+      <div style="background:#7c2d12"><b>40세 미만</b><span>1987. 1. 2. 이후 출생</span><small>약 26%</small></div>
+      <div style="background:#c2410c"><b>40~44세</b><span>1982. 1. 2.~1987. 1. 1.</span><small>약 23%</small></div>
+      <div style="background:#ea7a3a"><b>45~49세</b><span>1977. 1. 2.~1982. 1. 1.</span><small>약 27%</small></div>
+      <div style="background:#f2a97a;color:#4a1d06"><b>50세 이상</b><span>1977. 1. 1. 이전 출생</span><small>약 24%</small></div>
+    </div>
+    <div class="row" style="margin-top:6px"><label for="birth" class="small" style="font-weight:700">생년월일로 내 연령대 찾기</label><input type="date" id="birth" min="1950-01-01" max="2005-12-31"></div><p style="margin:6px 0 0"><span class="safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없음 · 생년월일은 전송되지 않아요</span></p>
+    <p class="fn">비율은 광주 공립 초등교사 전체의 연령대별 비율(업무처리지침 기재)입니다.</p>
+  </div>
+
+  <div class="card">
+    <h3>왜 점수가 높아도 못 갈까?</h3>
+    <div class="demo">
+      <div class="small" style="font-weight:800">예시: 희망하는 ○○초의 연령대별 자리</div>
+      <div class="demo-cols">
+        <div class="demo-col"><div class="seats"><span class="seat f"></span><span class="seat f"></span><span class="seat f"></span><span class="seat"></span><span class="seat"></span></div>40세 미만</div>
+        <div class="demo-col"><div class="seats"><span class="seat f"></span><span class="seat f"></span><span class="seat"></span><span class="seat"></span></div>40~44세</div>
+        <div class="demo-col full"><div class="seats"><span class="seat f"></span><span class="seat f"></span><span class="seat f"></span><span class="seat f"></span><span class="seat f"></span></div>45~49세</div>
+        <div class="demo-col"><div class="seats"><span class="seat f"></span><span class="seat f"></span><span class="seat f"></span><span class="seat"></span></div>50세 이상</div>
+      </div>
+      <div class="demo-me"><span class="mecard">나 · 45~49세 · 48점</span><span class="arrow">→ 내 연령대 자리가 이미 가득 차서 배치 어려움</span></div>
+      <p class="fn">이해를 돕기 위한 가상의 그림이며 실제 정원과 관계없어요.</p>
+    </div>
+    <ol class="clean" style="margin-top:12px">
+      <li><b>학교별·연령대별 서열명부</b>로 전보해요. 같은 연령대 안에서 서열 점수로 경쟁하는 구조예요.</li>
+      <li>학교마다 연령대별 인원이 <b>광주 공립 초등교사 전체 비율의 ±10% 범위</b> 안에 들도록 배치합니다.<sup>*</sup></li>
+      <li>그래서 내 연령대 자리가 이미 찬 학교는 점수가 높아도 가기 어려워요.</li>
+      <li>실습대용학교와 <b>12학급 이하 학교</b>(농촌소규모학교 포함)는 연령대 서열명부에서 제외될 수 있어요.</li>
+      <li>교육지원청은 <b>학교별 재임 예상 연령대 비율</b>과 만료자·일반 희망자 현황을 미리 공개하도록 노력합니다. 공지되면 지도에 반영할게요.</li>
+    </ol>
+    <p class="fn">* ±10%를 퍼센트포인트로 볼지 비율의 10%로 볼지는 문서에 풀이가 없어 해석하지 않았어요. 교육지원청 안내를 확인하세요.</p>
+  </div>
+</section>
+
+<!-- ===================== 달라진 점 ===================== -->
+<section class="page" id="p-changes">
+  <div class="ph"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"/></svg></div>
+    <div><h2>2027학년도 달라진 점</h2><p>2026. 7. 20.(시교육청) · 2026. 8. 24.(동·서부 지침) 개정분</p></div></div>
+  <div class="grp-t" style="margin-top:4px">일반 교사에게 영향</div>
+  <div class="card" id="chgA"></div>
+  <div class="grp-t">특정 직위·행정</div>
+  <div class="card" id="chgB"></div>
+  <p class="fn">개정 표시(&lt;개정·신설 2026.○.○.&gt;)가 붙은 조항을 기준으로 골랐어요. 문구 정비만 된 조항은 뺐고, 놓친 항목이 있을 수 있으니 원문을 함께 확인하세요.</p>
+</section>
+
+<!-- ===================== 다른 직위 ===================== -->
+<section class="page" id="p-roles">
+  <div class="ph"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg></div>
+    <div><h2>다른 직위·교과 안내</h2><p>일반 교사와 다른 점 위주로 정리했어요</p></div></div>
+  <div class="who" id="who"></div>
+  <div id="roleList"></div>
+  <div class="grp-t">참고</div>
+  <details class="acc" id="roleTemp"><summary>기간제교사 임용<span class="ref">기준 제10조 · 지침 3</span></summary><div class="body">
+    기간제교사는 학교장이 임용하고 「전남광주통합특별시교육청 계약제교원 운영 지침」을 따라요. 동점자 순위는 ① 장애인 교원 ② 본시 초등 신규교사 임용후보자 명부 등재자 ③ 타 시·도 명부 등재자 ④ 62세 이하 초·특수학교 교원자격증 소지자 순입니다.
+  </div></details>
+</section>
+
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="ft-notice"><b>비공식 참고용 사이트입니다.</b> 전남광주통합특별시교육청·광주동·서부교육지원청의 공식 사이트가 아니며, 공개 자료를 읽기 쉽게 정리했습니다. 실제 전보 결과와 다를 수 있으니 최종 기준은 공문과 교육지원청 안내를 따라 주세요.</div>
+    <div class="ft-grid">
+      <div>
+        <h4>근거 자료</h4>
+        <ul class="ft-src">
+          <li><span class="ab">기준</span>2027학년도 초등 교육공무원 인사관리기준(광주)</li>
+          <li><span class="ab">지침</span>같은 기준 업무처리지침(광주동·서부교육지원청)</li>
+          <li><span class="ab">참고</span>같은 기준 업무처리지침(시교육청)</li>
+          <li><span class="ab">학교</span>2027 인사구역별 학교 일람표</li>
+          <li><span class="ab">특구</span>2026 초등 교육공무원 인사실무 [별표 1] 인사특구학교</li>
+          <li><span class="ab">농촌</span>농촌학교 현황(2024. 6. 28. 기준)</li>
+          <li><span class="ab">요령</span>2026학년도 초등 교원 전보서류 작성 요령(동·서부교육지원청) — 서식 번호·증빙 방법·한국어학급 운영 학교</li>
+        </ul>
+        <p class="ft-hint">본문의 ‘기준 제19조 6항’은 인사관리기준 조항, ‘지침 6.카’는 동·서부 업무처리지침 항목, ‘서식7’은 2026 작성 요령의 서식 번호예요.</p>
+      </div>
+      <div>
+        <h4>개인정보</h4>
+        <p><span class="safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없는 사이트</span></p>
+        <p>이 사이트는 서버 없이 브라우저 안에서만 작동해요. 입력한 정보(집 위치, 체크 항목, 희망학교, 성명·생년월일 등)는 어디로도 전송되지 않고, 저장되지도 않아 새로고침하면 사라집니다.</p>
+        <p>엑셀 파일도 내 기기 안에서 만들어져 바로 내려받아져요(엑셀 생성 도구: ExcelJS, MIT 라이선스). 지도 표시와 주소 검색에는 카카오맵을 사용하며, 이때 주소 검색어만 카카오맵으로 전달돼요.</p>
+      </div>
+    </div>
+    <div class="credit">만든이 2026 최창훈 · <a href="https://edu-hub-alpha-ten.vercel.app/" target="_blank" rel="noopener">학교 연장통의 도구</a></div>
+  </div>
+</footer>
+
+<button class="fab" id="fab"><span>희망 내신 정리</span><span class="c" id="fabCnt">0/10</span></button>
+<div class="toast" id="toast"></div>
+<button class="rbar hide" id="rbar"></button>
+<div class="sheet-bg" id="sheetBg"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true"><div class="grip"></div><div id="sheetBody"></div></div>
+<div id="printArea"></div>
+
+<script>
+/* =========================================================
+   설정: 카카오 JavaScript 키를 아래에 넣으세요.
+   (카카오 디벨로퍼스 > 내 애플리케이션 > 앱 키 > JavaScript 키,
+    플랫폼 > Web 사이트 도메인에 배포 주소 등록)
+   ========================================================= */
+const KAKAO_KEY = '';
+
+/* 학교 좌표: 관리자 화면(주소 끝에 ?admin=1)에서 만든 결과를 붙여 넣으세요.
+   비어 있으면 접속할 때마다 카카오 장소 검색으로 찾습니다. */
+const COORDS = {};
+
+/* ---------- 인사구역별 학교 (2027 일람표) ----------
+   이름 뒤 * = 혁신학교, ^ = 특수학교
+   n = 구역 번호, area = 도식 지도 칸 */
+const ZONES = [
+  {id:'동-1',n:1,area:'d1',office:'동부',color:'#1d4ed8',s:'광주중앙 광주서석 광주산수 광주장원 율곡* 광주용산 광주동산* 광주학운* 지한* 광주남 광주계림'},
+  {id:'동-2',n:2,area:'d2',office:'동부',color:'#0284c7',s:'삼정 광주용봉* 광주우산 문흥* 두암 무등 광주수창 광주문화 광주풍향* 광주서림 광주중흥 각화* 광주효동*'},
+  {id:'동-3',n:3,area:'d3',office:'동부',color:'#0d9488',s:'오정 문정 오치 문우 광주서산 매곡* 문흥중앙 서일 일동* 일신 일곡 문산 삼각 하백 광주선우^'},
+  {id:'동-4',n:4,area:'d4',office:'동부',color:'#4f46e5',s:'광주동운 용주 광주양산 광주운암 양지 동림 한울 참미르 용두 경양 대자* 태봉 본촌 연제 건국* 신용*'},
+  {id:'동-5',n:5,area:'d5',office:'동부',color:'#15803d',s:'광주북* 광주지산* 광주동*'},
+  {id:'서-1',n:1,area:'s1',office:'서부',color:'#ea580c',s:'광주농성 봉선* 진남* 광주봉주* 광주월산 광주대성 진제* 광주학강* 광주백운* 광주방림* 진월 광주효덕* 장산 광주제석 유안 조봉 불로 빛여울 효천 광주선명^'},
+  {id:'서-2',n:2,area:'s2',office:'서부',color:'#be123c',s:'효광 광주양동 광주극락* 금당 금호* 마재 광주화정 계수 성진 금부* 유덕 운리 치평* 광주서* 유촌 광림 빛고을 염주 서광 풍암 광주상무* 광주광천 운천 신암 화개 화정남 만호 주월'},
+  {id:'서-3',n:3,area:'s3',office:'서부',color:'#ca8a04',s:'도산 운수 송정동 송정서 송정중앙 송정 어룡* 선운* 선예^'},
+  {id:'서-4',n:4,area:'s4',office:'서부',color:'#db2777',s:'신가 목련 영천 하남중앙 금구 어등 진만 운남* 대반 하남 송우 마지* 풍영 은빛 수문 장덕 큰별 새별* 고실 선창* 월곡 성덕 신창 산정 수완 광주선광^'},
+  {id:'서-5',n:5,area:'s5',office:'서부',color:'#92400e',s:'산월* 비아 월계* 첨단 미산 정암 봉산 월봉'},
+  {id:'서-6',n:6,area:'s6',office:'서부',color:'#78716c',s:'동곡 본량 무학 삼도 임곡 송학 평동* 대촌중앙*'}
+];
+
+/* 인사특구학교 — 2026 초등 교육공무원 인사실무 [별표 1], 인정기간이 끝나지 않은 학교만 */
+const TEUKGU = ['비아','송우','송정동','송정서','송정중앙','송정','어등','월곡','하남중앙','도산'];
+/* 농촌학교 → 인사특구 전환 학교: 전환일 전날까지는 농촌학교만, 전환일부터는 인사특구만 (날짜에 따라 자동 분류) */
+const SWITCH = {'대촌중앙':{date:'2029-03-01', label:'2029. 3. 1.', until:'2029. 2. 28.'}};
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+/* 농촌학교 — 농촌학교 현황(2024. 6. 28. 기준, 초 11교, 광주동초는 충효분교 포함) */
+const RURAL = ['광주동','광주지산','평동','삼도','본량','임곡','무학','송학','동곡','대촌중앙','광주북'];
+/* 한국어학급 운영 학교 — 2026학년도 초등 교원 전보서류 작성 요령 기준 (2027에 바뀔 수 있음) */
+const KOREAN = ['대반','영천','월곡','하남중앙'];
+
+const SCHOOLS = [];
+ZONES.forEach(z=>{
+  z.s.split(' ').forEach(raw=>{
+    const inn = raw.includes('*'), sp = raw.includes('^');
+    const base = raw.replace(/[*^]/g,'');
+    let name, query, match;
+    if(sp){ name = base+'학교'; query=(base.startsWith('광주')?'':'광주 ')+name; match=name; }
+    else { name = base+'초'; query = (base.startsWith('광주')?'':'광주 ')+base+'초등학교'; match = base+'초등학교'; }
+    const sw = SWITCH[base]||null, switched = sw && TODAY >= new Date(sw.date+'T00:00:00');
+    const tg = TEUKGU.includes(base) || !!switched;
+    const ru = RURAL.includes(base) && !switched;
+    const tgSoon = sw && !switched ? sw : null;
+    const tgFrom = sw && switched ? sw : null;
+    SCHOOLS.push({id:SCHOOLS.length, name, zone:z.id, zn:z.n, office:z.office, color:z.color, inn, sp, tg, ru, kr:KOREAN.includes(base), tgSoon, tgFrom, query, match, lat:null, lng:null,
+      note: base==='광주동' ? '충효분교 포함' : ''});
+  });
+});
+SCHOOLS.forEach(s=>{ const c=COORDS[s.name]; if(c){ s.lat=c[0]; s.lng=c[1]; } });
+const ZMAP = Object.fromEntries(ZONES.map(z=>[z.id,z]));
+
+/* ---------- 상태 (저장하지 않음) ---------- */
+const st = { office:'all', zonesOff:new Set(), types:new Set(), showSp:false, q:'',
+  sel:null, home:null, homeZone:'', wish:[], picking:false };
+
+/* ---------- 공통 ---------- */
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function distKm(a,b){ if(!a||!b||a.lat==null||b.lat==null) return null;
+  const R=6371,toR=x=>x*Math.PI/180; const dLa=toR(b.lat-a.lat), dLo=toR(b.lng-a.lng);
+  const h=Math.sin(dLa/2)**2+Math.cos(toR(a.lat))*Math.cos(toR(b.lat))*Math.sin(dLo/2)**2;
+  return 2*R*Math.asin(Math.sqrt(h)); }
+const fmtKm = d=> d==null?'':(d<1? Math.round(d*1000)+'m' : d.toFixed(1)+'km');
+const cntOf=k=>SCHOOLS.filter(s=>s[k]).length;
+function marks(s){ return (s.inn?'<span class="mk inn">혁</span>':'')+(s.tg?'<span class="mk tg">특구</span>':'')+(s.ru?'<span class="mk ru">농촌</span>':'')+(s.kr?'<span class="mk kr">한국어</span>':'')+(s.sp?'<span class="mk sp">특수</span>':''); }
+
+/* ---------- 바텀시트 ---------- */
+let sheetKind=null;
+function openSheet(kind, html, bind){
+  sheetKind=kind; $('#sheetBody').innerHTML=html; bind&&bind();
+  $('#sheet').classList.add('on'); $('#sheetBg').classList.add('on'); $('#sheet').scrollTop=0;
+}
+function closeSheet(){
+  $('#sheet').classList.remove('on'); $('#sheetBg').classList.remove('on');
+  if(sheetKind==='school'){ st.sel=null; drawMarkers(); }
+  sheetKind=null;
+}
+$('#sheetBg').onclick=closeSheet;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeSheet(); });
+
+/* ---------- 탭 이동 (주소에 # 없이, 뒤로가기 유지) ---------- */
+const TABS=['map','score','defer','age','changes','roles'];
+let curTab='map';
+function showTab(t, push){
+  if(!TABS.includes(t)) t='map';
+  curTab=t; document.body.dataset.tab=t;
+  document.querySelectorAll('section.page').forEach(p=>p.classList.toggle('on', p.id==='p-'+t));
+  document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('on', b.dataset.tab===t));
+  if(push){
+    const u=new URL(location.href);
+    if(t==='map') u.searchParams.delete('tab'); else u.searchParams.set('tab',t);
+    u.hash=''; history.pushState({tab:t},'',u.pathname+u.search);
+  }
+  closeSheet();
+  window.scrollTo({top:0});
+  $('#fab').classList.toggle('hide', t!=='map');
+  if(t==='score'){ renderTie(); renderTieResult(); }
+  if(t==='defer'){ renderDeferResult(); }
+  $('#rbar').style.opacity='1'; $('#rbar').style.pointerEvents='auto';
+  updateBar();
+  if(t==='map' && map) setTimeout(()=>map.relayout(),50);
+}
+document.querySelectorAll('#tabbar button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab,true));
+$('#logo').onclick=()=>showTab('map',true);
+window.addEventListener('popstate',e=>{
+  if($('#sheet').classList.contains('on')){ closeSheet(); }
+  const t=(e.state&&e.state.tab)||new URL(location.href).searchParams.get('tab')||'map';
+  showTab(t,false);
+});
+function initNav(){
+  const u=new URL(location.href);
+  const t=u.searchParams.get('tab')||'map';
+  history.replaceState({tab:t,guard:true},'',u.pathname+u.search);
+  history.pushState({tab:t},'',u.pathname+u.search); // 첫 뒤로가기에 사이트가 닫히지 않도록
+  showTab(t,false);
+}
+
+/* ---------- 필터 ---------- */
+function visible(s){
+  if(s.sp && !st.showSp) return false;
+  if(st.office!=='all' && s.office!==st.office) return false;
+  if(st.zonesOff.has(s.zone)) return false;
+  if(st.types.size && !((st.types.has('inn')&&s.inn)||(st.types.has('tg')&&s.tg)||(st.types.has('ru')&&s.ru)||(st.types.has('kr')&&s.kr))) return false;
+  return true;
+}
+function renderFilters(){
+  $('#fOffice').innerHTML=[['all','전체'],['동부','동부'],['서부','서부']].map(([v,l])=>`<button class="${st.office===v?'on':''}" data-v="${v}">${l}</button>`).join('');
+  $('#fOffice').querySelectorAll('button').forEach(b=>b.onclick=()=>{st.office=b.dataset.v; refresh();});
+  document.querySelectorAll('.chip.ty').forEach(b=>b.classList.toggle('on',st.types.has(b.dataset.ty)));
+  $('#fSp').classList.toggle('on',st.showSp);
+  $('#fZone').innerHTML=ZONES.map(z=>{
+    const n=SCHOOLS.filter(s=>s.zone===z.id&&!s.sp).length;
+    return `<button class="chip ${st.zonesOff.has(z.id)?'off':''}" data-z="${z.id}"><span class="sw" style="background:${z.color}"></span>${z.id} <span class="n">${n}</span></button>`;}).join('');
+  $('#fZone').querySelectorAll('button').forEach(b=>b.onclick=()=>{const z=b.dataset.z; st.zonesOff.has(z)?st.zonesOff.delete(z):st.zonesOff.add(z); refresh();});
+  const on=ZONES.length-st.zonesOff.size;
+  $('#zoneCnt').textContent= on===ZONES.length?'전체':on+'개';
+  $('#fZoneBtn').classList.toggle('on', on!==ZONES.length);
+  // 유형 설명
+  const tips=[];
+  if(st.types.has('inn')) tips.push('<b>혁신학교</b> 일람표의 혁) 표시 학교. 교사 정원 10% 이내에서 민주적 절차로 전보 유예 가능');
+  if(st.types.has('tg')) tips.push('<b>인사특구</b> 인정기간 중인 학교(종료된 학교 제외)'+SCHOOLS.filter(x=>x.tgSoon).map(x=>` · ${x.name}는 ${x.tgSoon.label}부터 인사특구`).join(''));
+  if(st.types.has('ru')) tips.push('<b>농촌학교</b> 농촌학교 현황(2024. 6. 28.) 기준. 근무 1회 한정, 전보 유예 불가');
+  if(st.types.has('kr')) tips.push('<b>한국어학급 운영 학교</b> 2026 전보서류 작성 요령 기준(바뀔 수 있음). 동점자 5번과 다문화 유예 사유에 관련');
+  $('#typeInfo').innerHTML=tips.join('<br>'); $('#typeInfo').classList.toggle('on',tips.length>0);
+}
+$('#cInn').textContent=cntOf('inn'); $('#cTg').textContent=cntOf('tg'); $('#cRu').textContent=cntOf('ru'); $('#cKr').textContent=cntOf('kr');
+document.querySelectorAll('.chip.ty').forEach(b=>b.onclick=()=>{const t=b.dataset.ty; st.types.has(t)?st.types.delete(t):st.types.add(t); refresh();});
+$('#fSp').onclick=()=>{st.showSp=!st.showSp; refresh();};
+$('#fZoneBtn').onclick=()=>$('#zonePop').classList.toggle('on');
+$('#zClose').onclick=()=>$('#zonePop').classList.remove('on');
+$('#zAll').onclick=()=>{st.zonesOff.clear(); refresh();};
+$('#sQ').oninput=e=>{st.q=e.target.value.trim(); renderList();};
+
+/* ---------- 도식 지도 (키 없을 때) ---------- */
+function renderTiles(){
+  const el=$('#tilemap'); if(map){ el.classList.add('hide'); $('.mapbox').classList.remove('tiles'); return; }
+  $('.mapbox').classList.add('tiles');
+  el.innerHTML=ZONES.map(z=>{
+    const all=SCHOOLS.filter(s=>s.zone===z.id&&!s.sp);
+    const vis=SCHOOLS.filter(s=>s.zone===z.id&&visible(s));
+    const off = !vis.length;
+    const sub=[]; const c=k=>all.filter(s=>s[k]).length;
+    if(c('inn')) sub.push('혁 '+c('inn')); if(c('tg')) sub.push('특구 '+c('tg')); if(c('ru')) sub.push('농촌 '+c('ru')); if(c('kr')) sub.push('한국어 '+c('kr'));
+    return `<button class="tile ${off?'dim':''} ${st.homeZone===z.id?'hz':''}" style="grid-area:${z.area};background:${z.color}" data-z="${z.id}">
+      <span><span class="zn">${z.id}</span><span class="of">${z.office}</span></span>
+      <span class="ct"><b>${vis.length}</b>교${sub.length?`<span class="sub">${sub.join(' · ')}</span>`:''}</span></button>`;
+  }).join('');
+  el.querySelectorAll('.tile').forEach(b=>b.onclick=()=>openZone(b.dataset.z));
+  $('#mapTag').textContent='도식 지도예요. 구역의 위치는 대략적이고, 칸을 누르면 그 구역 학교가 나와요.';
+}
+function openZone(zid){
+  const z=ZMAP[zid]; const arr=SCHOOLS.filter(s=>s.zone===zid&&visible(s));
+  openSheet('zone',`<div class="sh-head"><div><div class="sh-name"><span class="sw" style="background:${z.color};width:12px;height:12px"></span> ${zid} <span class="small muted">${z.office}교육지원청 · ${arr.length}교</span></div></div><button class="btn sm" data-x>닫기</button></div>
+    <div class="slist" style="margin-top:12px">${arr.map(s=>`<button class="sbtn ${st.wish.includes(s.id)?'wished':''}" data-id="${s.id}">${esc(s.name)}${marks(s)}</button>`).join('')||'<span class="muted small">조건에 맞는 학교가 없어요.</span>'}</div>`,
+    ()=>{ $('#sheetBody [data-x]').onclick=closeSheet; $('#sheetBody').querySelectorAll('.sbtn').forEach(b=>b.onclick=()=>selectSchool(+b.dataset.id,true)); });
+}
+
+/* ---------- 학교 목록 ---------- */
+function renderList(){
+  const q=st.q.replace(/\s/g,''); let html='', total=0;
+  ZONES.forEach(z=>{
+    const arr=SCHOOLS.filter(s=>s.zone===z.id && visible(s) && (!q || s.name.includes(q)));
+    if(!arr.length) return; total+=arr.length;
+    html+=`<div class="zone-block"><div class="zone-h"><span class="sw" style="background:${z.color}"></span>${z.id} <span class="cnt">${z.office} · ${arr.length}교</span>${st.homeZone===z.id?'<span class="tag home">거주지 구역</span>':''}</div><div class="slist">`+
+      arr.map(s=>`<button class="sbtn ${st.homeZone===s.zone?'hz':''} ${st.wish.includes(s.id)?'wished':''}" data-id="${s.id}">${esc(s.name)}${marks(s)}</button>`).join('')+`</div></div>`;
+  });
+  $('#schoolList').innerHTML = html || '<p class="muted small">조건에 맞는 학교가 없어요.</p>';
+  $('#listCnt').textContent = total+'교';
+  $('#schoolList').querySelectorAll('.sbtn').forEach(b=>b.onclick=()=>selectSchool(+b.dataset.id,true));
+}
+
+/* ---------- 학교 정보 (바텀시트) ---------- */
+function typeNote(s){
+  const a=[];
+  if(s.inn) a.push('혁신학교: 학교 구성원 민주적 절차로 교사 정원 10% 이내 전보 유예 가능');
+  if(s.tg) a.push('인사특구학교(인정기간 진행 중)');
+  if(s.tgFrom) a.push(`${s.tgFrom.label}부터 인사특구학교 (그 이전 경력은 농촌지역학교 경력)`);
+  if(s.kr) a.push('한국어학급 운영 학교(2026 요령 기준): 외국인 학생 50% 이상 학급 담임 2년 이상이면 동점자 5번, 다문화 유예 사유 해당 가능');
+  if(s.ru) a.push('농촌학교: 근무 1회 한정, 전보 유예 불가'+(s.name.startsWith('광주북')?'':', 우대전보(파견 경력자) 대상 학교에서 제외'));
+  if(s.tgSoon) a.push(`${s.tgSoon.until}까지는 농촌학교, ${s.tgSoon.label}부터는 농촌학교가 아니고 인사특구학교 (${s.tgSoon.label} 이전 경력은 농촌지역학교 경력)`);
+  return a.length? '<ul class="clean" style="margin:0">'+a.map(x=>`<li>${x}</li>`).join('')+'</ul>' : '<span class="muted">해당 없음</span>';
+}
+function selectSchool(id, pan){
+  st.sel=id; const s=SCHOOLS[id]; const z=ZMAP[s.zone];
+  const d=distKm(st.home,s); const inW=st.wish.includes(id);
+  openSheet('school',`
+    <div class="sh-head"><div><div class="sh-name">${esc(s.name)}${s.note?` <span class="small muted" style="font-weight:600">(${s.note})</span>`:''}</div>
+      <div class="small muted"><span class="sw" style="background:${z.color}"></span> ${s.zone} · ${s.office}교육지원청</div></div>
+      <button class="btn sm" data-x>닫기</button></div>
+    <div class="row" style="gap:4px;margin-top:8px">${s.inn?'<span class="tag inn">혁신학교</span>':''}${s.tg?'<span class="tag tg">인사특구</span>':''}${s.ru?'<span class="tag ru">농촌학교</span>':''}${s.kr?'<span class="tag kr">한국어학급</span>':''}${s.tgSoon?`<span class="tag soon">${s.tgSoon.label}부터 인사특구</span>`:''}${s.sp?'<span class="tag sp">특수학교</span>':''}</div>
+    <dl class="kv">
+      <dt>학교 유형</dt><dd>${typeNote(s)}</dd>
+      <dt>거주지 구역</dt><dd>${st.homeZone? (st.homeZone===s.zone?'<b style="color:var(--ok)">거주지 구역 학교</b> · 육아·다자녀 동점자 적용 가능':'거주지 구역 밖') : '<span class="muted">거주지 구역을 고르면 표시돼요</span>'}</dd>
+      ${d!=null?`<dt>집에서 거리</dt><dd>직선 ${fmtKm(d)}</dd>`:''}
+      <dt>학교 현황</dt><dd class="muted">학급 수·재임 예상 연령대·만료자 현황은 공지 후 반영</dd>
+    </dl>
+    <div class="row" style="margin-top:14px">
+      <button class="btn ${inW?'':'pri'}" data-w style="flex:1">${inW?'희망 목록에서 빼기':'희망 목록에 담기'}</button>
+      <a class="btn" style="text-decoration:none" target="_blank" rel="noopener" href="https://map.kakao.com/link/search/${encodeURIComponent(s.query)}">카카오맵</a>
+    </div>`,
+    ()=>{ $('#sheetBody [data-x]').onclick=closeSheet; $('#sheetBody [data-w]').onclick=()=>{toggleWish(id); selectSchool(id,false);}; });
+  drawMarkers();
+  if(pan && map && s.lat!=null){ map.panTo(new kakao.maps.LatLng(s.lat,s.lng)); }
+}
+
+/* ---------- 희망 목록 ---------- */
+function toggleWish(id){
+  const i=st.wish.indexOf(id); if(i>=0) st.wish.splice(i,1); else { if(st.wish.length>=10){ toast('희망학교는 10곳까지 담을 수 있어요'); return; } st.wish.push(id); }
+  $('#fab').classList.remove('bump'); void $('#fab').offsetWidth; $('#fab').classList.add('bump');
+  refresh();
+}
+function wishHtml(){
+  if(!st.wish.length) return '<p class="muted small" style="margin:6px 0 0">아직 담은 학교가 없어요. 지도나 목록에서 학교를 눌러 담아 보세요.</p>';
+  return '<ol>'+st.wish.map((id,i)=>{const s=SCHOOLS[id]; const d=distKm(st.home,s);
+    return `<li><span class="no">${i+1}</span><span class="nm">${esc(s.name)}<small>${s.zone}${s.inn?' · 혁신':''}${s.tg?' · 특구':''}${s.ru?' · 농촌':''}${s.kr?' · 한국어학급':''}${st.homeZone===s.zone?' · 거주지 구역':''}${d!=null?' · '+fmtKm(d):''}</small></span>
+      <span class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm" data-a="up" data-i="${i}" ${i===0?'disabled':''} aria-label="위로">▲</button><button class="btn sm" data-a="dn" data-i="${i}" ${i===st.wish.length-1?'disabled':''} aria-label="아래로">▼</button><button class="btn sm" data-a="rm" data-i="${i}">빼기</button></span></li>`;}).join('')+'</ol>';
+}
+
+/* ---------- 거주지 ---------- */
+$('#homeZone').innerHTML='<option value="">선택 안 함</option>'+ZONES.map(z=>`<option value="${z.id}">${z.id} (${z.office})</option>`).join('');
+$('#homeZone').onchange=e=>{st.homeZone=e.target.value; refresh();};
+function setHome(lat,lng,label){
+  st.home={lat,lng,label};
+  const near=SCHOOLS.filter(s=>!s.sp&&s.lat!=null).map(s=>({s,d:distKm(st.home,s)})).sort((a,b)=>a.d-b.d).slice(0,5);
+  let html=`<b>집 위치:</b> ${esc(label)} <button class="btn sm" id="homeClear" style="margin-left:6px">지우기</button>`;
+  if(near.length){
+    const cnt={}; near.forEach(n=>cnt[n.s.zone]=(cnt[n.s.zone]||0)+1);
+    const guess=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0][0];
+    html+=`<div style="margin-top:4px" class="muted">가까운 학교: ${near.map(n=>`${esc(n.s.name)}(${n.s.zone}, ${fmtKm(n.d)})`).join(', ')} → 추정 구역 <b style="color:var(--ink)">${guess}</b></div>`;
+    st.homeZone=guess; $('#homeZone').value=guess;
+  }
+  $('#homeInfo').innerHTML=html;
+  $('#homeClear').onclick=()=>{st.home=null; $('#homeInfo').innerHTML=''; $('#homeQ').value=''; if(homeOv){homeOv.setMap(null);homeOv=null;} refresh();};
+  if(map){ const p=new kakao.maps.LatLng(lat,lng);
+    if(homeOv) homeOv.setMap(null);
+    homeOv=new kakao.maps.CustomOverlay({position:p,content:'<div class="homepin">집</div>',yAnchor:1.3,zIndex:20}); homeOv.setMap(map); map.panTo(p); }
+  refresh();
+}
+
+/* ---------- 카카오 지도 ---------- */
+let map=null, geocoder=null, places=null, homeOv=null; const overlays={}; let labelOv=null;
+function loadKakao(){
+  if(!KAKAO_KEY){ $('#homeSearchRow').classList.add('hide'); return; }
+  const sc=document.createElement('script');
+  sc.src='https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&libraries=services&appkey='+encodeURIComponent(KAKAO_KEY);
+  sc.onload=()=>kakao.maps.load(initMap);
+  sc.onerror=()=>{ $('#homeSearchRow').classList.add('hide'); $('#mapTag').textContent='지도를 불러오지 못해 도식 지도로 보여 드려요(키·도메인 확인)'; };
+  document.head.appendChild(sc);
+}
+function initMap(){
+  $('#tilemap').classList.add('hide'); $('#mapTag').textContent='';  $('#mapTag').classList.add('hide');
+  map=new kakao.maps.Map($('#map'),{center:new kakao.maps.LatLng(35.160,126.851),level:8});
+  map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
+  geocoder=new kakao.maps.services.Geocoder(); places=new kakao.maps.services.Places();
+  kakao.maps.event.addListener(map,'click',e=>{
+    if(!st.picking) return; st.picking=false; $('#pickHint').style.display='none';
+    const ll=e.latLng; geocoder.coord2Address(ll.getLng(),ll.getLat(),(r,status)=>{
+      const label=(status===kakao.maps.services.Status.OK&&r[0])?(r[0].road_address?r[0].road_address.address_name:r[0].address.address_name):'지도에서 고른 위치';
+      setHome(ll.getLat(),ll.getLng(),label); });
+  });
+  drawMarkers();
+  const missing=SCHOOLS.filter(s=>s.lat==null);
+  if(missing.length) geocodeQueue(missing, ()=>{drawMarkers(); if(st.home) setHome(st.home.lat,st.home.lng,st.home.label);});
+  if(isAdmin) $('#adRun').disabled=false;
+}
+function searchSchool(s, cb){
+  places.keywordSearch(s.query,(data,status)=>{
+    if(status!==kakao.maps.services.Status.OK||!data.length){ cb(null); return; }
+    const inGj=data.filter(d=>(d.address_name||'').includes('광주'));
+    const pool=inGj.length?inGj:data;
+    const exact=pool.find(d=>d.place_name.replace(/\s/g,'').includes(s.match));
+    const pick=exact||pool[0];
+    cb({lat:+pick.y,lng:+pick.x,place:pick.place_name,addr:pick.road_address_name||pick.address_name,ok:!!exact});
+  },{size:5});
+}
+function geocodeQueue(list, done, onEach){
+  let i=0;
+  (function next(){
+    if(i>=list.length){ done&&done(); return; }
+    const s=list[i++];
+    searchSchool(s,r=>{ if(r){s.lat=r.lat;s.lng=r.lng;} onEach&&onEach(s,r); if(i%10===0) drawMarkers(); setTimeout(next,90); });
+  })();
+}
+const TYCOL={inn:'#047857',tg:'#1d4ed8',ru:'#8a5a00',kr:'#0e7490'};
+function drawMarkers(){
+  if(!map) return;
+  SCHOOLS.forEach(s=>{
+    if(s.lat==null) return;
+    let ov=overlays[s.id];
+    if(!ov){
+      const el=document.createElement('div'); el.title=s.name; el.textContent=s.zn;
+      el.addEventListener('click',ev=>{ev.stopPropagation(); selectSchool(s.id,false);});
+      ov=new kakao.maps.CustomOverlay({position:new kakao.maps.LatLng(s.lat,s.lng),content:el,zIndex:3,clickable:true});
+      ov._el=el; overlays[s.id]=ov;
+    }
+    const el=ov._el, vis=visible(s);
+    const hitTy=[...st.types].find(t=>s[t]);
+    el.className='dot'+(s.sp?' sp':'')+(hitTy?' hl':'')+(st.homeZone&&st.homeZone===s.zone?' hz':'')+(st.sel===s.id?' sel':'')+(st.wish.includes(s.id)?' wished':'');
+    el.style.background=s.color; el.style.setProperty('--hl', hitTy?TYCOL[hitTy]:'#111');
+    ov.setMap(vis?map:null);
+    ov.setZIndex(st.sel===s.id?10:3);
+  });
+  if(labelOv){labelOv.setMap(null);labelOv=null;}
+  if(st.sel!=null){ const s=SCHOOLS[st.sel]; if(s.lat!=null){
+    labelOv=new kakao.maps.CustomOverlay({position:new kakao.maps.LatLng(s.lat,s.lng),content:`<div class="maplabel">${esc(s.name)}</div>`,zIndex:11}); labelOv.setMap(map);} }
+}
+$('#homePick').onclick=()=>{ if(!map) return; st.picking=true; $('#pickHint').style.display='block'; $('.mapbox').scrollIntoView({behavior:'smooth',block:'center'}); };
+function doHomeSearch(){
+  const q=$('#homeQ').value.trim(); if(!q||!map) return;
+  geocoder.addressSearch(q,(r,status)=>{
+    if(status===kakao.maps.services.Status.OK&&r.length){ setHome(+r[0].y,+r[0].x,r[0].address_name); return; }
+    places.keywordSearch('광주 '+q,(d,s2)=>{
+      if(s2===kakao.maps.services.Status.OK&&d.length) setHome(+d[0].y,+d[0].x,d[0].place_name);
+      else $('#homeInfo').innerHTML='<span style="color:var(--bad);font-weight:700">위치를 찾지 못했어요. 동 이름이나 도로명 주소로 다시 검색하거나 지도에서 찍어 주세요.</span>';
+    });
+  });
+}
+$('#homeGo').onclick=doHomeSearch;
+$('#homeQ').onkeydown=e=>{ if(e.key==='Enter') doHomeSearch(); };
+
+function refresh(){ renderFilters(); renderTiles(); renderList(); drawMarkers(); $('#fabCnt').textContent=st.wish.length+'/10'; }
+
+/* ---------- 관리자: 좌표 만들기 (?admin=1) ---------- */
+const isAdmin=new URL(location.href).searchParams.get('admin')==='1';
+if(isAdmin){ $('#admin').classList.add('on'); $('#adRun').disabled=true; }
+$('#adRun').onclick=()=>{
+  if(!map){ $('#adStat').textContent='지도가 먼저 열려야 해요(키 확인).'; return; }
+  $('#adRun').disabled=true; let n=0;
+  $('#adTable').innerHTML='<tr><th>학교</th><th>검색 결과</th><th>주소</th></tr>';
+  geocodeQueue(SCHOOLS.slice(), ()=>{
+    $('#adStat').textContent=`완료: ${n}/${SCHOOLS.length}`; $('#adRun').disabled=false;
+    const obj={}; SCHOOLS.forEach(s=>{ if(s.lat!=null) obj[s.name]=[+s.lat.toFixed(6),+s.lng.toFixed(6)]; });
+    $('#adOut').value='const COORDS = '+JSON.stringify(obj)+';';
+    drawMarkers();
+  },(s,r)=>{ n++; $('#adStat').textContent=`${n}/${SCHOOLS.length}`;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${esc(s.name)}</td><td>${r?esc(r.place)+(r.ok?'':' <span class="flag">확인</span>'):'<span class="flag">못 찾음</span>'}</td><td>${r?esc(r.addr):''}</td>`;
+    $('#adTable').appendChild(tr); });
+};
+$('#adCopy').onclick=()=>{ const t=$('#adOut'); t.select(); navigator.clipboard?navigator.clipboard.writeText(t.value):document.execCommand('copy'); $('#adStat').textContent='복사했어요.'; };
+
+/* ---------- 하단 결과 막대 ---------- */
+function updateBar(){
+  const bar=$('#rbar');
+  if(curTab==='score'){
+    const r=tieSummary();
+    bar.innerHTML=`<span>해당 ${r.hit}개 · 준비 서류 ${r.ev}개</span><span class="s">결과 보기 ›</span>`;
+    bar.onclick=()=>$('#tieResult').scrollIntoView({behavior:'smooth',block:'start'});
+    bar.classList.remove('hide');
+  } else if(curTab==='defer'){
+    bar.innerHTML=`<span>${deferBlocked()?'유예 불가 학교':'고른 사유 '+defSt.size+'개'}</span><span class="s">결과 보기 ›</span>`;
+    bar.onclick=()=>$('#deferResult').scrollIntoView({behavior:'smooth',block:'start'});
+    bar.classList.remove('hide');
+  } else bar.classList.add('hide');
+}
+// 결과 상자가 화면에 보이면 막대 숨기기
+const io=new IntersectionObserver(es=>{ es.forEach(e=>{
+  if((curTab==='score'&&e.target.id==='tieResult')||(curTab==='defer'&&e.target.id==='deferResult')){
+    $('#rbar').style.opacity=e.isIntersecting?'0':'1'; $('#rbar').style.pointerEvents=e.isIntersecting?'none':'auto'; }
+}); });
+
+/* =========================================================
+   동점자 체크
+   ========================================================= */
+const FM=n=>`<span class="fm">서식${n}</span>`;
+const RES='거주 확인: 2026. 9. 1. 이전 전입해 현재까지 거주 중인 경우만 인정';
+const COUPLE='부부교사는 1인만 사용. 한 사람이 사용하면 그 교사가 그 학교에서 4년이 지나기 전에는 배우자가 사용할 수 없어요.';
+const LIVE='실거주 확인 서류 1가지: 통장의 실제 거주 확인서(학교장 경유)'+FM('7')+' — 통장 확인이 어려우면 관리소장 등 실제 거주를 확인할 수 있는 사람의 날인도 가능 — 또는 2026. 9. 1.~현재 공과금 납부 영수증 등(관리비 영수증처럼 본인 이름이 없으면 자동이체 통장 사본이나 신용카드 영수증 사본을 추가)';
+const TIE=[
+ {n:1,t:'직무연수 이수 실적',d:'현임교 근무 중 받은 직무연수만(4년 기준 120시간). 휴직 기간 중 받은 연수는 제외. NEIS 인사기록 등재분만, 내신 서류 제출일까지 인정. 집합연수는 기간이 겹치지 않는지 확인.',
+  opts:[['120시간 이상',4],['90~119시간',3],['60~89시간',2],['30~59시간',1],['30시간 미만',0]], kind:'hours'},
+ {n:2,t:'중증장애인 본인, 또는 중증장애인 배우자·미혼 자녀를 부양',d:'장애인복지법 시행규칙 [별표1]의 장애 정도가 심한 장애인.',
+  sub:['초등교사는 12. 1.자 기준 일반학급 20학급 이상 학교를 희망할 때만, 특수·비교과 교사는 거주지역 인사구역 내 학교를 희망할 때만 적용돼요.',COUPLE],
+  ev:['중증장애인 등록 증빙 서류(본인 이름으로 신청한 증명서)','(부양자) 주민등록등본 또는 가족관계증명서',LIVE]},
+ {n:3,t:'3세 미만 유아를 양육',d:'2027. 3. 1.자 기준 만 36개월 미만, 즉 2024. 3. 2. 이후 출생 자녀(2027. 2. 28.까지 출산 예정 포함).',
+  sub:['거주지역 인사구역 내 학교를 희망할 때만 적용돼요.',RES,'전입 예정 교원(초빙·전입요청 제외)의 25% 범위 안에서만 적용돼요.','부부교사는 자녀별 1인만. 같은 자녀로 한 사람이 사용하면 4년이 지나기 전에는 배우자가 사용할 수 없어요(다른 자녀는 가능).'],
+  ev:['주민등록등본(교사와 자녀 이름·생년월일 확인, 2026. 9. 1.~현재 해당 자녀와 동일 거주지, 자녀가 6개월 미만이면 출생일부터)','(출산 예정자) 임신확인서 또는 출산예정증명서(출산예정일 명기)',LIVE], zone:true},
+ {n:4,t:'자녀 3명 이상 부양 (1명 이상이 12세 이하)',d:'12세 이하 = 2027. 3. 1.자 기준 2014. 3. 2. 이후 출생.',
+  sub:['거주지역 인사구역 내 학교를 희망할 때만 적용돼요.',RES,'전입 예정 교원(초빙·전입요청 제외)의 25% 범위 안에서만 적용돼요.',COUPLE],
+  ev:['가족관계증명서 또는 주민등록등본(교사와 자녀 이름·생년월일 확인)','(출산 예정자) 임신확인서 또는 출산예정증명서(출산예정일 명기)',LIVE], zone:true},
+ {n:5,t:'한국어학급 운영 학교에서 외국인 학생 50% 이상 학급 담임 2년 이상',d:'현임교 근무 중, 2024. 3. 1. 이후 경력부터. 일반학급 담임 24개월 이상(2027. 2. 28.자, 교감 확인). 외국인 = 외국 국적 학생.',
+  sub:['한 달 중 학급 내 외국인 비율이 50% 이상인 날이 하루라도 있으면 1개월로 계산해요. 비율은 소수점 이하를 버립니다.','내부결재로 증빙할 때는 외국인임을 보여 주는 서류(NEIS 명렬표, 학생생활기록부 등)와 월별 외국인 비율 현황(NEIS 월별 출석부 등)을 근거로 해요.','한국어학급 운영 학교(2026 요령 기준): 대반초, 영천초, 월곡초, 하남중앙초 — 학교 지도의 ‘한국어학급’ 필터로 확인'],
+  ev:['한국어학급 운영 학교 일반학급 담임 경력 확인서'+FM('8-1')+FM('8-2')+' — 학교장 확인대장 사본(교감 원본대조필) 또는 내부결재 공문']},
+ {n:6,t:'6학년 담임 · 체육 교과전담 · 보직교사 경력',d:'현임교 근무 중 경력. 해당하는 것을 모두 고르세요.', kind:'multi',
+  items:[
+   ['6학년 담임 12개월 이상 (2027. 2. 28.자 기준)','6학년 담임 경력 확인서'+FM('8-3')+' — 학교장 발령대장 사본(교감 원본대조필) 또는 내부결재 공문'],
+   ['체육 교과전담 주 9시간 이상·12개월 이상 (2014. 3. 1.~2019. 2. 28. 경력만)','체육 교과전담교사 경력 확인서'+FM('8-4')+' — 학교장 발령대장 사본(교감 원본대조필) 또는 내부결재 공문'],
+   ['보직(부장)교사 24개월 이상 (현임교 근무 중)','보직교사 경력 확인서'+FM('8-5')+' — 학교장 발령대장 사본(교감 원본대조필) 또는 내부결재 공문'],
+   ['보결전담 순회(겸임)교사 1년 (2026학년도 선발, 6학년 담임과 동순위)','근무 사실 확인 서류 (교육지원청 안내 확인)'],
+   ['늘봄지원연구사 임기 마치고 복귀 (보직교사 2년과 동순위)','임기제 근무 경력 확인 (교육지원청 안내 확인)']
+  ],
+  sub:['3. 15.자까지 신규 임용·전보 발령 후 다음 해 2월 말까지 6학년 담임(체육전담)을 했다면 12개월로 인정해요(5. 1.자 개교 학교는 10개월 이상이면 12개월로 간주).','같은 학년도 6학년 담임과 체육전담 경력을 합쳐 12개월 이상이면 인정(2019. 2. 28.까지 경력).','비교과·특수학교 교사는 보직교사 경력만 인정해요.']},
+ {n:7,t:'교육경력이 많은 사람',d:'승진규정 제9조 [별표1] 경력, 제11조 기간 계산으로 자동 비교 (NEIS 확인, 서류 없음)',auto:true},
+ {n:8,deleted:true,t:'(삭제된 항목)'},
+ {n:9,t:'현임교 근무 중 순회교사 경력이 많은 사람',d:'1년 이상 경력만, 월 단위(15일 이상이면 1개월). 교육지원청 순회기간제교사 경력은 해당되지 않아요.', ev:['순회교사 근무 확인서(학교장 발행)'+FM('9')]},
+ {n:10,t:'생년월일이 빠른 사람',d:'NEIS 인사기록으로 자동 비교 (서류 없음)',auto:true}
+];
+const tieSt={};
+function renderTie(){
+  $('#tieQs').innerHTML=TIE.map(q=>{
+    if(q.deleted) return `<div class="q deleted"><div class="qh"><span class="num auto">${q.n}</span><div><div class="qt">${q.t}</div></div></div></div>`;
+    let opts='';
+    if(q.auto) opts=`<div class="opts"><span class="small faint">모두에게 자동 적용</span></div>`;
+    else if(q.kind==='hours') opts=`<div class="opts">${q.opts.map(([l,p],i)=>`<button class="opt ${tieSt[q.n]===i?'on':''}" data-q="${q.n}" data-v="${i}">${l} · ${p}점</button>`).join('')}</div>`;
+    else if(q.kind==='multi') opts=`<div class="sub-q on">${q.items.map((it,i)=>`<label><input type="checkbox" data-q="${q.n}" data-i="${i}" ${(tieSt[q.n]||[]).includes(i)?'checked':''}> <span>${it[0]}</span></label>`).join('')}${q.sub?'<ul class="clean small muted">'+q.sub.map(x=>`<li>${x}</li>`).join('')+'</ul>':''}</div>`;
+    else opts=`<div class="opts"><button class="opt ${tieSt[q.n]===true?'on':''}" data-q="${q.n}" data-v="y">해당</button><button class="opt ${tieSt[q.n]===false?'on':''}" data-q="${q.n}" data-v="n">해당 없음</button></div>`+
+      (q.sub?`<div class="sub-q ${tieSt[q.n]===true?'on':''}"><b>적용 조건</b><ul class="clean">${q.sub.map(x=>`<li>${x}</li>`).join('')}</ul>${q.zone?zoneHint():''}</div>`:'');
+    return `<div class="q"><div class="qh"><span class="num ${q.auto?'auto':''}">${q.n}</span><div><div class="qt">${q.t}</div><div class="qd">${q.d}</div></div></div>${opts}</div>`;
+  }).join('');
+  $('#tieQs').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const n=+b.dataset.q, v=b.dataset.v;
+    const nv= v==='y'?true: v==='n'?false: +v;
+    tieSt[n]= tieSt[n]===nv? undefined : nv; renderTie(); renderTieResult();
+  });
+  $('#tieQs').querySelectorAll('input[type=checkbox]').forEach(c=>c.onchange=()=>{
+    const n=+c.dataset.q, i=+c.dataset.i; const a=tieSt[n]||[];
+    tieSt[n]= c.checked? [...new Set([...a,i])] : a.filter(x=>x!==i); renderTieResult();
+  });
+}
+function zoneHint(){
+  return `<div class="small" style="margin-top:6px">${st.homeZone?`지도 탭에서 고른 거주지 구역은 <b>${st.homeZone}</b>이에요. 희망학교가 이 구역 학교여야 적용됩니다.`:'지도 탭에서 거주지 구역을 고르면 해당 구역 학교를 표시해 드려요.'}</div>`;
+}
+function tieCollect(){
+  const hit=[], ev=[];
+  TIE.forEach(q=>{
+    if(q.auto||q.deleted) return;
+    const v=tieSt[q.n];
+    if(q.kind==='hours'){ if(v!=null){ const [l,p]=q.opts[v]; hit.push(`${q.n}번 직무연수 <b>${p}점</b> (${l})`); ev.push(['1번','NEIS 인사기록 등재 연수 (별도 서류 없음, 내신 서류 제출일까지 등재 확인)']); } }
+    else if(q.kind==='multi'){ (v||[]).forEach(i=>{ hit.push(`${q.n}번 ${q.items[i][0]}`); ev.push(['6번',q.items[i][1]]); }); }
+    else if(v===true){ hit.push(`${q.n}번 ${q.t}`); q.ev.forEach(e=>ev.push([q.n+'번',e])); }
+  });
+  return {hit,ev};
+}
+function tieSummary(){ const {hit,ev}=tieCollect(); return {hit:hit.length, ev:ev.length}; }
+function renderTieResult(){
+  const {hit,ev}=tieCollect();
+  const wz=st.wish.length&&st.homeZone? st.wish.filter(id=>SCHOOLS[id].zone===st.homeZone).length : null;
+  let warn='';
+  if(tieSt[3]===true||tieSt[4]===true){
+    warn = !st.homeZone? `<div class="note">3·4번은 거주지 구역 학교를 희망할 때만 적용돼요. 지도 탭에서 거주지 구역을 골라 두면 희망 목록과 비교해 드려요.</div>`
+      : `<div class="note">거주지 구역은 <b>${st.homeZone}</b>입니다. ${wz==null?'희망 목록이 비어 있어요.':`희망 목록 ${st.wish.length}교 중 ${wz}교가 이 구역 학교예요. 나머지 학교에서는 3·4번이 적용되지 않아요.`}</div>`;
+  }
+  $('#tieResult').innerHTML=`<h3>나의 동점자 체크 결과</h3>`+
+    (hit.length?`<ul class="clean">${hit.map(h=>`<li>${h}</li>`).join('')}</ul>`:'<p class="muted" style="margin:0">아직 고른 항목이 없어요. 7번(교육경력)과 10번(생년월일)은 모두에게 자동 적용됩니다.</p>')+
+    warn+
+    (ev.length?`<h3 style="margin-top:14px">준비할 증빙서류</h3><ul class="ev">${ev.map(([k,e])=>`<li><span class="faint small">[${k}]</span> ${e}</li>`).join('')}</ul>`:'')+
+    `<div class="row" style="margin-top:12px"><button class="btn pri" onclick="plan.step=3;openWish()">이 결과를 엑셀에 넣기 ›</button></div><p class="small faint" style="margin:10px 0 0">6학년 담임·체육전담·보직·한국어학급 담임 경력은 교감 확인이 필요해요. 서식 번호는 2026학년도 전보서류 작성 요령 기준이라 2027 요령에서 바뀔 수 있어요. 서류 양식과 제출 기한은 교육지원청 공문을 따르세요.</p>`;
+  updateBar();
+}
+
+/* =========================================================
+   전보 유예
+   ========================================================= */
+const DEFER=[
+ {t:'정년 잔여기간 2년 이하 (수석교사 포함)',d:'정기전보일인 3. 1.자 기준으로 계산',ev:'유예원만 제출, 증빙은 NEIS 인사기록으로 갈음(반드시 NEIS에서 확인)'},
+ {t:'전국소년체전·전국체전 동계대회·전국장애학생체육대회 3위 이상 학생 직접 지도',d:'다음 연도에도 시 대표팀 선수를 계속 지도, 입상 종목을 계속 지도할 때만',ev:'시교육청 해당 업무 담당과 과장 인정서'+FM('5-1')+FM('5-2')+' · 1년, 1회'},
+ {t:'전국과학전람회 특상 이상 입상(본인 또는 입상 학생 직접 지도)',d:'다음 연도에도 작품 제작이나 학생 지도를 계속하려는 경우',ev:'창의융합교육원장 인정서'+FM('5-1')+FM('5-2')+' · 1년, 1회'},
+ {t:'발명교실 운영에 계속 필요',d:'동·서부 업무처리지침에 실린 사유',ev:'학교장 확인서'+FM('5-1')+' · 1년, 1회'},
+ {t:'시교육청 지정 ‘키움 영재학급’ 운영교사(또는 차년도 예정자) 중 1인',d:'',ev:'학교장 인정서'+FM('5-1')+' · 1년, 1회'},
+ {t:'출산휴가 중이거나 출산예정일이 3개월 이내인 여교사 (희망자)',d:'전보일 기준. 휴직 없이 출산휴가만 쓰는 경우이며 유예는 본인 선택',ev:'근무상황부 사본(교감 원본대조필) 또는 임신확인서·의사진단서(출산예정일 명기) 등'+FM('5-1')+' · 1년, 1회'},
+ {t:'영어 교과전담교사 중 의무복무 잔여기간 1년 이하',d:'',ev:'학교장 확인서 · 1년, 1회'},
+ {t:'혁신학교(예비·차년도 지정 포함) 교사',d:'교사 총 정원 10% 이내, 혁신학교 내실화에 필요하다고 학교 구성원 민주적 절차로 인정',ev:'학교장 요청'+FM('5-1')+' · 근거(회의록, 내부결재 등)는 학교가 자체 보관 · 1년, 1회', inn:true},
+ {t:'시교육청 지정 한국어학급 담임교사 중 1인',d:'다문화교육 내실화에 필요하다고 학교 구성원 민주적 절차로 인정',ev:'학교장 요청'+FM('5-1')+' · 근거(회의록, 내부결재 등)는 학교가 자체 보관 · 1년, 1회', kr:true},
+ {t:'중증장애인 (장애인고용촉진법 시행령 제4조)',d:'',ev:'중증장애인 등록 증빙 서류'+FM('5-1')+' · 1년, 1회'}
+];
+const defSt=new Set(); let mySchool=null;
+$('#mySchool').innerHTML='<option value="">현임교 선택 (선택 안 해도 돼요)</option>'+ZONES.map(z=>`<optgroup label="${z.id} (${z.office})">${SCHOOLS.filter(s=>s.zone===z.id).map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')}</optgroup>`).join('');
+$('#mySchool').onchange=e=>{ mySchool=e.target.value===''?null:SCHOOLS[+e.target.value]; if(mySchool) plan.school=mySchool.name; renderDefer(); };
+const deferBlocked=()=>!!(mySchool&&mySchool.ru);
+function renderDefer(){
+  let v='';
+  if(mySchool){
+    if(mySchool.ru) v=`<div class="verdict no">${esc(mySchool.name)}는 농촌학교예요. 승진가산점이 부여되는 농촌 지역 학교는 전보 유예를 할 수 없어요.</div>`;
+    else v=`<div class="verdict ok">${esc(mySchool.name)}는 농촌학교가 아니에요. 아래 사유를 확인하세요.${mySchool.inn?' 혁신학교라 혁신학교 사유를 맨 위로 올렸어요.':''}${mySchool.kr?' 한국어학급 운영 학교라 한국어학급 사유를 맨 위로 올렸어요.':''}</div>`;
+  }
+  $('#schoolVerdict').innerHTML=v;
+  const hitOf=x=>!!(mySchool&&((mySchool.inn&&x.inn)||(mySchool.kr&&x.kr)));
+  const order=DEFER.map((x,i)=>i); order.sort((a,b)=>(hitOf(DEFER[b])?1:0)-(hitOf(DEFER[a])?1:0));
+  $('#deferList').classList.toggle('blocked',deferBlocked());
+  $('#deferList').innerHTML=order.map(i=>{const x=DEFER[i]; const top=hitOf(x);
+    return `<label class="di ${top?'top':''}"><input type="checkbox" data-i="${i}" ${defSt.has(i)?'checked':''}><div><div class="qt">${x.t}${top?' <span class="tag inn">현임교 해당</span>':''}</div>${x.d?`<div class="qd">${x.d}</div>`:''}<div class="doc">필요: ${x.ev}</div></div></label>`;}).join('');
+  $('#deferList').querySelectorAll('input').forEach(c=>c.onchange=()=>{ c.checked?defSt.add(+c.dataset.i):defSt.delete(+c.dataset.i);
+    if(defSt.size){ const i=[...defSt][0]; plan.defer=true; plan.deferC=`제10조 제①항 제${DEFER_HO[i]}호`; }
+    renderDeferResult(); });
+  renderDeferResult();
+}
+function renderDeferResult(){
+  let h='<h3>자가진단 결과</h3>';
+  if(deferBlocked()) h+=`<p style="margin:0;color:var(--bad);font-weight:700">현임교가 농촌학교라 전보 유예를 할 수 없어요.</p>`;
+  else if(!defSt.size) h+=`<p class="muted" style="margin:0">해당하는 사유를 골라 주세요.</p>`;
+  else{
+    h+=`<ul class="ev">${[...defSt].sort((a,b)=>a-b).map(i=>`<li><b>${DEFER[i].t}</b><br><span class="small">${DEFER[i].ev}</span></li>`).join('')}</ul>`;
+    if(defSt.size>1) h+=`<div class="note">여러 사유에 해당해도 유예는 하나의 사유로 신청해요. 사유를 바꿔 가며 이어서 유예할 수는 없어요.</div>`;
+  }
+  h+=`<ul class="clean small muted" style="margin-top:10px"><li>모든 유예는 유예원(서식5)을 개인별로 내요.</li><li>농촌학교 근무 교사와 초빙교사는 출산·휴직·파견 예정이어도 전보 조치돼요.</li><li>복직자가 전보 유예자보다 현임교에 먼저 배치돼요.</li></ul>
+  <p class="small faint" style="margin:8px 0 0">서식 번호는 2026 작성 요령 기준이에요. 그 밖의 사항은 전보를 주관하는 교육지원청 안내를 따릅니다.<span class="ref">지침 8</span></p>`;
+  $('#deferResult').innerHTML=h;
+  updateBar();
+}
+
+/* =========================================================
+   연령대
+   ========================================================= */
+$('#birth').onchange=e=>{
+  const v=e.target.value; const bands=[...document.querySelectorAll('#bands > div')];
+  let k=-1; if(v){ k= v>='1987-01-02'?0 : v>='1982-01-02'?1 : v>='1977-01-02'?2 : 3; }
+  bands.forEach((b,i)=>{ b.classList.toggle('me',i===k); b.classList.toggle('dimmed',k>=0&&i!==k); });
+};
+
+/* =========================================================
+   달라진 점
+   ========================================================= */
+const CHG_A=[
+ ['new','보결전담 순회교사 48점','보결전담 순회(겸임)교사로 1년 근무하면 만료자와 같은 48점, 동점자 기준 ‘6학년 담임 경력’과 동순위를 줍니다(2026학년도 선발에 한함).','기준 제19조 14항'],
+ ['mod','정원 감축 학교 48점','폐교·휴교·학급 감축으로 정원 조정이 불가피한 학교의 교사는 48점을 주고 전보합니다(2027. 3. 1.자 전보부터). 이때 복직(귀)자는 근무 1년 미만이면 복직자 배치 기준, 1년 이상이면 일반 희망 기준을 적용해요.','기준 제19조 7항 · 지침 6.카'],
+ ['mod','늘봄지원연구사 복귀','임기 2년을 마치고 교원으로 복귀하면 48점과 동점자 기준 ‘보직교사 2년’과 동순위를 줍니다.','기준 제31조 8항'],
+ ['mod','보직교사 1명 추가 임용','학교장이 학교 구성원 의견을 모아 별도 승인 없이 배치 기준 외 보직교사 1명을 더 임용할 수 있어요.','지침 4'],
+ ['del','우대 전보 ‘나’항 삭제','동·서부 업무처리지침의 우대 전보 ‘나’항이 삭제됐어요.','지침 7.나']
+];
+const CHG_B=[
+ ['new','영양교사 직전 학교 금지','직전에 근무한 학교로는 인사상 부득이한 경우가 아니면 전보하지 않아요. 36학급 이상 학교(영양교사 1인 배치) 3년 이상, 공동 급식 운영학교(광주산수초) 4년 이상 근무자 우선 전보 규정도 정비됐어요.','기준 제19조의7'],
+ ['mod','전문상담교사 우선 전보','순회교사 2년 이상, 36학급 이상 학교 4년 이상 근무자 우선 전보와 순회교사 배치 순서를 정비했어요.','기준 제19조의8 2항'],
+ ['mod','신규 수석교사 배치','선발 당시 소속 학교 배치가 원칙이에요. 이미 수석교사가 있는 학교에서 선발되면 희망 학교·대규모 학교·연구(혁신)학교 등을 참고해 정합니다.','기준 제6조 3항'],
+ ['mod','적용 범위','전남광주통합특별시 출범에 따라 ‘종전 광주광역시 관내’ 학교·기관으로 적용 범위를 정리했어요. 인사지역은 종전 광주광역시 관내 공립 초등학교 전체(단일 인사지역)입니다.','기준 제3조 · 제17조 1항'],
+ ['mod','관련 지침 이름','기간제교사·원로교사·초빙교사 관련 지침 이름이 ‘전남광주통합특별시교육청’으로 바뀌었어요.','기준 제7조 3항 · 제10조 3항 · 제27조']
+];
+const BADGE={new:'<span class="tag new">신설</span>',mod:'<span class="tag mod">개정</span>',del:'<span class="tag del">삭제</span>'};
+const chgHtml=arr=>arr.map(([k,t,b,r])=>`<div class="chg"><div class="top">${BADGE[k]}<span class="tt">${t}</span><span class="ref">${r}</span></div><div>${b}</div></div>`).join('');
+$('#chgA').innerHTML=chgHtml(CHG_A); $('#chgB').innerHTML=chgHtml(CHG_B);
+
+/* =========================================================
+   다른 직위
+   ========================================================= */
+const ROLES=[
+ ['vp','교감','기준 제18조 · 제23조',`<ul class="clean">
+   <li>임용일(전보·전직·신규)로부터 만 4년이 되는 3. 1.자 또는 9. 1.자를 만료로 전보해요.</li>
+   <li>인사 내신 자료도 근무 기간 경력을 월 1점씩 반영합니다(근무성적평정점 적용은 삭제).</li>
+   <li>현임교 근무 연한, 교감 경력, 학교경영지원 역량, 청렴성, 학부모 여론 등을 종합적으로 고려해요.</li>
+   <li>정년 잔여기간 1년 이내인 사람은 전보하지 않아요.</li>
+   <li>혁신학교(예비·차년도 포함) 교감은 학교 구성원의 민주적 절차로 인정되면 학교장 요청으로 1년, 1회 유예할 수 있어요.</li></ul>`],
+ ['hd','수석교사','기준 제17조 5항 · 제24조',`<ul class="clean">
+   <li>근속 연한은 교사와 같아요(1년 이상 4년 이하). 인사 내신 자료도 월 1점씩 반영합니다.</li>
+   <li>근무 연한, 업무평가(직무수행능력), 컨설팅 장학 활동 실적, 청렴성, 학부모 여론 등을 종합 고려해요.</li>
+   <li>정년 잔여기간 2년 이하인 사람은 전보하지 않아요.</li>
+   <li>배치 참고 순서: 수석교사 배치 희망 학교 → 수석교사를 추천해 선발된 학교 → 추천했으나 선발되지 않은 학교 → 대규모 학교 → 연구·혁신학교 등</li>
+   <li>수석교사에게는 농촌·소규모학교 지역가산점 등 승진 가산점을 주지 않아요.</li></ul>`],
+ ['sp','특수교사','기준 제19조의2',`<ul class="clean">
+   <li><b>우선 전보:</b> 특수학교(급) 교사로 8년 이상 연속 근무했는데 총 근무 기간 중 특수학급(교) 근무가 4년 미만이면 특수학급(교)으로 우선 전보가 원칙이에요(우리 교육청 소재 학교 경력만 인정). 경합 시 특수학급(교) 경력이 적은 사람 → 특수교육 경력이 많은 사람 → 생년월일이 빠른 사람 순. 특수학교 우선 전보는 전체 전입 예정 정원의 40% 이내.</li>
+   <li>특수교육지원센터에서 4년 이상 근무하면 희망 학교에 우선 전보할 수 있어요(2022. 2. 28.자 이전 센터 전입자는 종전 규정).</li>
+   <li>직전에 근무한 특수학교로는 인사상 불가피한 경우가 아니면 전보하지 않아요.</li>
+   <li><b>교류 배치 순서:</b> ① 국가유공자·중증장애인 등 우대 대상 ② 특수학교(급) 우선 전보 대상 ③ 특수교육지원센터 4년 이상 ④ 근무 만료자 ⑤ 일반 희망자 (동점이면 일반 동점자 순위 적용)</li>
+   <li>전보인사 기초자료에 희망 내신을 공개한 사람만 전보 내신해요.</li>
+   <li>동점자 2번(중증장애)은 거주지역 인사구역 내 학교 희망자에게 적용돼요.</li>
+   <li>초등학교와 특수학교 간 전직을 희망하면 서식6과 증빙서류를 내요.</li>
+   <li>별도정원 처리가 없어 <b>6개월 이상 휴직 예정이어도 전보</b>되고, 전입한 학교에서 기간제 교사를 채용해요.</li></ul>`],
+ ['hl','보건·사서','기준 제19조의4 · 제19조의5',`<ul class="clean">
+   <li>일반 교사와 같은 전보·우대 전보 규정을 적용해요.</li>
+   <li>전보인사 기초자료에 희망 내신을 공개한 사람만 전보 내신해요.</li>
+   <li>동점자 6번은 <b>보직교사 경력만</b> 인정되고, 2번(중증장애)은 거주지역 인사구역 내 학교 희망자에게 적용돼요.</li>
+   <li>유·초·중등 간 전직은 1:1 동수 전직이 원칙이고, 현 학교급 교육경력이 많은 사람 → 생년월일이 빠른 사람 순이에요.</li>
+   <li>별도정원 처리가 없어 <b>6개월 이상 휴직 예정이어도 전보</b>되고, 전입한 학교에서 기간제 교사를 채용해요.</li></ul>`],
+ ['nu','영양교사','기준 제19조의7',`<ul class="clean">
+   <li><b>우선 전보</b> (경합 시 순서대로): ① 36학급 이상 학교(영양교사 1인 배치)에서 3년 이상 근무 — 경합하면 학급 수가 많은 학교 근무자 우선 ② 공동 급식 운영 학교(광주산수초)에서 4년 이상 근무</li>
+   <li>직전에 근무한 학교로는 인사상 부득이한 경우가 아니면 전보하지 않아요. (2026 신설)</li>
+   <li>희망 내신 공개자만 내신, 동점자 6번은 보직교사 경력만 인정.</li>
+   <li><b>36학급 근무 경력 산정</b>: 현임교에서 해당 학년도 <b>4. 1.자 학급 수</b>(일반학급 기준)로 보고, 3년(36개월) 동안 모두 36학급 이상이어야 해요. 9. 1.자 신설학교는 신설 연도 10. 1.자 학급 수로 봅니다. 서식10을 내요.</li>
+   <li>별도정원 처리가 없어 <b>6개월 이상 휴직 예정이어도 전보</b>되고, 전입한 학교에서 기간제 교사를 채용해요.</li></ul>`],
+ ['co','전문상담','기준 제19조의8',`<ul class="clean">
+   <li>학교와 교육(지원)청에 근무하는 전문상담교사는 서로 교류해 전보할 수 있어요.</li>
+   <li><b>우선 전보</b> (경합 시 순서대로): ① 교육(지원)청 순회교사로 2년 이상 근무(파견·휴직·직위해제 기간 제외, 2021. 3. 1.자 근무자부터) ② 36학급 이상 학교에서 4년 이상 근무(경합 시 학급 수가 많은 학교 근무자 우선)</li>
+   <li><b>순회교사 배치 순서:</b> ① 순회교사 근무 희망자 ② 순회교사 경력이 없는 사람 중 전문상담교사 경력이 많은 사람 ③ 순회교사 경력이 적은 사람 (②·③에서 경합하면 전보순위명부 후순위자를 우선 배치)</li>
+   <li>전문상담교사 경력은 임용 전 경력을 포함하며, 임용 전 경력이 있으면 경력증명서 등을 추가로 내야 해요.</li>
+   <li><b>36학급 근무 경력 산정</b>: 현임교에서 해당 학년도 <b>4. 1.자 학급 수</b>(일반학급 기준)로 보고, 4년(48개월) 동안 모두 36학급 이상이어야 해요. 9. 1.자 신설학교는 신설 연도 10. 1.자 학급 수로 봅니다. 서식10·서식11을 내요.</li>
+   <li>별도정원 처리가 없어 <b>6개월 이상 휴직 예정이어도 전보</b>되고, 전입한 학교에서 기간제 교사를 채용해요.</li></ul>`]
+];
+let roleOn=null;
+function renderRoles(){
+  $('#who').innerHTML='<span class="small muted" style="align-self:center;font-weight:700;margin-right:2px">나는</span>'+ROLES.map(([k,t])=>`<button class="chip ${roleOn===k?'on':''}" data-r="${k}">${t}</button>`).join('');
+  $('#who').querySelectorAll('button').forEach(b=>b.onclick=()=>{ roleOn= roleOn===b.dataset.r?null:b.dataset.r; renderRoles(); if(roleOn) document.getElementById('role-'+roleOn).scrollIntoView({behavior:'smooth',block:'start'}); });
+  $('#roleList').innerHTML=ROLES.map(([k,t,r,b])=>`<details class="acc" id="role-${k}" ${roleOn===k?'open':''} style="scroll-margin-top:120px"><summary>${t}<span class="ref">${r}</span></summary><div class="body">${b}</div></details>`).join('');
+}
+
+/* =========================================================
+   내신 서류 체크리스트 (2026 작성 요령 기준)
+   ========================================================= */
+const DOC_ROLES=[['el','초등'],['sp','특수'],['he','보건'],['li','사서'],['nu','영양'],['co','전문상담'],['hd','수석교사']];
+const DOC_BASE={el:['1-1','2-1'],sp:['1-3','2-2'],he:['1-2','2-1'],li:['1-2','2-1'],nu:['1-2','2-3'],co:['1-2','2-4'],hd:[]};
+const DOC_OPTS=[
+ ['pref','전보 우대 대상(유공자·파견 경력·권익위·중증장애, 영양·상담 우선 전보 포함)'],
+ ['defer','전보 유예 신청'],
+ ['tie','동점자 순위 실적이 있음(중증장애·육아·다자녀·한국어학급·6학년·체육·보직)'],
+ ['tour','순회교사 경력'],
+ ['kin','친인척 관계로 전보해야 함'],
+ ['right','교권침해로 인정됨'],
+ ['spx','초등학교 ↔ 특수학교 전직 희망 (특수교사)'],
+ ['big','36학급 이상 학교 근무로 우선 전보 (영양·전문상담)']
+];
+const docSt={role:'el',opts:new Set()};
+function renderDocs(){
+  $('#docRole').innerHTML=DOC_ROLES.map(([k,l])=>`<button class="chip ${docSt.role===k?'on':''}" data-k="${k}">${l}</button>`).join('');
+  $('#docRole').querySelectorAll('button').forEach(b=>b.onclick=()=>{docSt.role=b.dataset.k; renderDocs();});
+  $('#docOpts').innerHTML=DOC_OPTS.map(([k,l])=>`<label class="di" style="padding:7px 0"><input type="checkbox" data-k="${k}" ${docSt.opts.has(k)?'checked':''}><div class="small" style="font-weight:600">${l}</div></label>`).join('');
+  $('#docOpts').querySelectorAll('input').forEach(c=>c.onchange=()=>{c.checked?docSt.opts.add(c.dataset.k):docSt.opts.delete(c.dataset.k); renderDocOut();});
+  renderDocOut();
+}
+function renderDocOut(){
+  const r=docSt.role, o=docSt.opts, el=r==='el', L=[];
+  if(r==='hd'){
+    L.push('수석교사는 현임교 만료자로서 정년 잔여기간 2년 이하일 때만 유예 대상이에요.');
+    if(o.has('defer')) L.push(`전보 유예자 명부 ${FM('4-1')}, 유예원 ${FM('5')} (개인별)`);
+  } else {
+    L.push(`전보 대상자 명부 ${FM(DOC_BASE[r][0])}, 인사 내신 자료표 ${FM(DOC_BASE[r][1])} — 내신 자료표는 ‘초등교원전보시스템’에서 작성`);
+    if(o.has('pref')) L.push(`전보 우대자 명부 ${FM(el?'3-1':'3-2')} + 우대 사유별 증빙(본인 이름으로 신청한 증명서)`);
+    if(o.has('defer')) L.push(`전보 유예자 명부 ${FM(el?'4-1':'4-2')}, 유예원 ${FM('5')} + 사유별 ${FM('5-1')}${FM('5-2')}와 증빙 — 사유별 서류는 ‘전보 유예’ 탭 참고`);
+    if(o.has('tie')) L.push(`동점자 증빙: 실거주 확인서 ${FM('7')}, 한국어학급 ${FM('8-1')}${FM('8-2')}, 6학년 ${FM('8-3')}, 체육 ${FM('8-4')}, 보직 ${FM('8-5')} 중 해당 서식 + 증빙자료 — 위의 동점자 체크 결과 참고`);
+    if(o.has('tour')) L.push(`순회교사 근무 확인서 ${FM('9')} (학교장 발행)`);
+    if(o.has('kin')) L.push('관계를 입증할 서류(가족관계증명서 등)');
+    if(o.has('right')) L.push('지역교권보호위원회 조치결과 통지서(교감 원본대조필)');
+    if(o.has('spx')) L.push(r==='sp'?`초등학교·특수학교 간 전직 내신 총괄표 ${FM('6')} + 증빙서류`:'<span class="muted">(특수교사만 해당)</span>');
+    if(o.has('big')) L.push(r==='nu'?`36학급 이상 근무 경력 ${FM('10')}`: r==='co'?`전문상담교사 공통 ${FM('11')}, 36학급 이상 근무 경력 ${FM('10')}`:'<span class="muted">(영양·전문상담 교사만 해당)</span>');
+    if(r==='co' && !o.has('big')) L.push(`전문상담교사 공통 ${FM('11')}`);
+  }
+  $('#docOut').innerHTML='<b>낼 서류</b><ul class="clean">'+L.map(x=>`<li>${x}</li>`).join('')+'</ul><p class="small" style="margin:8px 0 0">모든 서류는 날인해 원본은 학교를 거쳐 교육지원청에 인편 제출하고, 사본은 학교에 보관해요.</p>';
+}
+
+const TPL_B64='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';
+
+/* =========================================================
+   희망 내신 정리 → 엑셀 (서버 없이 브라우저 안에서 생성)
+   ========================================================= */
+function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'),2200); }
+const PREF_CLAUSES=[['제9조 제①항 제1호','1호 국가·독립·5·18 유공자'],['제9조 제①항 제2호','2호 교육행정기관 등 2년 이상 근무·파견'],['제9조 제①항 제3호','3호 국민권익위원회 요구'],['제9조 제①항 제4호','4호 중증장애인'],['제9조 제②항','제9조 ②항'],['제9조 제③항','제9조 ③항'],['제26조(영양교사)','영양교사 우선 전보'],['제28조 제②항(전문상담교사)','전문상담교사 우선 전보']];
+const DEFER_HO=[1,2,3,4,5,6,7,8,10,12];
+const ROLE_INFO={el:['초등','교사(초등)'],he:['보건','교사(보건)'],li:['사서','교사(사서)'],nu:['영양','교사(영양)'],co:['상담','교사(상담)'],sp:['특수','교사(특수)']};
+const plan={step:1, zones:[], size:'', role:'el', kind:'만료', school:'', name:'', sex:'', birth:'', months:'', eduM:'', tourM:'', krM:'', kin:'',
+  prefC:'', prefR:'', defer:false, deferC:'', deferR:'', sp8:'', spS:'', spC:'', spCt:'', spT:'', coW:'', coT:'', coC:'', coTot:''};
+const pad=n=>String(n).padStart(2,'0');
+const yymmdd=(d,sep)=>d? d.slice(2,4)+sep+d.slice(5,7)+sep+d.slice(8,10) : '';
+const ageAt=(d)=>{ if(!d) return ''; const [y,m,dd]=d.split('-').map(Number); let a=2027-y; if(m>1||(m===1&&dd>1)) a--; return a; };
+const ym=m=> (m===''||m==null)? '' : Math.floor(+m/12)+'.'+pad(+m%12);
+function tieFromState(){
+  const t1=tieSt[1]; const pts=(t1==null)?'':TIE[0].opts[t1][1];
+  return {train:pts, severe:tieSt[2]===true, under3:tieSt[3]===true, kids3:tieSt[4]===true, g6:(tieSt[6]||[]).length>0};
+}
+function personFromPlan(){
+  return {v:1, role:plan.role, kind:plan.kind, school:plan.school, name:plan.name.trim(), sex:plan.sex, birth:plan.birth,
+    months:plan.months, eduM:plan.eduM, tourM:plan.tourM, krM:plan.krM, kin:plan.kin.trim(), tie:tieFromState(),
+    wishes:st.wish.map(id=>SCHOOLS[id].name.replace(/초$|학교$/,'')), zones:plan.zones.slice(), size:plan.size,
+    pref: plan.kind==='우대'?{c:plan.prefC,r:plan.prefR}:null, defer: plan.defer?{c:plan.deferC,r:plan.deferR}:null,
+    sp: plan.role==='sp'?{eight:plan.sp8,s:plan.spS,c:plan.spC,ct:plan.spCt,t:plan.spT}:null,
+    co: plan.role==='co'?{w:plan.coW,t:plan.coT,c:plan.coC,tot:plan.coTot}:null};
+}
+/* ---- 4단계 시트 ---- */
+function stepBtn(n,t,sub,done){ return `<button class="${plan.step===n?'on':''} ${done?'done':''}" data-s="${n}">${n}. ${t}<small>${sub}</small></button>`; }
+function openWish(){
+  const z=plan.zones.length, w=st.wish.length;
+  const head=`<div class="sh-head"><div><div class="sh-name">희망 내신 정리</div><div style="margin-top:4px">${'<span class="safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없음 · 입력 정보는 전송되지 않아요</span>'}</div></div><button class="btn sm" data-x>닫기</button></div>
+    <div class="steps">${stepBtn(1,'학교',w+'/10',w===10)}${stepBtn(2,'구역',z+'/10',z===10)}${stepBtn(3,'내 정보',plan.name?'입력함':'선택',!!plan.name)}${stepBtn(4,'내려받기','엑셀',false)}</div>`;
+  let body='';
+  if(plan.step===1) body=step1();
+  if(plan.step===2) body=step2();
+  if(plan.step===3) body=step3();
+  if(plan.step===4) body=step4();
+  openSheet('wish', head+body, ()=>{
+    $('#sheetBody [data-x]').onclick=closeSheet;
+    $('#sheetBody').querySelectorAll('.steps button').forEach(b=>b.onclick=()=>{plan.step=+b.dataset.s; openWish();});
+    ({1:bind1,2:bind2,3:bind3,4:bind4})[plan.step]();
+  });
+}
+function wishWarn(s){
+  const w=[];
+  if((tieSt[3]===true||tieSt[4]===true) && st.homeZone && s.zone!==st.homeZone) w.push('거주지 구역 밖 → 동점자 3·4번 미적용');
+  if(plan.kind==='우대' && plan.prefC==='제9조 제①항 제2호' && s.ru && !s.name.startsWith('광주북')) w.push('농촌학교 → 우대(파견) 우선 전보 대상 아님');
+  if(s.sp && plan.role!=='sp') w.push('특수학교');
+  return w;
+}
+function step1(){
+  if(!st.wish.length) return '<p class="muted small">아직 담은 학교가 없어요. 지도나 목록에서 학교를 눌러 <b>최대 10곳</b>까지 담고, 여기서 1~10희망 순서를 정하세요.</p><button class="btn" data-go-map>학교 고르러 가기</button>';
+  return `<div class="row" style="margin-bottom:6px"><button class="btn sm" id="wishSort">거리순 정렬</button><button class="btn sm" id="wishPrint">인쇄</button><span class="small faint">▲▼로 희망 순서 조정</span></div>
+  <div class="wish"><ol>${st.wish.map((id,i)=>{const s=SCHOOLS[id]; const d=distKm(st.home,s); const ww=wishWarn(s);
+    return `<li><span class="no">${i+1}</span><span class="nm">${esc(s.name)}<small>${s.zone}${s.inn?' · 혁신':''}${s.tg?' · 특구':''}${s.ru?' · 농촌':''}${s.kr?' · 한국어학급':''}${st.homeZone===s.zone?' · 거주지 구역':''}${d!=null?' · '+fmtKm(d):''}</small>${ww.map(x=>`<span class="warn-l">${x}</span>`).join('')}</span>
+    <span class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm" data-a="up" data-i="${i}" ${i===0?'disabled':''} aria-label="위로">▲</button><button class="btn sm" data-a="dn" data-i="${i}" ${i===st.wish.length-1?'disabled':''} aria-label="아래로">▼</button><button class="btn sm" data-a="rm" data-i="${i}">빼기</button></span></li>`;}).join('')}</ol></div>
+  ${st.wish.length<10?`<p class="small muted" style="margin:8px 0 0">${10-st.wish.length}곳 더 담을 수 있어요. 서식1에는 1~10희망 칸이 있어요.</p>`:''}
+  <div class="row" style="justify-content:flex-end;margin-top:10px"><button class="btn pri" data-next>다음: 구역 순서 ›</button></div>`;
+}
+function bind1(){
+  const g=$('#sheetBody [data-go-map]'); if(g) g.onclick=()=>{closeSheet(); $('.mapbox').scrollIntoView({behavior:'smooth',block:'center'});};
+  const n=$('#sheetBody [data-next]'); if(n) n.onclick=()=>{plan.step=2; openWish();};
+  const so=$('#wishSort'); if(so) so.onclick=()=>{ if(!st.home){ toast('집 위치를 먼저 정해 주세요'); return; }
+    st.wish.sort((a,b)=>(distKm(st.home,SCHOOLS[a])??999)-(distKm(st.home,SCHOOLS[b])??999)); openWish(); };
+  const pr=$('#wishPrint'); if(pr) pr.onclick=()=>{
+    $('#printArea').innerHTML=`<h2>희망학교 후보 목록</h2><p style="color:#666;font-size:12px">전보 한눈에 – 광주 초등 (비공식) · 거주지 구역: ${st.homeZone||'미선택'} · 희망 구역: ${plan.zones.join(', ')||'미선택'}</p><ol>${st.wish.map(id=>{const s=SCHOOLS[id];const d=distKm(st.home,s);return `<li>${esc(s.name)} — ${s.zone}${s.inn?' · 혁신':''}${s.tg?' · 인사특구':''}${s.ru?' · 농촌':''}${d!=null?' · '+fmtKm(d):''}</li>`;}).join('')}</ol>`;
+    window.print(); };
+  $('#sheetBody').querySelectorAll('.wish button').forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.i, a=b.dataset.a, w=st.wish;
+    if(a==='up'&&i>0)[w[i-1],w[i]]=[w[i],w[i-1]];
+    if(a==='dn'&&i<w.length-1)[w[i+1],w[i]]=[w[i],w[i+1]];
+    if(a==='rm') w.splice(i,1);
+    refresh(); openWish();
+  });
+}
+function step2(){
+  return `<p class="small muted" style="margin-top:0">구역을 누르는 순서대로 1~10희망이 매겨져요. 다시 누르면 빠져요. (11개 구역 중 10개)</p>
+  <div class="zpick">${ZONES.map(z=>{const k=plan.zones.indexOf(z.id); return `<button data-z="${z.id}" style="background:${z.color}" class="${k<0&&plan.zones.length>=10?'off':''}">${z.id}${k>=0?`<span class="o">${k+1}</span>`:''}</button>`;}).join('')}</div>
+  <div class="zorder">${plan.zones.length? plan.zones.map((z,i)=>`<span>${i+1}. ${z}</span>`).join('') : '<span class="faint" style="background:none">아직 고른 구역이 없어요</span>'}</div>
+  <div class="row" style="margin-top:10px"><button class="btn sm" id="zFill">희망학교 순서로 채우기</button><button class="btn sm" id="zClear">비우기</button></div>
+  <div class="fsec">희망 순서 (서식1 ‘희망순서 ○ 표시’)</div>
+  <div class="row">${[['many','학급 수 많은 학교'],['few','학급 수 적은 학교'],['','선택 안 함']].map(([v,l])=>`<button class="chip ${plan.size===v?'on':''}" data-size="${v}">${l}</button>`).join('')}</div>
+  <div class="row" style="justify-content:space-between;margin-top:14px"><button class="btn" data-prev>‹ 학교</button><button class="btn pri" data-next>다음: 내 정보 ›</button></div>`;
+}
+function bind2(){
+  $('#sheetBody').querySelectorAll('.zpick button').forEach(b=>b.onclick=()=>{
+    const z=b.dataset.z, k=plan.zones.indexOf(z);
+    if(k>=0) plan.zones.splice(k,1); else { if(plan.zones.length>=10){ toast('희망 구역은 10개까지예요'); return; } plan.zones.push(z); }
+    openWish(); });
+  $('#zFill').onclick=()=>{ const seen=[]; st.wish.forEach(id=>{const z=SCHOOLS[id].zone; if(!seen.includes(z)) seen.push(z);}); plan.zones=seen.slice(0,10); openWish(); if(seen.length<10) toast('나머지 구역은 직접 눌러 채워 주세요'); };
+  $('#zClear').onclick=()=>{plan.zones=[]; openWish();};
+  $('#sheetBody').querySelectorAll('[data-size]').forEach(b=>b.onclick=()=>{plan.size=b.dataset.size; openWish();});
+  $('#sheetBody [data-prev]').onclick=()=>{plan.step=1; openWish();};
+  $('#sheetBody [data-next]').onclick=()=>{plan.step=3; openWish();};
+}
+const opt=(arr,v)=>arr.map(([k,l])=>`<option value="${esc(k)}" ${v===k?'selected':''}>${esc(l)}</option>`).join('');
+function step3(){
+  const t=tieFromState();
+  const schoolOpts='<option value="">선택</option>'+ZONES.map(z=>`<optgroup label="${z.id}">${SCHOOLS.filter(s=>s.zone===z.id).map(s=>`<option ${plan.school===s.name?'selected':''}>${esc(s.name)}</option>`).join('')}</optgroup>`).join('');
+  const deferOpts='<option value="">선택</option>'+DEFER.map((d,i)=>[`제10조 제①항 제${DEFER_HO[i]}호`,`${DEFER_HO[i]}호 ${d.t}`]).map(([k,l])=>`<option value="${k}" ${plan.deferC===k?'selected':''}>${esc(l)}</option>`).join('');
+  return `<p class="small muted" style="margin-top:0">모두 선택 입력이에요. 비워 두면 엑셀에서도 빈칸으로 남아요. 입력한 내용은 저장·전송되지 않아요.</p>
+  <div class="fsec">기본 정보</div>
+  <div class="fgrid">
+    <label>직위<select data-f="role">${opt(Object.entries(ROLE_INFO).map(([k,v])=>[k,v[1]]),plan.role)}</select></label>
+    <label>전보 구분<select data-f="kind">${opt([['우대','우대'],['만료','만료'],['희망','일반 희망']],plan.kind)}</select></label>
+    <label>현임교<select data-f="school">${schoolOpts}</select></label>
+    <label>성명<input type="text" data-f="name" value="${esc(plan.name)}" autocomplete="off"></label>
+    <label>성별<select data-f="sex">${opt([['','선택'],['남','남'],['여','여']],plan.sex)}</select></label>
+    <label>생년월일<input type="date" data-f="birth" value="${plan.birth}"></label>
+    <label>현임교 근무 월수 <span class="faint">(휴직·타 시·도 파견 제외)</span><input type="number" min="0" max="600" data-f="months" value="${plan.months}" placeholder="예: 48"></label>
+    <label>교육경력 월수 <span class="faint">(36년 9월 → 441)</span><input type="number" min="0" max="600" data-f="eduM" value="${plan.eduM}"></label>
+    <label>순회교사 경력 월수<input type="number" min="0" max="600" data-f="tourM" value="${plan.tourM}" placeholder="없으면 비움"></label>
+    ${plan.role==='el'?`<label>한국어학급 담임 경력 월수<input type="number" min="0" max="600" data-f="krM" value="${plan.krM}" placeholder="없으면 비움"></label>`:''}
+    <label class="full">친인척 교원 <span class="faint">(관내 초등 재직 교원만, 예: 배우자,홍길동,○○초)</span><input type="text" data-f="kin" value="${esc(plan.kin)}" autocomplete="off"></label>
+  </div>
+  <div class="fsec">동점자 (서열 탭 체크와 연결돼요)</div>
+  <div class="fgrid">
+    <label>직무연수 환산점<select data-t="1">${opt([['','선택 안 함'],['0','120시간 이상 · 4점'],['1','90~119시간 · 3점'],['2','60~89시간 · 2점'],['3','30~59시간 · 1점'],['4','30시간 미만 · 0점']], tieSt[1]==null?'':String(tieSt[1]))}</select></label>
+    <span></span>
+    <label class="ck"><input type="checkbox" data-t="2" ${t.severe?'checked':''}>중증장애 (본인·부양)</label>
+    <label class="ck"><input type="checkbox" data-t="3" ${t.under3?'checked':''}>3세 미만 유아 양육</label>
+    <label class="ck"><input type="checkbox" data-t="4" ${t.kids3?'checked':''}>3명 이상 자녀</label>
+    <label class="ck"><input type="checkbox" data-t="6" ${t.g6?'checked':''} ${(tieSt[6]||[]).length?'':''}>6학년 담임·체육전담·보직</label>
+  </div>
+  ${plan.kind==='우대'?`<div class="fsec">우대 사항</div><div class="fgrid"><label>우대 조항<select data-f="prefC">${'<option value="">선택</option>'+PREF_CLAUSES.map(([k,l])=>`<option value="${k}" ${plan.prefC===k?'selected':''}>${esc(l)}</option>`).join('')}</select></label><label>우대 사유<input type="text" data-f="prefR" value="${esc(plan.prefR)}" placeholder="예: 교육연구기관 2년 파견"></label></div>`:''}
+  <div class="fsec">전보 유예</div>
+  <div class="fgrid">
+    <label class="ck full"><input type="checkbox" data-f="defer" ${plan.defer?'checked':''}>전보 유예를 신청해요 (서식4)</label>
+    ${plan.defer?`<label>유예 조항<select data-f="deferC">${deferOpts}</select></label><label>유예 사유<input type="text" data-f="deferR" value="${esc(plan.deferR)}" placeholder="예: 혁신학교 내실화에 필요"></label>`:''}
+  </div>
+  ${plan.role==='sp'?`<div class="fsec">특수교사 총괄표 (서식6) <span class="faint small">경력은 3년 6개월 → 3.06</span></div><div class="fgrid">
+    <label>특수학교(급) 8년 이상 연속 근무<select data-f="sp8">${opt([['','선택'],['O','O'],['X','X']],plan.sp8)}</select></label><span></span>
+    <label>특수학교 경력<input type="text" data-f="spS" value="${esc(plan.spS)}" placeholder="0.00"></label>
+    <label>특수학급 경력<input type="text" data-f="spC" value="${esc(plan.spC)}" placeholder="0.00"></label>
+    <label>특수교육지원센터 경력<input type="text" data-f="spCt" value="${esc(plan.spCt)}" placeholder="0.00"></label>
+    <label>총경력<input type="text" data-f="spT" value="${esc(plan.spT)}" placeholder="0.00"></label></div>`:''}
+  ${plan.role==='co'?`<div class="fsec">전문상담교사 총괄표 (서식11) <span class="faint small">경력은 10년 6개월 → 10.06</span></div><div class="fgrid">
+    <label>순회교사 희망<select data-f="coW">${opt([['','선택'],['O','O'],['X','X']],plan.coW)}</select></label><span></span>
+    <label>순회교사 근무 경력<input type="text" data-f="coT" value="${esc(plan.coT)}" placeholder="0.00"></label>
+    <label>전문상담교사 경력<input type="text" data-f="coC" value="${esc(plan.coC)}" placeholder="0.00"></label>
+    <label>총경력<input type="text" data-f="coTot" value="${esc(plan.coTot)}" placeholder="0.00"></label></div>`:''}
+  <div class="row" style="justify-content:space-between;margin-top:14px"><button class="btn" data-prev>‹ 구역</button><button class="btn pri" data-next>다음: 내려받기 ›</button></div>`;
+}
+function bind3(){
+  const rerender=new Set(['role','kind','defer']);
+  $('#sheetBody').querySelectorAll('[data-f]').forEach(el=>{
+    const f=el.dataset.f;
+    const h=()=>{ plan[f]= el.type==='checkbox'? el.checked : el.value; if(rerender.has(f)){ const y=$('#sheet').scrollTop; openWish(); $('#sheet').scrollTop=y; } };
+    el.addEventListener(el.tagName==='SELECT'||el.type==='checkbox'||el.type==='date'?'change':'input', h);
+  });
+  $('#sheetBody').querySelectorAll('[data-t]').forEach(el=>el.onchange=()=>{
+    const n=+el.dataset.t;
+    if(n===1) tieSt[1]= el.value===''? undefined : +el.value;
+    else if(n===6){ if(el.checked){ if(!(tieSt[6]||[]).length) tieSt[6]=[0]; } else tieSt[6]=[]; }
+    else tieSt[n]= el.checked? true : undefined;
+    renderTie(); renderTieResult();
+  });
+  $('#sheetBody [data-prev]').onclick=()=>{plan.step=2; openWish();};
+  $('#sheetBody [data-next]').onclick=()=>{plan.step=4; openWish();};
+}
+function step4(){
+  const P=personFromPlan(), t=P.tie;
+  const chk=(ok,txt)=>`<span class="${ok?'ok-l':'no-l'}">${ok?'✓':'!'}</span> ${txt}`;
+  const rows=[
+    ['양식', `서식${P.role==='el'?'1-1':P.role==='sp'?'1-3':'1-2'}${P.pref?' + 서식3':''}${P.defer?' + 서식4':''}${P.role==='sp'?' + 서식6':''}${P.role==='co'?' + 서식11':''}`],
+    ['직위·구분', `${ROLE_INFO[P.role][1]} · ${P.kind}`],
+    ['희망학교', chk(P.wishes.length===10, `${P.wishes.length}/10 ${P.wishes.length?'('+P.wishes.join(', ')+')':''}`)],
+    ['희망 구역', chk(P.zones.length===10, `${P.zones.length}/10 ${P.zones.join(' ')}`)],
+    ['경력점', P.months===''?'<span class="faint">비움</span>':Math.min(48,+P.months)+'점'],
+    ['동점자', `직무연수 ${t.train===''?'-':t.train+'점'} · 중증 ${t.severe?'O':'X'} · 3세 미만 ${t.under3?'O':'X'} · 3자녀 ${t.kids3?'O':'X'} · 6학년 등 ${t.g6?'O':'X'}`],
+    ['성명', P.name||'<span class="faint">비움</span>']
+  ];
+  return `<table class="sumtbl">${rows.map(([a,b])=>`<tr><td>${a}</td><td>${b}</td></tr>`).join('')}</table>
+  <div class="info small" style="margin-top:12px">엑셀 파일은 <b>이 기기 안에서 만들어져</b> 바로 내려받아져요. 서버로 보내지 않아요. 교감 선생님께 파일을 보내면 ‘서열’ 탭 맨 아래 ‘여러 명 합치기’로 학교 명부를 만들 수 있어요.</div>
+  <div class="row" style="justify-content:space-between;margin-top:12px"><button class="btn" data-prev>‹ 내 정보</button><button class="btn pri" id="dlOne">엑셀 내려받기</button></div>
+  <p class="small faint" style="margin:10px 0 0">공식 제출은 ‘초등교원전보시스템’에서 해요. 이 파일은 시스템 입력 전 정리·점검용이에요. 서식 칸 배치는 2026 시스템 양식 기준이에요.</p>`;
+}
+function bind4(){
+  $('#sheetBody [data-prev]').onclick=()=>{plan.step=3; openWish();};
+  $('#dlOne').onclick=async()=>{
+    const P=personFromPlan(); const b=$('#dlOne'); b.disabled=true; b.textContent='만드는 중…';
+    try{ await downloadBook([P],{school:P.school}, `희망내신_${P.name||'이름없음'}_2027.xlsx`); toast('엑셀을 내려받았어요'); }
+    catch(e){ toast('엑셀을 만들지 못했어요. 인터넷 연결을 확인해 주세요'); console.error(e); }
+    b.disabled=false; b.textContent='엑셀 내려받기';
+  };
+}
+$('#fab').onclick=()=>{ if(!st.wish.length&&plan.step===1){} openWish(); };
+
+/* ---- 엑셀 생성 ---- */
+let exLoading=null;
+function loadExcelJS(){
+  if(window.ExcelJS) return Promise.resolve();
+  if(!exLoading) exLoading=new Promise((ok,no)=>{ const sc=document.createElement('script'); sc.src='https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js'; sc.onload=ok; sc.onerror=()=>{exLoading=null; no(new Error('load'));}; document.head.appendChild(sc); });
+  return exLoading;
+}
+function b64buf(b){ const s=atob(b); const u=new Uint8Array(s.length); for(let i=0;i<s.length;i++) u[i]=s.charCodeAt(i); return u.buffer; }
+const SH={'1-1':'서식1-1.전보대상자(초등)','1-2':'서식1-2.전보대상자(비교과)','1-3':'서식1-3.전보대상자(특수)','3-1':'서식3-1.우대자(초등)','3-2':'서식3-2.우대자(특수,비교과)','4-1':'서식4-1. 유예자(초등)','4-2':'서식4-2.유예자(특수,비교과)','6':'서식6.특수-내신총괄표','11':'서식11. 전문상담교사내신총괄표'};
+const COLS=n=>{ let s=''; while(n>0){ const m=(n-1)%26; s=String.fromCharCode(65+m)+s; n=Math.floor((n-1)/26);} return s; };
+const colNum=c=>c.split('').reduce((a,ch)=>a*26+ch.charCodeAt(0)-64,0);
+const OX=b=>b?'O':'X';
+async function buildBook(people, meta){
+  await loadExcelJS();
+  const wb=new ExcelJS.Workbook(); await wb.xlsx.load(b64buf(TPL_B64));
+  const order={'우대':0,'만료':1,'희망':2};
+  const ps=people.slice().sort((a,b)=>(order[a.kind]-order[b.kind]));
+  const used=new Set();
+  const put=(ws,addr,v)=>{ if(v===undefined||v===null) return; ws.getCell(addr).value=v; };
+  // 서식1
+  const cnt={};
+  ps.forEach(P=>{
+    const key=P.role==='el'?'1-1':P.role==='sp'?'1-3':'1-2'; const ws=wb.getWorksheet(SH[key]); used.add(key);
+    const r=9+(cnt[key]=(cnt[key]||0)+1)-1; if(r>38) return;
+    const el=P.role==='el', t=P.tie||{};
+    const base=[ROLE_INFO[P.role][0]+P.kind, null, P.school||'', P.name||'', ROLE_INFO[P.role][1], P.sex||'', P.birth?ageAt(P.birth):'', P.months===''?'':String(Math.min(48,+P.months)),
+      t.train===''?'':t.train, OX(t.severe), OX(t.under3), OX(t.kids3)];
+    let c=1; base.forEach(v=>{ if(c!==2) put(ws,COLS(c)+r,v); c++; });
+    if(el){ put(ws,'M'+r, P.krM===''?'X':+P.krM); c=14; } else c=13;
+    put(ws,COLS(c++)+r,OX(t.g6)); put(ws,COLS(c++)+r,P.eduM===''?'':+P.eduM); put(ws,COLS(c++)+r,P.tourM===''?'X':+P.tourM); put(ws,COLS(c++)+r,yymmdd(P.birth,'-'));
+    for(let i=0;i<10;i++) put(ws,COLS(c+i)+r,P.wishes[i]||''); c+=10;
+    for(let i=0;i<10;i++) put(ws,COLS(c+i)+r,P.zones[i]||''); c+=10;
+    put(ws,COLS(c++)+r,P.size==='many'?'O':''); put(ws,COLS(c++)+r,P.size==='few'?'O':'');
+    put(ws,COLS(c++)+r,P.kin||''); put(ws,COLS(c++)+r,P.pref?P.pref.c:''); put(ws,COLS(c++)+r,P.pref?P.pref.r:'');
+  });
+  // 서식3·4
+  const listSheet=(key,arr,pick)=>{ if(!arr.length) return; const ws=wb.getWorksheet(SH[key]); used.add(key);
+    arr.slice(0,15).forEach((P,i)=>{ const r=7+i; const x=pick(P);
+      put(ws,'B'+r,P.school||''); put(ws,'C'+r,ROLE_INFO[P.role][1]); put(ws,'D'+r,P.name||''); put(ws,'E'+r,P.sex||''); put(ws,'F'+r,ym(P.months)); put(ws,'G'+r,x.c||''); put(ws,'H'+r,x.r||''); }); };
+  listSheet('3-1',ps.filter(P=>P.pref&&P.role==='el'),P=>P.pref); listSheet('3-2',ps.filter(P=>P.pref&&P.role!=='el'),P=>P.pref);
+  listSheet('4-1',ps.filter(P=>P.defer&&P.role==='el'),P=>P.defer); listSheet('4-2',ps.filter(P=>P.defer&&P.role!=='el'),P=>P.defer);
+  // 서식6·11
+  const sp=ps.filter(P=>P.role==='sp'); if(sp.length){ const ws=wb.getWorksheet(SH['6']); used.add('6');
+    sp.slice(0,30).forEach((P,i)=>{const r=8+i, x=P.sp||{}; put(ws,'B'+r,P.school||''); put(ws,'C'+r,P.name||''); put(ws,'D'+r,ROLE_INFO[P.role][1]); put(ws,'E'+r,P.sex||''); put(ws,'F'+r,x.eight||''); put(ws,'G'+r,x.s||''); put(ws,'H'+r,x.c||''); put(ws,'I'+r,x.ct||''); put(ws,'J'+r,x.t||''); put(ws,'K'+r,yymmdd(P.birth,'.'));}); }
+  const co=ps.filter(P=>P.role==='co'); if(co.length){ const ws=wb.getWorksheet(SH['11']); used.add('11');
+    co.slice(0,10).forEach((P,i)=>{const r=8+i, x=P.co||{}; put(ws,'B'+r,P.school||''); put(ws,'C'+r,P.name||''); put(ws,'D'+r,ROLE_INFO[P.role][1]); put(ws,'E'+r,P.sex||''); put(ws,'F'+r,x.w||''); put(ws,'G'+r,x.t||''); put(ws,'H'+r,x.c||''); put(ws,'I'+r,x.tot||''); put(ws,'J'+r,yymmdd(P.birth,'-'));}); }
+  // 교번·확인자·작성자
+  const META={'1-1':['AM2','AM3','AM4'],'1-2':['AK2','AK3','AK4'],'1-3':['AK2','AK3','AK4'],'3-1':['G3','G4','G5'],'3-2':['G3','G4','G5'],'4-1':['G3','G4','G5'],'4-2':['G3','G4','G5'],'6':['H3','H4','H5'],'11':['H3','H4','H5']};
+  Object.keys(SH).forEach(k=>{ const ws=wb.getWorksheet(SH[k]); if(!used.has(k)){ wb.removeWorksheet(ws.id); return; }
+    const [a,b,c]=META[k]; if(meta.no) put(ws,a,meta.no); put(ws,b,`교장 ( ${meta.head||'            '} ) (인)`); put(ws,c,`교감 ( ${meta.vice||'            '} ) (인)`); });
+  // 합치기용 숨김 데이터
+  const ds=wb.addWorksheet('_data',{state:'hidden'}); ds.getCell('A1').value=JSON.stringify(people); ds.getCell('A2').value='전보 한눈에(비공식) 합치기용 데이터 — 지우지 마세요';
+  return wb;
+}
+async function downloadBook(people, meta, fname){
+  const wb=await buildBook(people, meta); const buf=await wb.xlsx.writeBuffer();
+  const url=URL.createObjectURL(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));
+  const a=document.createElement('a'); a.href=url; a.download=fname; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),4000);
+}
+
+/* ---- 교감용 합치기 ---- */
+const merged=[];
+$('#mSchool').innerHTML='<option value="">선택</option>'+ZONES.map(z=>`<optgroup label="${z.id}">${SCHOOLS.filter(s=>s.zone===z.id).map(s=>`<option>${esc(s.name)}</option>`).join('')}</optgroup>`).join('');
+function renderMerge(){
+  $('#mList').innerHTML=merged.map((m,i)=>`<li><span><b>${esc(m.P.name||'(이름 없음)')}</b> <span class="muted small">${ROLE_INFO[m.P.role]?ROLE_INFO[m.P.role][1]:''} · ${esc(m.P.kind||'')} · ${esc(m.file)}</span></span><button class="btn sm" data-i="${i}">빼기</button></li>`).join('');
+  $('#mList').querySelectorAll('button').forEach(b=>b.onclick=()=>{merged.splice(+b.dataset.i,1); renderMerge();});
+  $('#mGo').disabled=!merged.length; $('#mStat').textContent=merged.length?merged.length+'명':'';
+}
+$('#mFiles').onchange=async e=>{
+  const files=[...e.target.files]; e.target.value='';
+  if(!files.length) return; $('#mStat').textContent='읽는 중…';
+  try{ await loadExcelJS(); }catch(err){ $('#mStat').textContent='엑셀 도구를 불러오지 못했어요(인터넷 연결 확인)'; return; }
+  let bad=0;
+  for(const f of files){
+    try{ const wb=new ExcelJS.Workbook(); await wb.xlsx.load(await f.arrayBuffer()); const ds=wb.getWorksheet('_data');
+      const arr=JSON.parse(ds.getCell('A1').value); arr.forEach(P=>{ if(P&&P.role) merged.push({P,file:f.name}); }); }
+    catch(err){ bad++; }
+  }
+  renderMerge(); if(bad) $('#mStat').textContent=`${bad}개 파일은 이 사이트에서 만든 파일이 아니라 건너뛰었어요`;
+};
+$('#mGo').onclick=async()=>{
+  const b=$('#mGo'); b.disabled=true; b.textContent='만드는 중…';
+  const meta={no:$('#mNo').value.trim(), head:$('#mHead').value.trim(), vice:$('#mVice').value.trim()};
+  const school=$('#mSchool').value;
+  try{ await downloadBook(merged.map(m=>m.P), meta, `전보대상자명부_${school||'학교'}_2027.xlsx`); toast('학교 명부를 내려받았어요'); }
+  catch(e){ toast('엑셀을 만들지 못했어요'); console.error(e); }
+  b.disabled=false; b.textContent='학교 명부 내려받기';
+};
+
+/* ---------- 시작 ---------- */
+refresh(); renderTie(); renderTieResult(); renderDefer(); renderRoles(); renderDocs(); initNav(); loadKakao();
+io.observe($('#tieResult')); io.observe($('#deferResult'));
+</script>
+</body>
+</html>
