@@ -154,6 +154,25 @@ input[type=text],input[type=search],input[type=date],select{border:1px solid var
 .maplabel{background:#fff;border:1px solid #c9ced6;border-radius:7px;padding:2px 7px;font-size:12px;font-weight:700;white-space:nowrap;transform:translateY(-26px);box-shadow:0 1px 3px rgba(0,0,0,.15)}
 
 .homebar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+#homeCard.flash{animation:flash 1.2s}
+@keyframes flash{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 4px #ffd78a}}
+.hstat{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;background:#f5f6f8;border-radius:12px;padding:10px 12px}
+.hstat .t{font-weight:800}
+.hstat .m{font-size:12.5px;color:var(--sub)}
+.hm{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0}
+.hm button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 4px;font-size:13px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1.25}
+.hm button svg{width:18px;height:18px;color:#1f4fbf}
+.hm button.on{border-color:#1f4fbf;background:#eaf0fd}
+.hm button.dim{opacity:.45}
+@media (max-width:520px){.hm{grid-template-columns:repeat(2,1fr)}}
+.hpane{margin-top:4px}
+.hres{list-style:none;margin:8px 0 0;padding:0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.hres li button{width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:#fff;padding:8px 12px;font-size:13.5px}
+.hres li:last-child button{border-bottom:0}
+.hres li button small{display:block;color:var(--sub);font-size:12px}
+.hres li button:hover{background:#f5f8ff}
+.unlock{font-size:12.5px;color:var(--sub);margin:8px 0 0}
+.zconf{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding:10px 12px;border-radius:12px;background:#fff8ea;font-size:13.5px}
 .homebar label{font-weight:800;font-size:14px}
 .typeinfo{font-size:13px;color:var(--sub);margin:0 0 10px;display:none}
 .typeinfo.on{display:block}
@@ -434,19 +453,24 @@ table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align
   </div>
   <div class="maptag" id="mapTag"></div>
 
-  <div class="card" style="margin-top:12px">
-    <div class="homebar">
+  <div class="card" id="homeCard" style="margin-top:12px;scroll-margin-top:120px">
+    <h3 style="margin-bottom:10px">내 위치 정하기</h3>
+    <div class="hstat"><div><div class="t" id="hsT">집 위치: 아직 정하지 않았어요</div><div class="m" id="hsM">집 위치를 정하면 반경 보기·거리순 정렬·가까운 순 채우기를 쓸 수 있어요</div></div><button class="btn sm hide" id="homeClear">지우기</button></div>
+    <div class="hm" id="hm">
+      <button data-m="addr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>주소·아파트</button>
+      <button data-m="gps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3"/></svg>현재 위치</button>
+      <button data-m="pick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>지도에서 찍기</button>
+      <button data-m="school"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg>집 근처 학교</button>
+    </div>
+    <div class="hpane" id="hpane"></div>
+    <div id="zconf"></div>
+    <div class="homebar" style="margin-top:12px">
       <label for="homeZone">내 거주지 구역</label>
       <select id="homeZone"></select>
-      <span class="row" id="homeSearchRow" style="flex:1;min-width:220px">
-        <input type="search" id="homeQ" placeholder="또는 주소·아파트로 찾기" style="flex:1;min-width:120px">
-        <button class="btn sm" id="homeGo">찾기</button>
-        <button class="btn sm" id="homePick">지도에서 찍기</button>
-      </span>
     </div>
-    <div id="homeInfo" class="small" style="margin-top:6px"></div>
-    <p class="small faint" style="margin:6px 0 0">육아·다자녀 동점자 우선은 거주지 구역 학교를 희망할 때만 적용돼요. 집 위치로 추정한 구역은 참고용이에요.<span class="ref">기준 제19조 6항</span></p>
-    <p style="margin:6px 0 0"><span class="safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없음 · 집 위치는 이 화면에서만 써요</span> <span class="small faint">주소 검색어는 카카오맵 검색에만 쓰여요.</span></p>
+    <p class="small faint" style="margin:6px 0 0">육아·다자녀 동점자 우선은 거주지 구역 학교를 희망할 때만 적용돼요. 위치로 추정한 구역은 참고용이에요.<span class="ref">기준 제19조 6항</span></p>
+    <p style="margin:8px 0 0"><span class="safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없음 · 집 위치는 이 화면에서만 써요</span></p>
+    <p class="small faint" style="margin:4px 0 0">현재 위치·지도 찍기·학교 기준은 아무것도 밖으로 보내지 않아요. 주소 검색만 검색어가 카카오맵으로 전달돼요.</p>
   </div>
 
   <div class="card">
@@ -738,7 +762,7 @@ table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align
    (카카오 디벨로퍼스 > 내 애플리케이션 > 앱 키 > JavaScript 키,
     플랫폼 > Web 사이트 도메인에 배포 주소 등록)
    ========================================================= */
-const KAKAO_KEY = 'cd56f9c6598fb7312a544ba419ec2794';
+const KAKAO_KEY = '0ebce4200a961ee05c78c6722d69907b';
 
 /* 학교 좌표: 관리자 화면(주소 끝에 ?admin=1)에서 만든 결과를 붙여 넣으세요.
    비어 있으면 접속할 때마다 카카오 장소 검색으로 찾습니다. */
@@ -872,7 +896,7 @@ function renderFilters(){
   $('#fRad').innerHTML='<span class="lb">집에서</span>'+[[0,'전체'],[1,'1km'],[2,'2km'],[3,'3km'],[5,'5km']].map(([v,l])=>`<button class="${st.radius===v?'on':''}" data-r="${v}">${l}</button>`).join('');
   $('#fRad').querySelectorAll('button').forEach(b=>b.onclick=()=>{
     const v=+b.dataset.r;
-    if(v && !st.home){ toast(map?'먼저 아래 ‘내 거주지 구역’에서 집 위치를 찾거나 지도에서 찍어 주세요':'지도가 연결되면 집 위치를 정해 반경으로 볼 수 있어요'); return; }
+    if(v && !st.home){ toast('먼저 ‘내 위치 정하기’에서 집 위치를 정해 주세요'); goHomeCard(); return; }
     st.radius=v; refresh(); drawRadius(true);
   });
   $('#fOffice').innerHTML=[['all','전체'],['동부','동부'],['서부','서부']].map(([v,l])=>`<button class="${st.office===v?'on':''}" data-v="${v}">${l}</button>`).join('');
@@ -1035,7 +1059,7 @@ $('#sQ').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault()
 $('#sQ').addEventListener('paste',e=>{ const t=(e.clipboardData||window.clipboardData).getData('text'); if(/[,\n]/.test(t)){ e.preventDefault(); $('#sQ').value=t; quickAdd(); } });
 /* 가까운 순 채우기 */
 $('#autoFill').onclick=()=>{
-  if(!st.home){ toast('집 위치를 먼저 정해 주세요'); return; }
+  if(!st.home){ toast('집 위치를 먼저 정해 주세요'); goHomeCard(); return; }
   const cand=SCHOOLS.filter(s=>visible(s)&&!s.sp&&s.lat!=null&&!st.wish.includes(s.id)).sort((a,b)=>distKm(st.home,a)-distKm(st.home,b));
   const room=10-st.wish.length; if(room<=0){ toast('이미 10곳을 담았어요'); return; }
   cand.slice(0,room).forEach(s=>st.wish.push(s.id)); lastUndo=null; refresh();
@@ -1051,23 +1075,82 @@ function wishHtml(){
 /* ---------- 거주지 ---------- */
 $('#homeZone').innerHTML='<option value="">선택 안 함</option>'+ZONES.map(z=>`<option value="${z.id}">${z.id} (${z.office})</option>`).join('');
 $('#homeZone').onchange=e=>{st.homeZone=e.target.value; refresh();};
-function setHome(lat,lng,label){
-  st.home={lat,lng,label};
+let mapState=KAKAO_KEY?'loading':'nokey', homeMode='';
+const METHOD_LABEL={addr:'주소 검색',gps:'현재 위치',pick:'지도에서 찍기',school:'집 근처 학교'};
+function setHome(lat,lng,label,method){
+  st.home={lat,lng,label,method:method||''};
   const near=SCHOOLS.filter(s=>!s.sp&&s.lat!=null).map(s=>({s,d:distKm(st.home,s)})).sort((a,b)=>a.d-b.d).slice(0,5);
-  let html=`<b>집 위치:</b> ${esc(label)} <button class="btn sm" id="homeClear" style="margin-left:6px">지우기</button>`;
-  if(near.length){
-    const cnt={}; near.forEach(n=>cnt[n.s.zone]=(cnt[n.s.zone]||0)+1);
-    const guess=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0][0];
-    html+=`<div style="margin-top:4px" class="muted">가까운 학교: ${near.map(n=>`${esc(n.s.name)}(${n.s.zone}, ${fmtKm(n.d)})`).join(', ')} → 추정 구역 <b style="color:var(--ink)">${guess}</b></div>`;
-    st.homeZone=guess; $('#homeZone').value=guess;
-  }
-  $('#homeInfo').innerHTML=html;
-  $('#homeClear').onclick=()=>{st.home=null; st.radius=0; drawRadius(false); $('#homeInfo').innerHTML=''; $('#homeQ').value=''; if(homeOv){homeOv.setMap(null);homeOv=null;} refresh();};
+  let guess='';
+  if(near.length){ const cnt={}; near.forEach(n=>cnt[n.s.zone]=(cnt[n.s.zone]||0)+1); guess=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0][0]; }
+  if(method==='school'){ const sc=SCHOOLS.find(x=>x.name===label); if(sc) guess=sc.zone; }
+  homeMode=''; renderHomePane();
+  renderHomeStat();
+  if(guess){ st.homeZone=guess; $('#homeZone').value=guess;
+    $('#zconf').innerHTML=`<div class="zconf">추정 거주지 구역 <b>${guess}</b> ${near.length?`<span class="faint small">(가까운 학교: ${near.slice(0,3).map(n=>esc(n.s.name)+' '+fmtKm(n.d)).join(', ')})</span>`:''}<button class="btn sm pri" id="zOk">맞아요</button><button class="btn sm" id="zNo">다른 구역</button></div>`;
+    $('#zOk').onclick=()=>{$('#zconf').innerHTML=''; toast(`거주지 구역을 ${st.homeZone}로 정했어요`);};
+    $('#zNo').onclick=()=>{$('#zconf').innerHTML=''; $('#homeZone').focus(); toast('아래에서 거주지 구역을 골라 주세요');}; }
   if(map){ const p=new kakao.maps.LatLng(lat,lng);
     if(homeOv) homeOv.setMap(null);
     homeOv=new kakao.maps.CustomOverlay({position:p,content:'<div class="homepin">집</div>',yAnchor:1.3,zIndex:20}); homeOv.setMap(map); map.panTo(p); }
   refresh(); drawRadius(!!st.radius);
 }
+function clearHome(){ st.home=null; st.radius=0; drawRadius(false); if(homeOv){homeOv.setMap(null);homeOv=null;} $('#zconf').innerHTML=''; renderHomeStat(); refresh(); }
+$('#homeClear').onclick=clearHome;
+function renderHomeStat(){
+  if(st.home){ $('#hsT').textContent='집 위치: '+st.home.label; $('#hsM').textContent=(METHOD_LABEL[st.home.method]||'')+(st.home.method?'로 정함 · ':'')+'반경 보기·거리순 정렬·가까운 순 채우기를 쓸 수 있어요'; $('#homeClear').classList.remove('hide'); }
+  else { $('#hsT').textContent='집 위치: 아직 정하지 않았어요'; $('#hsM').textContent='집 위치를 정하면 반경 보기·거리순 정렬·가까운 순 채우기를 쓸 수 있어요'; $('#homeClear').classList.add('hide'); }
+}
+const hasCoords=()=>SCHOOLS.some(s=>s.lat!=null);
+function methodOK(m){
+  if(m==='addr'||m==='pick') return mapState==='ok';
+  if(m==='gps') return !!navigator.geolocation;
+  return true;
+}
+function methodWhy(m){
+  if(mapState==='loading') return '지도를 불러오는 중이에요. 잠시 후 다시 눌러 주세요.';
+  if(mapState==='nokey') return '지도 키가 연결되지 않아 이 방법은 쓸 수 없어요.';
+  if(mapState==='fail') return '지도를 불러오지 못해 이 방법은 쓸 수 없어요(카카오 키·도메인 설정 확인). ‘현재 위치’나 ‘집 근처 학교’를 써 주세요.';
+  return '';
+}
+function renderHomeMethods(){
+  document.querySelectorAll('#hm button').forEach(b=>{ const m=b.dataset.m; b.classList.toggle('on',homeMode===m); b.classList.toggle('dim',!methodOK(m)); b.title=methodOK(m)?'':methodWhy(m); });
+}
+function renderHomePane(){
+  renderHomeMethods();
+  const P=$('#hpane'); const m=homeMode;
+  if(!m){ P.innerHTML=''; return; }
+  if(!methodOK(m)){ P.innerHTML=`<div class="note">${m==='gps'?'이 브라우저는 위치 기능을 지원하지 않아요.':methodWhy(m)}</div>`; return; }
+  if(m==='addr'){
+    P.innerHTML=`<div class="row"><input type="search" id="homeQ" placeholder="예: 수완동, ○○아파트, 도로명 주소" style="flex:1;min-width:160px" enterkeyhint="search"><button class="btn sm pri" id="homeGo">검색</button></div><ul class="hres" id="hres" style="display:none"></ul><p class="small faint" style="margin:6px 0 0">검색어만 카카오맵 검색으로 전달되고, 고른 위치는 저장되지 않아요.</p>`;
+    $('#homeGo').onclick=doHomeSearch; $('#homeQ').onkeydown=e=>{ if(e.key==='Enter') doHomeSearch(); }; $('#homeQ').focus();
+  }
+  if(m==='gps'){
+    P.innerHTML=`<div class="row"><button class="btn sm pri" id="gpsGo">지금 위치로 정하기</button><span class="small faint">브라우저가 위치 권한을 물으면 ‘허용’을 눌러 주세요. 위치는 이 화면에서만 써요.</span></div>`;
+    $('#gpsGo').onclick=()=>{ $('#gpsGo').textContent='찾는 중…';
+      navigator.geolocation.getCurrentPosition(pos=>{ const {latitude:la,longitude:lo}=pos.coords;
+        const done=lbl=>setHome(la,lo,lbl,'gps');
+        if(geocoder){ geocoder.coord2Address(lo,la,(r,status)=>done(status===kakao.maps.services.Status.OK&&r[0]?(r[0].road_address?r[0].road_address.address_name:r[0].address.address_name):'현재 위치')); }
+        else done('현재 위치');
+      },err=>{ $('#gpsGo').textContent='지금 위치로 정하기'; toast(err.code===1?'위치 권한이 거부됐어요. 브라우저 설정에서 허용하거나 다른 방법을 써 주세요':'위치를 찾지 못했어요. 다른 방법을 써 주세요'); },{enableHighAccuracy:true,timeout:10000}); };
+  }
+  if(m==='pick'){
+    st.picking=true; $('#pickHint').style.display='block';
+    P.innerHTML=`<div class="row"><span class="small">위쪽 지도에서 집 위치를 한 번 눌러 주세요.</span><button class="btn sm" id="pickTop">지도로 이동</button><button class="btn sm" id="pickCancel">취소</button></div>`;
+    $('#pickTop').onclick=()=>$('.mapbox').scrollIntoView({behavior:'smooth',block:'center'});
+    $('#pickCancel').onclick=()=>{st.picking=false; $('#pickHint').style.display='none'; homeMode=''; renderHomePane();};
+    $('.mapbox').scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  if(m==='school'){
+    const opts='<option value="">학교 선택</option>'+ZONES.map(z=>`<optgroup label="${z.id}">${SCHOOLS.filter(s=>s.zone===z.id&&!s.sp).map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')}</optgroup>`).join('');
+    P.innerHTML=`<div class="row"><select id="nearSch" style="flex:1;min-width:180px">${opts}</select></div><p class="small faint" style="margin:6px 0 0">집에서 가까운 학교를 고르면 그 학교 위치를 집 위치로 써요. 주소를 넣지 않아도 되고, 아무것도 밖으로 보내지 않아요.</p>`;
+    $('#nearSch').onchange=e=>{ if(e.target.value==='') return; const s=SCHOOLS[+e.target.value];
+      if(s.lat!=null) setHome(s.lat,s.lng,s.name,'school');
+      else if(mapState==='ok'){ toast('학교 위치를 찾는 중…'); searchSchool(s,r=>{ if(r){ s.lat=r.lat; s.lng=r.lng; setHome(s.lat,s.lng,s.name,'school'); } else toast('학교 위치를 찾지 못했어요'); }); }
+      else { st.homeZone=s.zone; $('#homeZone').value=s.zone; homeMode=''; renderHomePane(); refresh(); toast(`학교 좌표가 아직 없어 거주지 구역만 ${s.zone}로 정했어요`); } };
+  }
+}
+document.querySelectorAll('#hm button').forEach(b=>b.onclick=()=>{ const m=b.dataset.m; if(homeMode==='pick'&&m!=='pick'){ st.picking=false; $('#pickHint').style.display='none'; } homeMode= homeMode===m?'':m; renderHomePane(); });
+function goHomeCard(){ const c=$('#homeCard'); c.scrollIntoView({behavior:'smooth',block:'start'}); c.classList.remove('flash'); void c.offsetWidth; c.classList.add('flash'); }
 
 /* ---------- 카카오 지도 ---------- */
 let map=null, geocoder=null, places=null, homeOv=null; const overlays={}; let labelOv=null; let radCircle=null;
@@ -1080,14 +1163,16 @@ function drawRadius(fit){
   if(fit) map.setBounds(radCircle.getBounds());
 }
 function loadKakao(){
-  if(!KAKAO_KEY){ $('#homeSearchRow').classList.add('hide'); return; }
+  if(!KAKAO_KEY){ mapState='nokey'; renderHomeMethods(); return; }
   const sc=document.createElement('script');
   sc.src='https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&libraries=services&appkey='+encodeURIComponent(KAKAO_KEY);
   sc.onload=()=>kakao.maps.load(initMap);
-  sc.onerror=()=>{ $('#homeSearchRow').classList.add('hide'); $('#mapTag').textContent='지도를 불러오지 못해 도식 지도로 보여 드려요(키·도메인 확인)'; };
+  sc.onerror=()=>{ mapState='fail'; renderHomePane(); $('#mapTag').textContent='지도를 불러오지 못해 도식 지도로 보여 드려요(카카오 키·도메인 설정 확인)'; };
+  setTimeout(()=>{ if(mapState==='loading'){ mapState='fail'; renderHomePane(); $('#mapTag').textContent='지도가 응답하지 않아 도식 지도로 보여 드려요(카카오맵 사용 설정·도메인 확인)'; } },12000);
   document.head.appendChild(sc);
 }
 function initMap(){
+  mapState='ok'; renderHomePane();
   $('#tilemap').classList.add('hide'); $('#mapTag').textContent='';  $('#mapTag').classList.add('hide');
   map=new kakao.maps.Map($('#map'),{center:new kakao.maps.LatLng(35.160,126.851),level:8});
   map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
@@ -1096,7 +1181,7 @@ function initMap(){
     if(!st.picking){ closePop(); return; } st.picking=false; $('#pickHint').style.display='none';
     const ll=e.latLng; geocoder.coord2Address(ll.getLng(),ll.getLat(),(r,status)=>{
       const label=(status===kakao.maps.services.Status.OK&&r[0])?(r[0].road_address?r[0].road_address.address_name:r[0].address.address_name):'지도에서 고른 위치';
-      setHome(ll.getLat(),ll.getLng(),label); });
+      setHome(ll.getLat(),ll.getLng(),label,'pick'); });
   });
   drawMarkers();
   const missing=SCHOOLS.filter(s=>s.lat==null);
@@ -1158,19 +1243,20 @@ function drawMarkers(){
   if(st.sel!=null){ const s=SCHOOLS[st.sel]; if(s.lat!=null){
     labelOv=new kakao.maps.CustomOverlay({position:new kakao.maps.LatLng(s.lat,s.lng),content:`<div class="maplabel">${esc(s.name)}</div>`,zIndex:11}); labelOv.setMap(map);} }
 }
-$('#homePick').onclick=()=>{ if(!map) return; st.picking=true; $('#pickHint').style.display='block'; $('.mapbox').scrollIntoView({behavior:'smooth',block:'center'}); };
 function doHomeSearch(){
-  const q=$('#homeQ').value.trim(); if(!q||!map) return;
-  geocoder.addressSearch(q,(r,status)=>{
-    if(status===kakao.maps.services.Status.OK&&r.length){ setHome(+r[0].y,+r[0].x,r[0].address_name); return; }
-    places.keywordSearch('광주 '+q,(d,s2)=>{
-      if(s2===kakao.maps.services.Status.OK&&d.length) setHome(+d[0].y,+d[0].x,d[0].place_name);
-      else $('#homeInfo').innerHTML='<span style="color:var(--bad);font-weight:700">위치를 찾지 못했어요. 동 이름이나 도로명 주소로 다시 검색하거나 지도에서 찍어 주세요.</span>';
-    });
+  const q=($('#homeQ')||{}).value; if(!q||!q.trim()||!map) return;
+  const res=[]; const S=kakao.maps.services.Status;
+  geocoder.addressSearch(q.trim(),(r,status)=>{
+    if(status===S.OK) r.slice(0,3).forEach(x=>res.push({lat:+x.y,lng:+x.x,name:x.address_name,sub:x.road_address?x.road_address.address_name:''}));
+    places.keywordSearch('광주 '+q.trim(),(d,s2)=>{
+      if(s2===S.OK) d.filter(x=>(x.address_name||'').includes('광주')).slice(0,5).forEach(x=>res.push({lat:+x.y,lng:+x.x,name:x.place_name,sub:x.road_address_name||x.address_name}));
+      const ul=$('#hres'); if(!ul) return; ul.style.display='block';
+      ul.innerHTML= res.length? res.slice(0,6).map((x,i)=>`<li><button data-i="${i}">${esc(x.name)}${x.sub?`<small>${esc(x.sub)}</small>`:''}</button></li>`).join('')
+        : '<li><button disabled>찾지 못했어요. 동 이름이나 도로명 주소로 다시 검색하거나 다른 방법을 써 주세요.</button></li>';
+      ul.querySelectorAll('button[data-i]').forEach(b=>b.onclick=()=>{ const x=res[+b.dataset.i]; setHome(x.lat,x.lng,x.name,'addr'); });
+    },{size:8});
   });
 }
-$('#homeGo').onclick=doHomeSearch;
-$('#homeQ').onkeydown=e=>{ if(e.key==='Enter') doHomeSearch(); };
 
 function refresh(){ renderFilters(); renderTiles(); renderList(); drawMarkers(); renderTray(); }
 
@@ -1756,7 +1842,7 @@ $('#mGo').onclick=async()=>{
 };
 
 /* ---------- 시작 ---------- */
-refresh(); renderTie(); renderTieResult(); renderDefer(); renderRoles(); renderDocs(); initNav(); loadKakao();
+renderHomeStat(); renderHomeMethods(); refresh(); renderTie(); renderTieResult(); renderDefer(); renderRoles(); renderDocs(); initNav(); loadKakao();
 io.observe($('#tieResult')); io.observe($('#deferResult'));
 </script>
 </body>
