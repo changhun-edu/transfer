@@ -114,6 +114,8 @@ input[type=text],input[type=search],input[type=date],select{border:1px solid var
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:99px;overflow:hidden;flex:0 0 auto;background:#fff}
 .seg button{border:0;background:none;padding:5px 11px;font-size:13.5px;font-weight:700;color:var(--sub)}
 .seg button.on{background:var(--ink);color:#fff}
+.seg.dis{opacity:.45}
+.seg .lb{font-size:12.5px;font-weight:800;color:var(--sub);padding:5px 4px 5px 11px;align-self:center}
 .sep{width:1px;background:var(--line);flex:0 0 auto;margin:3px 2px}
 .zone-pop{display:none;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:-4px 0 10px}
 .zone-pop.on{display:block}
@@ -168,9 +170,40 @@ input[type=text],input[type=search],input[type=date],select{border:1px solid var
 .sbtn.wished .mk{background:rgba(255,255,255,.18);color:#fff}
 
 /* 떠 있는 희망 버튼 */
-.fab{position:fixed;bottom:18px;right:max(16px,calc((100vw - var(--w))/2 + 16px));z-index:55;background:#191d26;color:#fff;border:0;border-radius:99px;padding:11px 16px;font-weight:800;font-size:14.5px;box-shadow:0 6px 18px rgba(0,0,0,.25);display:flex;gap:8px;align-items:center}
-.fab .c{background:#ffd78a;color:#191d26;border-radius:99px;min-width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;padding:0 6px}
-.fab.bump{animation:bump .3s}
+.fab-old{position:fixed;bottom:18px;right:max(16px,calc((100vw - var(--w))/2 + 16px));z-index:55;background:#191d26;color:#fff;border:0;border-radius:99px;padding:11px 16px;font-weight:800;font-size:14.5px;box-shadow:0 6px 18px rgba(0,0,0,.25);display:flex;gap:8px;align-items:center}
+.fab-old .c{background:#ffd78a;color:#191d26;border-radius:99px;min-width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;padding:0 6px}
+/* 담은 학교 띠 */
+.tray{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;z-index:55;width:min(calc(100vw - 20px),calc(var(--w) - 24px));background:#191d26;color:#fff;border-radius:16px;padding:8px 8px 8px 12px;display:flex;align-items:center;gap:8px;box-shadow:0 8px 22px rgba(0,0,0,.28)}
+.tray .cnt{flex:0 0 auto;font-weight:800;font-size:13px;color:#ffd78a;min-width:38px}
+.tray .chips{flex:1;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;min-width:0}
+.tray .chips::-webkit-scrollbar{display:none}
+.tray .tc{flex:0 0 auto;border:0;background:rgba(255,255,255,.13);color:#fff;border-radius:99px;padding:5px 10px 5px 5px;font-size:13px;font-weight:700;display:inline-flex;gap:5px;align-items:center;white-space:nowrap}
+.tray .tc i{font-style:normal;background:#ffd78a;color:#191d26;border-radius:99px;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:800}
+.tray .tc:after{content:"×";opacity:.6;margin-left:2px}
+.tray .empty{font-size:13px;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tray .go{flex:0 0 auto;border:0;background:#fff;color:#191d26;border-radius:11px;padding:8px 12px;font-weight:800;font-size:13.5px}
+.tray.bump .cnt{animation:bump .3s}
+/* 학교 버튼: 누르면 담기, ⓘ는 정보 */
+.sitem{display:inline-flex;align-items:stretch;border:1px solid var(--line);border-radius:9px;background:#fff;overflow:hidden}
+.sitem.hz{border-color:#e6b35c;background:#fffaf0}
+.sitem .sb{border:0;background:none;padding:5px 4px 5px 9px;font-size:13.5px;display:inline-flex;align-items:center;gap:4px}
+.sitem .si{border:0;border-left:1px solid var(--line);background:none;padding:0 8px;color:var(--faint);font-size:13px;font-weight:800}
+.sitem.wished{background:#191d26;border-color:#191d26}
+.sitem.wished .sb{color:#fff}
+.sitem.wished .si{color:#c8ccd4;border-left-color:#3a404c}
+.sitem.wished .mk{background:rgba(255,255,255,.18);color:#fff}
+.sitem .ord{background:#ffd78a;color:#191d26;border-radius:99px;min-width:19px;height:19px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+.qadd{display:flex;gap:6px;margin:0 0 12px}
+.qadd input{flex:1}
+.toast button{border:0;background:#ffd78a;color:#191d26;border-radius:7px;padding:2px 8px;font-weight:800;margin-left:8px;font-size:12.5px}
+.toast.on{pointer-events:auto}
+/* 지도 말풍선 */
+.pop{background:#fff;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.25);padding:8px 10px;transform:translateY(-34px);display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:13.5px}
+.pop b{font-size:14px}
+.pop button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:4px 9px;font-weight:800;font-size:12.5px}
+.pop button.add{background:#1f4fbf;border-color:#1f4fbf;color:#fff}
+.pop button.add.rm{background:#fff;color:#b91c1c;border-color:#f3c2c2}
+.dot .o{font-size:10px}
 @keyframes bump{50%{transform:scale(1.12)}}
 
 /* 결과 막대 */
@@ -387,6 +420,8 @@ table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align
     <span class="sep"></span>
     <button class="chip" id="fZoneBtn">구역 <span class="n" id="zoneCnt">전체</span> ▾</button>
     <button class="chip" id="fSp">특수학교</button>
+    <span class="sep"></span>
+    <span class="seg" id="fRad" title="집 위치를 정하면 쓸 수 있어요"></span>
   </div>
   <div class="zone-pop" id="zonePop"><div class="chips" id="fZone"></div>
     <div class="row" style="margin-top:8px"><button class="btn sm" id="zAll">모두 켜기</button><button class="btn sm" id="zClose">닫기</button></div></div>
@@ -417,8 +452,10 @@ table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align
   <div class="card">
     <div class="row" style="justify-content:space-between;margin-bottom:10px">
       <h3 style="margin:0">학교 목록 <span class="small muted" id="listCnt"></span></h3>
-      <input type="search" id="sQ" placeholder="학교 이름" style="width:150px">
+      <button class="btn sm" id="autoFill">가까운 순 채우기</button>
     </div>
+    <div class="qadd"><input type="search" id="sQ" placeholder="학교 이름 (여러 곳은 쉼표로)" enterkeyhint="done"><button class="btn sm" id="sAdd">담기</button></div>
+    <p class="small faint" style="margin:-6px 0 10px">학교를 <b>한 번 누르면 담기</b>, 다시 누르면 빼기 · 정보는 ⓘ · 이름 입력 후 Enter로도 담겨요</p>
     <div id="schoolList"></div>
     <p class="small faint" style="margin:6px 0 0">학급 수·재임 예상 연령대·만료자 현황은 교육지원청 공지 후 반영합니다.</p>
   </div>
@@ -688,7 +725,7 @@ table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align
   </div>
 </footer>
 
-<button class="fab" id="fab"><span>희망 내신 정리</span><span class="c" id="fabCnt">0/10</span></button>
+<div class="tray" id="tray"><span class="cnt" id="trayCnt">0/10</span><div class="chips" id="trayChips"></div><button class="go" id="trayGo">정리 ›</button></div>
 <div class="toast" id="toast"></div>
 <button class="rbar hide" id="rbar"></button>
 <div class="sheet-bg" id="sheetBg"></div>
@@ -701,7 +738,7 @@ table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align
    (카카오 디벨로퍼스 > 내 애플리케이션 > 앱 키 > JavaScript 키,
     플랫폼 > Web 사이트 도메인에 배포 주소 등록)
    ========================================================= */
-const KAKAO_KEY = '';
+const KAKAO_KEY = 'cd56f9c6598fb7312a544ba419ec2794';
 
 /* 학교 좌표: 관리자 화면(주소 끝에 ?admin=1)에서 만든 결과를 붙여 넣으세요.
    비어 있으면 접속할 때마다 카카오 장소 검색으로 찾습니다. */
@@ -756,7 +793,7 @@ const ZMAP = Object.fromEntries(ZONES.map(z=>[z.id,z]));
 
 /* ---------- 상태 (저장하지 않음) ---------- */
 const st = { office:'all', zonesOff:new Set(), types:new Set(), showSp:false, q:'',
-  sel:null, home:null, homeZone:'', wish:[], picking:false };
+  sel:null, home:null, homeZone:'', wish:[], picking:false, radius:0 };
 
 /* ---------- 공통 ---------- */
 const $ = s=>document.querySelector(s);
@@ -798,7 +835,7 @@ function showTab(t, push){
   }
   closeSheet();
   window.scrollTo({top:0});
-  $('#fab').classList.toggle('hide', t!=='map');
+  $('#tray').classList.toggle('hide', t!=='map');
   if(t==='score'){ renderTie(); renderTieResult(); }
   if(t==='defer'){ renderDeferResult(); }
   $('#rbar').style.opacity='1'; $('#rbar').style.pointerEvents='auto';
@@ -822,6 +859,7 @@ function initNav(){
 
 /* ---------- 필터 ---------- */
 function visible(s){
+  if(st.radius && st.home){ if(s.lat==null) return false; if(distKm(st.home,s)>st.radius) return false; }
   if(s.sp && !st.showSp) return false;
   if(st.office!=='all' && s.office!==st.office) return false;
   if(st.zonesOff.has(s.zone)) return false;
@@ -829,6 +867,14 @@ function visible(s){
   return true;
 }
 function renderFilters(){
+  const ok=!!st.home;
+  $('#fRad').classList.toggle('dis',!ok);
+  $('#fRad').innerHTML='<span class="lb">집에서</span>'+[[0,'전체'],[1,'1km'],[2,'2km'],[3,'3km'],[5,'5km']].map(([v,l])=>`<button class="${st.radius===v?'on':''}" data-r="${v}">${l}</button>`).join('');
+  $('#fRad').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    const v=+b.dataset.r;
+    if(v && !st.home){ toast(map?'먼저 아래 ‘내 거주지 구역’에서 집 위치를 찾거나 지도에서 찍어 주세요':'지도가 연결되면 집 위치를 정해 반경으로 볼 수 있어요'); return; }
+    st.radius=v; refresh(); drawRadius(true);
+  });
   $('#fOffice').innerHTML=[['all','전체'],['동부','동부'],['서부','서부']].map(([v,l])=>`<button class="${st.office===v?'on':''}" data-v="${v}">${l}</button>`).join('');
   $('#fOffice').querySelectorAll('button').forEach(b=>b.onclick=()=>{st.office=b.dataset.v; refresh();});
   document.querySelectorAll('.chip.ty').forEach(b=>b.classList.toggle('on',st.types.has(b.dataset.ty)));
@@ -876,22 +922,33 @@ function renderTiles(){
 function openZone(zid){
   const z=ZMAP[zid]; const arr=SCHOOLS.filter(s=>s.zone===zid&&visible(s));
   openSheet('zone',`<div class="sh-head"><div><div class="sh-name"><span class="sw" style="background:${z.color};width:12px;height:12px"></span> ${zid} <span class="small muted">${z.office}교육지원청 · ${arr.length}교</span></div></div><button class="btn sm" data-x>닫기</button></div>
-    <div class="slist" style="margin-top:12px">${arr.map(s=>`<button class="sbtn ${st.wish.includes(s.id)?'wished':''}" data-id="${s.id}">${esc(s.name)}${marks(s)}</button>`).join('')||'<span class="muted small">조건에 맞는 학교가 없어요.</span>'}</div>`,
-    ()=>{ $('#sheetBody [data-x]').onclick=closeSheet; $('#sheetBody').querySelectorAll('.sbtn').forEach(b=>b.onclick=()=>selectSchool(+b.dataset.id,true)); });
+    <p class="small faint" style="margin:6px 0 0">누르면 담기 · 다시 누르면 빼기 · 정보는 ⓘ</p>
+    <div class="slist" style="margin-top:10px">${arr.map(sitem).join('')||'<span class="muted small">조건에 맞는 학교가 없어요.</span>'}</div>`,
+    ()=>{ $('#sheetBody [data-x]').onclick=closeSheet; bindItems($('#sheetBody'),true); });
 }
 
+/* ---------- 학교 버튼 (누르면 담기, ⓘ 정보) ---------- */
+function sitem(s){
+  const k=st.wish.indexOf(s.id);
+  return `<span class="sitem ${st.homeZone===s.zone?'hz':''} ${k>=0?'wished':''}"><button class="sb" data-add="${s.id}" aria-label="${esc(s.name)} ${k>=0?'빼기':'담기'}">${k>=0?`<span class="ord">${k+1}</span>`:''}${esc(s.name)}${marks(s)}</button><button class="si" data-info="${s.id}" aria-label="${esc(s.name)} 정보">ⓘ</button></span>`;
+}
+function bindItems(root, pan){
+  root.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>toggleWish(+b.dataset.add,true));
+  root.querySelectorAll('[data-info]').forEach(b=>b.onclick=()=>selectSchool(+b.dataset.info,pan));
+}
 /* ---------- 학교 목록 ---------- */
 function renderList(){
-  const q=st.q.replace(/\s/g,''); let html='', total=0;
+  const q=normName((st.q.split(/[,\n，、·]+/).pop()||'')); let html='', total=0;
   ZONES.forEach(z=>{
     const arr=SCHOOLS.filter(s=>s.zone===z.id && visible(s) && (!q || s.name.includes(q)));
     if(!arr.length) return; total+=arr.length;
     html+=`<div class="zone-block"><div class="zone-h"><span class="sw" style="background:${z.color}"></span>${z.id} <span class="cnt">${z.office} · ${arr.length}교</span>${st.homeZone===z.id?'<span class="tag home">거주지 구역</span>':''}</div><div class="slist">`+
-      arr.map(s=>`<button class="sbtn ${st.homeZone===s.zone?'hz':''} ${st.wish.includes(s.id)?'wished':''}" data-id="${s.id}">${esc(s.name)}${marks(s)}</button>`).join('')+`</div></div>`;
+      arr.map(sitem).join('')+`</div></div>`;
   });
   $('#schoolList').innerHTML = html || '<p class="muted small">조건에 맞는 학교가 없어요.</p>';
-  $('#listCnt').textContent = total+'교';
-  $('#schoolList').querySelectorAll('.sbtn').forEach(b=>b.onclick=()=>selectSchool(+b.dataset.id,true));
+  $('#listCnt').textContent = total+'교'+(st.radius&&st.home?` · 집에서 ${st.radius}km 이내`:'');
+  bindItems($('#schoolList'),true);
+  $('#autoFill').classList.toggle('hide',!(st.home&&map));
 }
 
 /* ---------- 학교 정보 (바텀시트) ---------- */
@@ -923,17 +980,67 @@ function selectSchool(id, pan){
       <button class="btn ${inW?'':'pri'}" data-w style="flex:1">${inW?'희망 목록에서 빼기':'희망 목록에 담기'}</button>
       <a class="btn" style="text-decoration:none" target="_blank" rel="noopener" href="https://map.kakao.com/link/search/${encodeURIComponent(s.query)}">카카오맵</a>
     </div>`,
-    ()=>{ $('#sheetBody [data-x]').onclick=closeSheet; $('#sheetBody [data-w]').onclick=()=>{toggleWish(id); selectSchool(id,false);}; });
+    ()=>{ $('#sheetBody [data-x]').onclick=closeSheet; $('#sheetBody [data-w]').onclick=()=>{toggleWish(id,true); closeSheet();}; });
   drawMarkers();
   if(pan && map && s.lat!=null){ map.panTo(new kakao.maps.LatLng(s.lat,s.lng)); }
 }
 
 /* ---------- 희망 목록 ---------- */
-function toggleWish(id){
-  const i=st.wish.indexOf(id); if(i>=0) st.wish.splice(i,1); else { if(st.wish.length>=10){ toast('희망학교는 10곳까지 담을 수 있어요'); return; } st.wish.push(id); }
-  $('#fab').classList.remove('bump'); void $('#fab').offsetWidth; $('#fab').classList.add('bump');
+let lastUndo=null;
+function toggleWish(id, notify){
+  const i=st.wish.indexOf(id); const nm=SCHOOLS[id].name;
+  if(i>=0){ st.wish.splice(i,1); lastUndo={id,add:false,i}; }
+  else { if(st.wish.length>=10){ toast('희망학교는 10곳까지 담을 수 있어요'); return; } st.wish.push(id); lastUndo={id,add:true}; }
+  $('#tray').classList.remove('bump'); void $('#tray').offsetWidth; $('#tray').classList.add('bump');
   refresh();
+  if(notify) toast(`${st.wish.length}/10 · ${nm} ${i>=0?'뺐어요':'담았어요'}`, true);
 }
+function undoWish(){
+  if(!lastUndo) return; const u=lastUndo; lastUndo=null;
+  if(u.add){ st.wish=st.wish.filter(x=>x!==u.id); } else { st.wish.splice(Math.min(u.i,st.wish.length),0,u.id); }
+  refresh(); toast('되돌렸어요');
+}
+function renderTray(){
+  $('#trayCnt').textContent=st.wish.length+'/10';
+  $('#trayChips').innerHTML= st.wish.length? st.wish.map((id,i)=>`<button class="tc" data-rm="${id}" aria-label="${esc(SCHOOLS[id].name)} 빼기"><i>${i+1}</i>${esc(SCHOOLS[id].name.replace(/초$/,''))}</button>`).join('')
+    : '<span class="empty">학교를 누르면 여기에 담겨요</span>';
+  $('#trayChips').querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>toggleWish(+b.dataset.rm,true));
+}
+$('#trayGo').onclick=()=>openWish();
+/* 이름으로 담기 (쉼표·줄바꿈으로 여러 곳) */
+const normName=t=>t.replace(/\s/g,'').replace(/(초등학교|초교|학교|초)$/,'');
+function findSchool(t){
+  const n=normName(t); if(!n) return null;
+  const base=s=>s.name.replace(/(초|학교)$/,'');
+  let hit=SCHOOLS.filter(s=>base(s)===n||base(s)==='광주'+n);
+  if(hit.length===1) return hit[0];
+  hit=SCHOOLS.filter(s=>base(s).includes(n));
+  return hit.length===1? hit[0] : (hit.length? 'many' : null);
+}
+function quickAdd(){
+  const raw=$('#sQ').value; const parts=raw.split(/[,\n，、·]+/).map(x=>x.trim()).filter(Boolean);
+  if(!parts.length) return;
+  const added=[], miss=[], many=[];
+  parts.forEach(p=>{ const r=findSchool(p);
+    if(r==='many') many.push(p); else if(!r) miss.push(p);
+    else if(!st.wish.includes(r.id)){ if(st.wish.length<10){ st.wish.push(r.id); added.push(r.name); } else miss.push(p+'(10곳 초과)'); } });
+  lastUndo=null; refresh();
+  let m=added.length? `${added.length}곳 담았어요 (${st.wish.length}/10)` : '담은 학교가 없어요';
+  if(many.length) m+=` · 여러 학교와 겹침: ${many.join(', ')}`;
+  if(miss.length) m+=` · 못 찾음: ${miss.join(', ')}`;
+  toast(m); $('#sQ').value=[...many,...miss.filter(x=>!x.includes('초과'))].join(', '); st.q=''; renderList();
+}
+$('#sAdd').onclick=quickAdd;
+$('#sQ').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); quickAdd(); } });
+$('#sQ').addEventListener('paste',e=>{ const t=(e.clipboardData||window.clipboardData).getData('text'); if(/[,\n]/.test(t)){ e.preventDefault(); $('#sQ').value=t; quickAdd(); } });
+/* 가까운 순 채우기 */
+$('#autoFill').onclick=()=>{
+  if(!st.home){ toast('집 위치를 먼저 정해 주세요'); return; }
+  const cand=SCHOOLS.filter(s=>visible(s)&&!s.sp&&s.lat!=null&&!st.wish.includes(s.id)).sort((a,b)=>distKm(st.home,a)-distKm(st.home,b));
+  const room=10-st.wish.length; if(room<=0){ toast('이미 10곳을 담았어요'); return; }
+  cand.slice(0,room).forEach(s=>st.wish.push(s.id)); lastUndo=null; refresh();
+  toast(`지금 필터 조건에서 가까운 순으로 ${Math.min(room,cand.length)}곳을 채웠어요. 후보일 뿐이니 꼭 직접 검토하세요`);
+};
 function wishHtml(){
   if(!st.wish.length) return '<p class="muted small" style="margin:6px 0 0">아직 담은 학교가 없어요. 지도나 목록에서 학교를 눌러 담아 보세요.</p>';
   return '<ol>'+st.wish.map((id,i)=>{const s=SCHOOLS[id]; const d=distKm(st.home,s);
@@ -955,15 +1062,23 @@ function setHome(lat,lng,label){
     st.homeZone=guess; $('#homeZone').value=guess;
   }
   $('#homeInfo').innerHTML=html;
-  $('#homeClear').onclick=()=>{st.home=null; $('#homeInfo').innerHTML=''; $('#homeQ').value=''; if(homeOv){homeOv.setMap(null);homeOv=null;} refresh();};
+  $('#homeClear').onclick=()=>{st.home=null; st.radius=0; drawRadius(false); $('#homeInfo').innerHTML=''; $('#homeQ').value=''; if(homeOv){homeOv.setMap(null);homeOv=null;} refresh();};
   if(map){ const p=new kakao.maps.LatLng(lat,lng);
     if(homeOv) homeOv.setMap(null);
     homeOv=new kakao.maps.CustomOverlay({position:p,content:'<div class="homepin">집</div>',yAnchor:1.3,zIndex:20}); homeOv.setMap(map); map.panTo(p); }
-  refresh();
+  refresh(); drawRadius(!!st.radius);
 }
 
 /* ---------- 카카오 지도 ---------- */
-let map=null, geocoder=null, places=null, homeOv=null; const overlays={}; let labelOv=null;
+let map=null, geocoder=null, places=null, homeOv=null; const overlays={}; let labelOv=null; let radCircle=null;
+function drawRadius(fit){
+  if(!map) return;
+  if(radCircle){ radCircle.setMap(null); radCircle=null; }
+  if(!st.radius||!st.home) return;
+  radCircle=new kakao.maps.Circle({center:new kakao.maps.LatLng(st.home.lat,st.home.lng),radius:st.radius*1000,strokeWeight:2,strokeColor:'#1f4fbf',strokeOpacity:.8,strokeStyle:'dashed',fillColor:'#1f4fbf',fillOpacity:.07});
+  radCircle.setMap(map);
+  if(fit) map.setBounds(radCircle.getBounds());
+}
 function loadKakao(){
   if(!KAKAO_KEY){ $('#homeSearchRow').classList.add('hide'); return; }
   const sc=document.createElement('script');
@@ -978,7 +1093,7 @@ function initMap(){
   map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
   geocoder=new kakao.maps.services.Geocoder(); places=new kakao.maps.services.Places();
   kakao.maps.event.addListener(map,'click',e=>{
-    if(!st.picking) return; st.picking=false; $('#pickHint').style.display='none';
+    if(!st.picking){ closePop(); return; } st.picking=false; $('#pickHint').style.display='none';
     const ll=e.latLng; geocoder.coord2Address(ll.getLng(),ll.getLat(),(r,status)=>{
       const label=(status===kakao.maps.services.Status.OK&&r[0])?(r[0].road_address?r[0].road_address.address_name:r[0].address.address_name):'지도에서 고른 위치';
       setHome(ll.getLat(),ll.getLng(),label); });
@@ -1007,6 +1122,19 @@ function geocodeQueue(list, done, onEach){
   })();
 }
 const TYCOL={inn:'#047857',tg:'#1d4ed8',ru:'#8a5a00',kr:'#0e7490'};
+let popOv=null, popId=null;
+function closePop(){ if(popOv){ popOv.setMap(null); popOv=null; popId=null; } }
+function openPop(id){
+  closePop(); const s=SCHOOLS[id]; if(!map||s.lat==null) return; popId=id;
+  const inW=st.wish.includes(id);
+  const el=document.createElement('div'); el.className='pop';
+  el.innerHTML=`<b>${esc(s.name)}</b><span class="faint small">${s.zone}</span><button class="add ${inW?'rm':''}" data-a>${inW?'빼기':'담기'}</button><button data-i>정보</button>`;
+  el.querySelector('[data-a]').onclick=ev=>{ev.stopPropagation(); toggleWish(id,true); openPop(id);};
+  el.querySelector('[data-i]').onclick=ev=>{ev.stopPropagation(); closePop(); selectSchool(id,false);};
+  el.addEventListener('click',ev=>ev.stopPropagation());
+  popOv=new kakao.maps.CustomOverlay({position:new kakao.maps.LatLng(s.lat,s.lng),content:el,zIndex:30,clickable:true,yAnchor:1});
+  popOv.setMap(map);
+}
 function drawMarkers(){
   if(!map) return;
   SCHOOLS.forEach(s=>{
@@ -1014,12 +1142,13 @@ function drawMarkers(){
     let ov=overlays[s.id];
     if(!ov){
       const el=document.createElement('div'); el.title=s.name; el.textContent=s.zn;
-      el.addEventListener('click',ev=>{ev.stopPropagation(); selectSchool(s.id,false);});
+      el.addEventListener('click',ev=>{ev.stopPropagation(); openPop(s.id);});
       ov=new kakao.maps.CustomOverlay({position:new kakao.maps.LatLng(s.lat,s.lng),content:el,zIndex:3,clickable:true});
       ov._el=el; overlays[s.id]=ov;
     }
     const el=ov._el, vis=visible(s);
     const hitTy=[...st.types].find(t=>s[t]);
+    const k=st.wish.indexOf(s.id); el.textContent= k>=0? String(k+1) : s.zn;
     el.className='dot'+(s.sp?' sp':'')+(hitTy?' hl':'')+(st.homeZone&&st.homeZone===s.zone?' hz':'')+(st.sel===s.id?' sel':'')+(st.wish.includes(s.id)?' wished':'');
     el.style.background=s.color; el.style.setProperty('--hl', hitTy?TYCOL[hitTy]:'#111');
     ov.setMap(vis?map:null);
@@ -1043,7 +1172,7 @@ function doHomeSearch(){
 $('#homeGo').onclick=doHomeSearch;
 $('#homeQ').onkeydown=e=>{ if(e.key==='Enter') doHomeSearch(); };
 
-function refresh(){ renderFilters(); renderTiles(); renderList(); drawMarkers(); $('#fabCnt').textContent=st.wish.length+'/10'; }
+function refresh(){ renderFilters(); renderTiles(); renderList(); drawMarkers(); renderTray(); }
 
 /* ---------- 관리자: 좌표 만들기 (?admin=1) ---------- */
 const isAdmin=new URL(location.href).searchParams.get('admin')==='1';
@@ -1353,7 +1482,7 @@ const TPL_B64='UEsDBBQAAAAIAMV1dF1Gx01IlwAAAM0AAAAQAAAAZG9jUHJvcHMvYXBwLnhtbE2PT
 /* =========================================================
    희망 내신 정리 → 엑셀 (서버 없이 브라우저 안에서 생성)
    ========================================================= */
-function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'),2200); }
+function toast(m, undo){ const t=$('#toast'); t.textContent=m; if(undo&&lastUndo){ const b=document.createElement('button'); b.textContent='되돌리기'; b.onclick=()=>{t.classList.remove('on'); undoWish();}; t.appendChild(b); } t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'), undo?3200:2600); }
 const PREF_CLAUSES=[['제9조 제①항 제1호','1호 국가·독립·5·18 유공자'],['제9조 제①항 제2호','2호 교육행정기관 등 2년 이상 근무·파견'],['제9조 제①항 제3호','3호 국민권익위원회 요구'],['제9조 제①항 제4호','4호 중증장애인'],['제9조 제②항','제9조 ②항'],['제9조 제③항','제9조 ③항'],['제26조(영양교사)','영양교사 우선 전보'],['제28조 제②항(전문상담교사)','전문상담교사 우선 전보']];
 const DEFER_HO=[1,2,3,4,5,6,7,8,10,12];
 const ROLE_INFO={el:['초등','교사(초등)'],he:['보건','교사(보건)'],li:['사서','교사(사서)'],nu:['영양','교사(영양)'],co:['상담','교사(상담)'],sp:['특수','교사(특수)']};
@@ -1535,7 +1664,7 @@ function bind4(){
     b.disabled=false; b.textContent='엑셀 내려받기';
   };
 }
-$('#fab').onclick=()=>{ if(!st.wish.length&&plan.step===1){} openWish(); };
+
 
 /* ---- 엑셀 생성 ---- */
 let exLoading=null;
