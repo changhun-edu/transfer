@@ -1293,10 +1293,10 @@ function renderTray(){
   const g=$('#trayGo'); g.classList.toggle('dim',n===0); g.classList.toggle('full',n>=10);
   g.textContent= n===0? '다음 ›' : n>=10? '10곳 완료 · 순서·엑셀 ›' : '다음: 순서·엑셀 ›';
   $('#trayChips').innerHTML= st.wish.length? st.wish.map((id,i)=>`<button class="tc" data-rm="${id}" aria-label="${esc(SCHOOLS[id].name)} 빼기"><i>${i+1}</i>${esc(SCHOOLS[id].name.replace(/초$/,''))}</button>`).join('')
-    : '<span class="empty">학교를 눌러 담으세요 (최대 10곳)</span>';
+    : '<span class="empty">희망학교를 선택하세요 (최대 10곳)</span>';
   $('#trayChips').querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>toggleWish(+b.dataset.rm,true));
 }
-$('#trayGo').onclick=()=>{ if(!st.wish.length){ toast('먼저 지도나 목록에서 학교를 눌러 담으세요'); return; } openWish(); };
+$('#trayGo').onclick=()=>{ if(!st.wish.length){ toast('먼저 지도나 목록에서 희망학교를 선택하세요'); return; } openWish(); };
 $('#sortSel').onchange=e=>{ const v=e.target.value; if(v==='near'&&!st.home){ toast('가까운 순은 집 위치를 정하면 쓸 수 있어요'); e.target.value=st.sort; goHomeCard(); return; } st.sort=v; renderList(); };
 $('#zToggle').onclick=()=>{ st.allOpen=!st.allOpen; st.zManual.clear(); if(!st.allOpen){ ZONES.forEach(z=>st.zManual.set(z.id,false)); } renderList(); };
 /* 이름으로 담기 (쉼표·줄바꿈으로 여러 곳) */
@@ -1326,7 +1326,7 @@ $('#sQ').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault()
     if(/[,\n]/.test($('#sQ').value)){ quickAdd(); return; }
     const vis=[...document.querySelectorAll('#schoolList [data-add]')];
     if(vis.length===1){ toggleWish(+vis[0].dataset.add,true); $('#sQ').value=''; st.q=''; renderList(); }
-    else if(vis.length>1) toast(`${vis.length}곳이 검색됐어요. 목록에서 눌러 담으세요`); else toast('검색된 학교가 없어요'); } });
+    else if(vis.length>1) toast(`${vis.length}곳이 검색됐어요. 목록에서 희망학교를 선택하세요`); else toast('검색된 학교가 없어요'); } });
 $('#multiBtn').onclick=()=>{ $('#multiRow').classList.toggle('on'); if($('#multiRow').classList.contains('on')) $('#multiTa').focus(); };
 $('#multiX').onclick=()=>$('#multiRow').classList.remove('on');
 $('#multiGo').onclick=()=>{ const v=$('#multiTa').value; const keep=$('#sQ').value; $('#sQ').value=v; quickAdd(); $('#multiTa').value=$('#sQ').value; $('#sQ').value=keep; };
@@ -1340,7 +1340,7 @@ $('#autoFill').onclick=()=>{
   toast(`지금 필터 조건에서 가까운 순으로 ${Math.min(room,cand.length)}곳을 채웠어요. 후보일 뿐이니 꼭 직접 검토하세요`);
 };
 function wishHtml(){
-  if(!st.wish.length) return '<p class="muted small" style="margin:6px 0 0">아직 담은 학교가 없어요. 지도나 목록에서 학교를 눌러 담아 보세요.</p>';
+  if(!st.wish.length) return '<p class="muted small" style="margin:6px 0 0">아직 선택한 희망학교가 없어요. 지도나 목록에서 희망학교를 선택하세요.</p>';
   return '<ol>'+st.wish.map((id,i)=>{const s=SCHOOLS[id]; const d=distKm(st.home,s);
     return `<li><span class="no">${i+1}</span><span class="nm">${esc(s.name)}<small>${s.zone}${s.inn?' · 혁신':''}${s.tg?' · 특구':''}${s.ru?' · 농촌':''}${s.kr?' · 한국어학급':''}${st.homeZone===s.zone?' · 거주지 구역':''}${d!=null?' · '+fmtKm(d):''}</small></span>
       <span class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm" data-a="up" data-i="${i}" ${i===0?'disabled':''} aria-label="위로">▲</button><button class="btn sm" data-a="dn" data-i="${i}" ${i===st.wish.length-1?'disabled':''} aria-label="아래로">▼</button><button class="btn sm" data-a="rm" data-i="${i}">빼기</button></span></li>`;}).join('')+'</ol>';
