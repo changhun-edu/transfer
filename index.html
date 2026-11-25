@@ -291,6 +291,32 @@ details.mini p{margin:6px 0 0}
 .locban .tx b{display:block;font-size:14.5px;color:#1c3a85}
 .locban .x{border:0;background:none;color:var(--faint);font-size:12.5px;font-weight:700;padding:4px}
 @media (max-width:520px){.locban{flex-wrap:wrap}.locban .tx{flex:1 1 calc(100% - 52px)}.locban .btn{flex:1}}
+/* ---- 지도 크게 보기 ---- */
+.mapbox .fsbtn{position:absolute;right:10px;top:56px;z-index:6;border:0;background:#fff;border-radius:12px;width:40px;height:38px;box-shadow:0 2px 8px rgba(0,0,0,.2);color:#1f4fbf;display:flex;align-items:center;justify-content:center}
+.mapbox .fsbtn svg{width:18px;height:18px}
+.mapbox .fsbtn .c{display:none}
+.mapbox.fs .fsbtn .o{display:none} .mapbox.fs .fsbtn .c{display:block}
+.mapbox.tiles .fsbtn{display:none}
+.mapbox.fs{position:fixed!important;inset:0;width:100vw;height:100vh!important;min-height:0;z-index:70;border-radius:0;border:0}
+body.fsmode{overflow:hidden}
+body.fsmode #p-map > #mapWrap, body.fsmode #mapWrap{position:static!important;transform:none}
+body.fsmode #listCard{position:static!important}
+body.fsmode .topbar{z-index:1}
+body.fsmode .tray{z-index:75}
+body.fsmode .toast{z-index:95}
+.sitem.flash{animation:flash 1.4s;border-radius:9px}
+/* PC 넓은 배치: 지도 + 목록 나란히 (카카오 지도 연결 시, 1024px 이상) */
+@media (min-width:1024px){
+  body.kmap[data-tab=map] main > .wrap{max-width:1280px}
+  body.kmap #p-map.on{display:grid;grid-template-columns:minmax(0,65fr) minmax(0,35fr);column-gap:16px;align-items:start}
+  body.kmap #p-map > *{grid-column:1 / -1}
+  body.kmap #p-map > #mapWrap{grid-column:1;position:sticky;top:112px}
+  body.kmap #p-map > #listCard{grid-column:2;max-height:calc(100vh - 128px);overflow:auto;position:sticky;top:112px;padding:0 4px 90px 2px}
+  body.kmap #p-map > #listCard > .row:first-child{margin-top:0!important;position:sticky;top:0;background:var(--bg);z-index:2;padding:4px 0 8px}
+  body.kmap #p-map .mapbox{height:calc(100vh - 150px);min-height:480px}
+  body.kmap #p-map .stepper, body.kmap #p-map .quick{max-width:none}
+  body.kmap .tray{width:min(calc(100vw - 20px),760px)}
+}
 /* 담은 학교 띠 */
 .tray{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;z-index:55;width:min(calc(100vw - 20px),calc(var(--w) - 24px));background:#191d26;color:#fff;border-radius:16px;padding:8px 8px 8px 12px;display:flex;align-items:center;gap:8px;box-shadow:0 8px 22px rgba(0,0,0,.28)}
 .tray .cnt{flex:0 0 auto;font-weight:800;font-size:13px;color:#ffd78a;min-width:30px}
@@ -580,6 +606,7 @@ table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align
     <div class="mode-pick" id="pickHint">지도에서 집 위치를 눌러 주세요</div>
     <div class="tilehint">구역을 누르면 학교가 나와요</div>
     <button class="locbtn" id="locBtn" aria-label="내 위치 정하기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><circle cx="12" cy="12" r="8"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></svg><span>내 위치</span></button>
+    <button class="fsbtn" id="fsBtn" aria-label="지도 크게 보기" title="지도 크게 보기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path class="o" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="c" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg></button>
     <button class="hometag hide" id="homeTag"></button>
     <div class="legend-ov"><span><i class="d inn"></i>혁신</span><span><i class="d tg"></i>특구</span><span><i class="d ru"></i>농촌</span><span><i class="d kr"></i>한국어</span></div>
   </div>
@@ -986,7 +1013,7 @@ function closeSheet(){
   sheetKind=null;
 }
 $('#sheetBg').onclick=closeSheet;
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeSheet(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if($('.mapbox').classList.contains('fs')&&!$('#sheet').classList.contains('on')) toggleFs(false); else closeSheet(); } });
 
 /* ---------- 탭 이동 (주소에 # 없이, 뒤로가기 유지) ---------- */
 const TABS=['map','score','defer','age','changes','roles'];
@@ -1001,7 +1028,7 @@ function showTab(t, push){
     if(t==='map') u.searchParams.delete('tab'); else u.searchParams.set('tab',t);
     u.hash=''; history.pushState({tab:t},'',u.pathname+u.search);
   }
-  closeSheet();
+  closeSheet(); if(t!=='map' && $('.mapbox').classList.contains('fs')) toggleFs(false);
   window.scrollTo({top:0});
   $('#tray').classList.toggle('hide', t!=='map');
   if(t==='score'){ renderTie(); renderTieResult(); }
@@ -1414,7 +1441,7 @@ function loadKakao(){
   document.head.appendChild(sc);
 }
 function initMap(){
-  mapState='ok'; renderHomePane();
+  mapState='ok'; renderHomePane(); document.body.classList.add('kmap');
   $('.mapbox').classList.remove('tiles');
   $('#tilemap').classList.add('hide'); $('#mapTag').textContent='';  $('#mapTag').classList.add('hide');
   map=new kakao.maps.Map($('#map'),{center:new kakao.maps.LatLng(35.160,126.851),level:8});
@@ -1463,6 +1490,28 @@ function openPop(id){
   el.addEventListener('click',ev=>ev.stopPropagation());
   popOv=new kakao.maps.CustomOverlay({position:new kakao.maps.LatLng(s.lat,s.lng),content:el,zIndex:30,clickable:true,yAnchor:1});
   popOv.setMap(map);
+  if(window.innerWidth>=1024 && !$('.mapbox').classList.contains('fs')) revealInList(id);
+}
+/* 지도 크게 보기 */
+function toggleFs(on){
+  const mb=$('.mapbox'); const v= on===undefined? !mb.classList.contains('fs') : on;
+  mb.classList.toggle('fs',v); document.body.classList.toggle('fsmode',v);
+  $('#fsBtn').setAttribute('aria-label', v?'크게 보기 닫기':'지도 크게 보기'); $('#fsBtn').title=v?'크게 보기 닫기 (Esc)':'지도 크게 보기';
+  if(map) setTimeout(()=>map.relayout(),60);
+}
+$('#fsBtn').onclick=()=>toggleFs();
+/* 창 크기가 바뀌면 지도 다시 그리기 */
+let rzT=null; window.addEventListener('resize',()=>{ clearTimeout(rzT); rzT=setTimeout(()=>{ if(map) map.relayout(); },150); });
+/* 지도에서 고른 학교를 목록에서 찾아 강조 (넓은 화면) */
+function revealInList(id){
+  const s=SCHOOLS[id]; const lc=$('#listCard'); if(getComputedStyle(lc).display==='none') return;
+  if(st.sort==='zone') st.zManual.set(s.zone,true);
+  if(!visible(s)) return;
+  renderList();
+  const el=$(`#schoolList [data-add="${id}"]`); if(!el) return;
+  const it=el.closest('.sitem'); const box=lc;
+  if(box.scrollHeight>box.clientHeight+4){ const r=it.getBoundingClientRect(), br=box.getBoundingClientRect(); box.scrollTo({top:box.scrollTop+(r.top-br.top)-box.clientHeight/3,behavior:'smooth'}); }
+  it.classList.remove('flash'); void it.offsetWidth; it.classList.add('flash');
 }
 function drawMarkers(){
   if(!map) return;
