@@ -99,7 +99,7 @@ ul.clean li,ol.clean li{margin:3px 0}
 .btn.sm{padding:5px 10px;font-size:13px;border-radius:8px}
 .btn:disabled{opacity:.4;cursor:not-allowed}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-input[type=text],input[type=search],input[type=date],select{border:1px solid var(--line);border-radius:10px;padding:8px 11px;background:#fff;min-width:0}
+input[type=text],input[type=search],input[type=date],input[type=number],select{border:1px solid var(--line);border-radius:10px;padding:8px 11px;background:#fff;min-width:0}
 
 /* ---------- 지도 페이지 ---------- */
 .toolbar{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0 10px;margin:0 -16px;padding-left:16px;padding-right:16px}
@@ -364,8 +364,8 @@ body.fsmode .toast{z-index:95}
 .sheet.on{transform:translate(-50%,0);visibility:visible;transition:transform .25s ease}
 .grip{width:40px;height:5px;border-radius:9px;background:#d5d9e0;margin:2px auto 10px}
 .sh-btns{display:flex;gap:6px;flex-shrink:0}
-.btn.rst{color:#b42318;border-color:#f3c7c2;background:#fff}
-.btn.rst:hover{background:#fef3f2}
+.btn.rst{color:var(--sub);border-color:transparent;background:transparent;font-weight:600}
+.btn.rst:hover{color:#b42318;background:#fef3f2}
 .sh-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .sh-name{font-size:19px;font-weight:800;letter-spacing:-.3px}
 .kv{display:grid;grid-template-columns:96px 1fr;gap:6px 10px;font-size:14px;margin-top:10px}
@@ -581,6 +581,27 @@ table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align
 body.srch-on{overflow:hidden}
 @keyframes sflash{0%,40%{background:#fff2a8;box-shadow:0 0 0 6px #fff2a8}100%{background:transparent;box-shadow:0 0 0 6px transparent}}
 .sflash{animation:sflash 2.4s ease-out;border-radius:6px}
+
+/* 내 정보 양식 */
+.fbox{border:1px solid var(--line);border-radius:14px;padding:12px 14px 14px;margin:0 0 10px;background:#fff}
+.fbox-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:10px}
+.fbox-h b{font-size:14.5px}
+.fbox-h .pg{font-size:12px;font-weight:700;color:var(--faint)}
+.fbox-h .pg.full{color:var(--ok)}
+.fbox-h .pg.full::before{content:'✓ '}
+.fbox-h .pg.faint{color:var(--faint);font-weight:600}
+.ff{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ff.full{grid-column:1/-1}
+.fl-l{font-size:12.5px;font-weight:700;color:var(--sub)}
+.fl-h{font-size:12px;font-weight:500;color:var(--faint);line-height:1.45}
+.fl-h em,.ymout em{color:#c2410c;font-style:normal;font-weight:700}
+.fl-h b{color:var(--ink)}
+#sheetBody .fgrid input:not([type=checkbox]),#sheetBody .fgrid select,#sheetBody .ym input{height:40px;box-sizing:border-box;font-size:15px}
+.ymrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:6px 14px;align-items:start;padding:10px 0;border-top:1px dashed var(--line)}
+.fbox-h + .ymrow{border-top:0;padding-top:0}
+.ymrow-l{display:flex;flex-direction:column;gap:2px;padding-top:9px}
+.ymrow-r{display:flex;flex-direction:column;gap:4px;min-width:0}
+@media (max-width:520px){.ymrow{grid-template-columns:1fr}.ymrow-l{padding-top:0}}
 </style>
 </head>
 <body data-tab="map">
@@ -1927,7 +1948,7 @@ function toast(m, undo){ const t=$('#toast'); t.classList.toggle('top',$('#sheet
 const PREF_CLAUSES=[['제9조 제①항 제1호','1호 국가·독립·5·18 유공자'],['제9조 제①항 제2호','2호 교육행정기관 등 2년 이상 근무·파견'],['제9조 제①항 제3호','3호 국민권익위원회 요구'],['제9조 제①항 제4호','4호 중증장애인'],['제9조 제②항','제9조 ②항'],['제9조 제③항','제9조 ③항'],['제26조(영양교사)','영양교사 우선 전보'],['제28조 제②항(전문상담교사)','전문상담교사 우선 전보']];
 const DEFER_HO=[1,2,3,4,5,6,7,8,10,12];
 const ROLE_INFO={el:['초등','교사(초등)'],he:['보건','교사(보건)'],li:['사서','교사(사서)'],nu:['영양','교사(영양)'],co:['상담','교사(상담)'],sp:['특수','교사(특수)']};
-const plan={step:1, zones:[], size:'', role:'el', kind:'만료', school:'', name:'', sex:'', birth:'', months:'', eduM:'', eduY:'', eduMo:'', tourM:'', krM:'', kin:'',
+const plan={step:1, zones:[], size:'', role:'el', kind:'만료', school:'', name:'', sex:'', birth:'', months:'', monY:'', monMo:'', schoolTxt:'', kinRel:'', kinName:'', kinSchool:'', kinSim:false, eduM:'', eduY:'', eduMo:'', tourM:'', tourY:'', tourMo:'', krM:'', krY:'', krMo:'', kin:'',
   prefC:'', prefR:'', defer:false, deferC:'', deferR:'', sp8:'', spS:'', spC:'', spCt:'', spT:'', coW:'', coT:'', coC:'', coTot:''};
 const PLAN0=JSON.parse(JSON.stringify(plan));
 function resetAll(){
@@ -1965,7 +1986,7 @@ function stepBtn(n,t,sub,done){ return `<button class="${plan.step===n?'on':''} 
 function openWish(){
   const z=plan.zones.length, w=st.wish.length;
   const head=`<div class="sh-head"><div><div class="sh-name">희망 내신 정리</div><div style="margin-top:4px">${'<span class="safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없음 · 입력 정보는 전송되지 않아요</span>'}</div></div><div class="sh-btns"><button class="btn sm rst" data-reset title="희망학교·구역·내 정보를 처음 상태로">모두 지우기</button><button class="btn sm" data-x>닫기</button></div></div>
-    <div class="steps">${stepBtn(1,'학교',w+'/10',w===10)}${stepBtn(2,'구역',z+'/10',z===10)}${stepBtn(3,'내 정보',plan.name?'입력함':'선택',!!plan.name)}${stepBtn(4,'내려받기','엑셀',false)}</div>`;
+    <div class="steps">${stepBtn(1,'학교',w+'/10',w===10)}${stepBtn(2,'구역',z+'/10',z===10)}${stepBtn(3,'내 정보',plan.name?'입력함':'선택 입력',!!plan.name)}${stepBtn(4,'내려받기','엑셀',false)}</div>`;
   let body='';
   if(plan.step===1) body=step1();
   if(plan.step===2) body=step2();
@@ -2032,27 +2053,69 @@ function bind2(){
   $('#sheetBody [data-next]').onclick=()=>{plan.step=3; openWish();};
 }
 const opt=(arr,v)=>arr.map(([k,l])=>`<option value="${esc(k)}" ${v===k?'selected':''}>${esc(l)}</option>`).join('');
+function fld(label, input, help, cls){ return `<label class="ff ${cls||''}"><span class="fl-l">${label}</span>${input}${help?`<span class="fl-h">${help}</span>`:''}</label>`; }
+function ymRow(k,label,help){
+  return `<div class="ymrow"><div class="ymrow-l"><span class="fl-l">${label}</span><span class="fl-h">${help}</span></div>
+    <div class="ymrow-r"><div class="ym"><input type="number" min="0" max="50" inputmode="numeric" data-f="${k}Y" value="${plan[k+'Y']}" aria-label="${label} 년"><span>년</span><input type="number" min="0" max="11" inputmode="numeric" data-f="${k}Mo" value="${plan[k+'Mo']}" aria-label="${label} 월"><span>월</span></div>
+    <span class="ymout" id="${k}Out">${ymText(k)}</span></div></div>`;
+}
+const normSch=v=>{ v=(v||'').replace(/\s+/g,'').replace(/등학교$/,''); const c=[v, v+'초', v.replace(/초$/,'')]; const x=SCHOOLS.find(y=>c.includes(y.name)); return x? x.name : ''; };
+function schHelp(){
+  const t=(plan.schoolTxt||'').trim();
+  if(plan.school){ const x=SCHOOLS.find(y=>y.name===plan.school); return `✓ ${esc(plan.school)} · ${x?x.zone:''}`; }
+  return t? '<em>목록에서 학교를 골라 주세요</em>' : '두 글자만 쳐도 목록이 나와요';
+}
+function composeKin(){
+  if(!plan.kinRel && !plan.kinName.trim() && !plan.kinSchool.trim()){ plan.kin=''; return; }
+  const sc=plan.kinSchool.trim(); const n=normSch(sc);
+  plan.kin=[plan.kinRel, plan.kinName.trim(), n||sc, plan.kinSim?'동시전보':''].filter(Boolean).join(',');
+}
+function kinText(){ return plan.kin? `엑셀에는 <b>${esc(plan.kin)}</b> 로 들어가요` : '해당 없으면 비워 두세요'; }
+function pgCounts(){
+  const f=v=>v!==''&&v!=null;
+  const a=1+1+(plan.school?1:0), b=[plan.name.trim(),plan.sex,plan.birth].filter(f).length;
+  const ks=['months','eduM','tourM'].concat(plan.role==='el'?['krM']:[]); const c=ks.filter(x=>f(plan[x])).length;
+  return [`${a}/3 입력`,`${b}/3 입력`,`${c}/${ks.length} 입력`];
+}
+const pgFull=t=>{ const m=t.match(/(\d+)\/(\d+)/); return !!m&&m[1]===m[2]; };
+function updForm(){
+  const p=pgCounts(); ['pg1','pg2','pg3'].forEach((id,i)=>{ const e=$('#'+id); if(e){ e.textContent=p[i]; e.classList.toggle('full',pgFull(p[i])); } });
+  const h=$('#schHelp'); if(h) h.innerHTML=schHelp();
+  const k=$('#kinOut'); if(k) k.innerHTML=kinText();
+}
 function step3(){
   const t=tieFromState();
   const schoolOpts='<option value="">선택</option>'+ZONES.map(z=>`<optgroup label="${z.id}">${SCHOOLS.filter(s=>s.zone===z.id).map(s=>`<option ${plan.school===s.name?'selected':''}>${esc(s.name)}</option>`).join('')}</optgroup>`).join('');
   const deferOpts='<option value="">선택</option>'+DEFER.map((d,i)=>[`제10조 제①항 제${DEFER_HO[i]}호`,`${DEFER_HO[i]}호 ${d.t}`]).map(([k,l])=>`<option value="${k}" ${plan.deferC===k?'selected':''}>${esc(l)}</option>`).join('');
-  return `<p class="small muted" style="margin-top:0">모두 선택 입력이에요. 비워 두면 엑셀에서도 빈칸으로 남아요. 입력한 내용은 저장·전송되지 않아요.</p>
-  <div class="fsec">기본 정보</div>
+  const prog=pgCounts();
+  return `<p class="small muted" style="margin-top:0">모두 선택 사항이에요 · 비운 칸은 엑셀에서도 빈칸이에요.</p>
+  <div class="fbox"><div class="fbox-h"><b>① 전보</b><span class="pg ${pgFull(prog[0])?'full':''}" id="pg1">${prog[0]}</span></div>
   <div class="fgrid">
-    <label>직위<select data-f="role">${opt(Object.entries(ROLE_INFO).map(([k,v])=>[k,v[1]]),plan.role)}</select></label>
-    <label>전보 구분<select data-f="kind">${opt([['우대','우대'],['만료','만료'],['희망','일반 희망']],plan.kind)}</select></label>
-    <label>현임교<select data-f="school">${schoolOpts}</select></label>
-    <label>성명<input type="text" data-f="name" value="${esc(plan.name)}" autocomplete="off"></label>
-    <label>성별<select data-f="sex">${opt([['','선택'],['남','남'],['여','여']],plan.sex)}</select></label>
-    <label>생년월일<input type="date" data-f="birth" value="${plan.birth}"></label>
-    <label>현임교 근무 월수 <span class="faint">(휴직·타 시·도 파견 제외)</span><input type="number" min="0" max="600" data-f="months" value="${plan.months}" placeholder="예: 48"></label>
-    <div class="ymwrap"><span class="ymlab">교육경력 <span class="faint">(2027. 2. 28. 기준)</span></span>
-      <div class="ym"><input type="number" min="0" max="50" inputmode="numeric" data-f="eduY" value="${plan.eduY}" placeholder="0" aria-label="교육경력 년"><span>년</span><input type="number" min="0" max="11" inputmode="numeric" data-f="eduMo" value="${plan.eduMo}" placeholder="0" aria-label="교육경력 월"><span>월</span></div>
-      <span class="ymout" id="eduOut">${eduText()}</span></div>
-    <label>순회교사 경력 월수<input type="number" min="0" max="600" data-f="tourM" value="${plan.tourM}" placeholder="없으면 비움"></label>
-    ${plan.role==='el'?`<label>한국어학급 담임 경력 월수<input type="number" min="0" max="600" data-f="krM" value="${plan.krM}" placeholder="없으면 비움"></label>`:''}
-    <label class="full">친인척 교원 <span class="faint">(관내 초등 재직 교원만, 예: 배우자,홍길동,○○초,동시전보)</span><input type="text" data-f="kin" value="${esc(plan.kin)}" autocomplete="off"></label>
+    ${fld('직위',`<select data-f="role">${opt(Object.entries(ROLE_INFO).map(([k,v])=>[k,v[1]]),plan.role)}</select>`)}
+    ${fld('전보 구분',`<select data-f="kind">${opt([['우대','우대'],['만료','만료'],['희망','일반 희망']],plan.kind)}</select>`)}
+    ${fld('현임교',`<input type="text" list="dlSchools" data-f="schoolTxt" value="${esc(plan.schoolTxt||plan.school)}" placeholder="예: 운남" autocomplete="off">`,`<span id="schHelp">${schHelp()}</span>`,'full')}
+  </div></div>
+  <div class="fbox"><div class="fbox-h"><b>② 나</b><span class="pg ${pgFull(prog[1])?'full':''}" id="pg2">${prog[1]}</span></div>
+  <div class="fgrid">
+    ${fld('성명',`<input type="text" data-f="name" value="${esc(plan.name)}" placeholder="예: 홍길동" autocomplete="off">`)}
+    ${fld('성별',`<select data-f="sex">${opt([['','선택'],['남','남'],['여','여']],plan.sex)}</select>`)}
+    ${fld('생년월일',`<input type="date" data-f="birth" value="${plan.birth}">`,'','full')}
+  </div></div>
+  <div class="fbox"><div class="fbox-h"><b>③ 경력</b><span class="pg ${pgFull(prog[2])?'full':''}" id="pg3">${prog[2]}</span></div>
+    ${ymRow('mon','현임교 근무','휴직·타 시·도 파견 기간은 빼요')}
+    ${ymRow('edu','교육경력','2027. 2. 28. 기준')}
+    ${ymRow('tour','순회교사 경력','없으면 비워 두세요')}
+    ${plan.role==='el'?ymRow('kr','한국어학급 담임 경력','없으면 비워 두세요'):''}
   </div>
+  <div class="fbox"><div class="fbox-h"><b>④ 친인척 교원</b><span class="pg faint">관내 초등 재직 교원만</span></div>
+  <div class="fgrid">
+    ${fld('관계',`<select data-f="kinRel">${opt([['','없음'],['배우자','배우자'],['부모','부모'],['자녀','자녀'],['형제자매','형제자매'],['기타 친인척','기타 친인척']],plan.kinRel)}</select>`)}
+    ${fld('성명',`<input type="text" data-f="kinName" value="${esc(plan.kinName)}" placeholder="예: 김철수" autocomplete="off">`)}
+    ${fld('근무 학교',`<input type="text" list="dlSchools" data-f="kinSchool" value="${esc(plan.kinSchool)}" placeholder="예: 동산" autocomplete="off">`)}
+    <label class="ck"><input type="checkbox" data-f="kinSim" ${plan.kinSim?'checked':''}>동시전보 희망</label>
+  </div>
+  <p class="fl-h" id="kinOut" style="margin:8px 0 0">${kinText()}</p></div>
+  <datalist id="dlSchools">${SCHOOLS.map(x=>`<option value="${esc(x.name)}">${x.zone}${x.closed?' · 휴교':''}</option>`).join('')}</datalist>
   <div class="fsec">동점자 (서열 탭 체크와 연결돼요)</div>
   <div class="fgrid">
     <label>직무연수 환산점<select data-t="1">${opt([['','선택 안 함'],['0','120시간 이상 · 4점'],['1','90~119시간 · 3점'],['2','60~89시간 · 2점'],['3','30~59시간 · 1점'],['4','30시간 미만 · 0점']], tieSt[1]==null?'':String(tieSt[1]))}</select></label>
@@ -2081,21 +2144,29 @@ function step3(){
     <label>총경력<input type="text" data-f="coTot" value="${esc(plan.coTot)}" placeholder="0.00"></label></div>`:''}
   <div class="row" style="justify-content:space-between;margin-top:14px"><button class="btn" data-prev>‹ 구역</button><button class="btn pri" data-next>다음: 내려받기 ›</button></div>`;
 }
-function syncEdu(){
-  const y=plan.eduY===''?'':Math.max(0,Math.floor(+plan.eduY||0)), m=plan.eduMo===''?'':Math.max(0,Math.floor(+plan.eduMo||0));
-  plan.eduM=(y===''&&m==='')?'':(+y||0)*12+(+m||0);
-  const o=$('#eduOut'); if(o){ o.innerHTML=eduText(); }
+const YM_T={edu:'eduM',tour:'tourM',kr:'krM',mon:'months'};
+function ymField(k,label,hint){
+  return `<div class="ymwrap"><span class="ymlab">${label} <span class="faint">${hint}</span></span>
+      <div class="ym"><input type="number" min="0" max="50" inputmode="numeric" data-f="${k}Y" value="${plan[k+'Y']}" placeholder="0" aria-label="${label} 년"><span>년</span><input type="number" min="0" max="11" inputmode="numeric" data-f="${k}Mo" value="${plan[k+'Mo']}" placeholder="0" aria-label="${label} 월"><span>월</span></div>
+      <span class="ymout" id="${k}Out">${ymText(k)}</span></div>`;
 }
-function eduText(){
-  if(plan.eduM==='') return '년·월을 넣으면 개월 수로 바꿔 드려요';
-  const warn=(+plan.eduMo>11)?' <em>(월은 0~11로 넣어 주세요)</em>':'';
-  return `= <b>${plan.eduM}개월</b>로 엑셀에 들어가요${warn}`;
+function syncYM(k){
+  const y=plan[k+'Y'], m=plan[k+'Mo'];
+  plan[YM_T[k]]=(y===''&&m==='')?'':Math.max(0,Math.floor(+y||0))*12+Math.max(0,Math.floor(+m||0));
+  const o=$('#'+k+'Out'); if(o) o.innerHTML=ymText(k);
+}
+function ymText(k){
+  const v=plan[YM_T[k]];
+  if(v===''||v==null) return '년·월을 넣으면 개월 수로 바꿔 드려요';
+  const warn=(+plan[k+'Mo']>11)?' <em>(월은 0~11로 넣어 주세요)</em>':'';
+  if(k==='mon' && +v>48) return `= <b>${v}개월</b> · 경력점은 48점까지라 엑셀에는 <b>48</b>로 들어가요${warn}`;
+  return `= <b>${v}개월</b>로 엑셀에 들어가요${warn}`;
 }
 function bind3(){
   const rerender=new Set(['role','kind','defer']);
   $('#sheetBody').querySelectorAll('[data-f]').forEach(el=>{
     const f=el.dataset.f;
-    const h=()=>{ plan[f]= el.type==='checkbox'? el.checked : el.value; if(f==='eduY'||f==='eduMo') syncEdu(); if(rerender.has(f)){ const y=$('#sheet').scrollTop; openWish(); $('#sheet').scrollTop=y; } };
+    const h=()=>{ plan[f]= el.type==='checkbox'? el.checked : el.value; { const m=f.match(/^(edu|tour|kr|mon)(Y|Mo)$/); if(m) syncYM(m[1]); if(f==='schoolTxt') plan.school=normSch(plan.schoolTxt); if(f.startsWith('kin')) composeKin(); updForm(); } if(rerender.has(f)){ const y=$('#sheet').scrollTop; openWish(); $('#sheet').scrollTop=y; } };
     el.addEventListener(el.tagName==='SELECT'||el.type==='checkbox'||el.type==='date'?'change':'input', h);
   });
   $('#sheetBody').querySelectorAll('[data-t]').forEach(el=>el.onchange=()=>{
@@ -2304,7 +2375,7 @@ function sRun(){
   const qn=q.replace(/\s+/g,'').replace(/초(등학교)?$/,'');
   const sch=qn.length>=1? SCHOOLS.filter(x=>x.name.includes(qn)||(x.name+'초').includes(q.replace(/\s+/g,''))).slice(0,8):[];
   let h='';
-  if(sch.length) h+=`<h5>학교 <span class="n">${sch.length}</span></h5>`+sch.map(x=>`<button class="sr" data-sid="${x.id}"><div class="w">학교 지도 · ${x.zone} · ${x.office}</div><div class="x"><b>${esc(x.name)}초</b>${x.closed?' (휴교)':''}${x.inn?' · 혁신':''}${x.tg?' · 인사특구':''}${x.ru?' · 농촌':''}${x.kr?' · 한국어학급':''}${x.cls?` · 일반 ${x.cls.g}학급`:''}</div></button>`).join('');
+  if(sch.length) h+=`<h5>학교 <span class="n">${sch.length}</span></h5>`+sch.map(x=>`<button class="sr" data-sid="${x.id}"><div class="w">학교 지도 · ${x.zone} · ${x.office}</div><div class="x"><b>${esc(x.name)}</b>${x.closed?' (휴교)':''}${x.inn?' · 혁신':''}${x.tg?' · 인사특구':''}${x.ru?' · 농촌':''}${x.kr?' · 한국어학급':''}${x.cls?` · 일반 ${x.cls.g}학급`:''}</div></button>`).join('');
   const alts=T.flat();
   const best=t=>Math.max(-99,...rows.filter(r=>r.e.tab===t).map(r=>r.score));
   Object.keys(S_TABN).sort((a,b)=>best(b)-best(a)).forEach(tab=>{
