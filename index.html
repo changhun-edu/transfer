@@ -465,7 +465,7 @@ details.acc .body{padding:0 14px 14px;font-size:14px}
 .who{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
 .who .chip.on{background:var(--accent);border-color:var(--accent)}
 
-footer{border-top:1px solid var(--line);background:#fff;padding:22px 0 96px;font-size:13px;color:var(--sub);line-height:1.6}
+footer{border-top:1px solid var(--line);background:#fff;padding:14px 0 96px;font-size:13px;color:var(--sub);line-height:1.6}
 .ft-notice{background:#f5f6f8;border-radius:12px;padding:12px 14px;color:var(--ink);font-size:13px}
 .ft-notice b{display:block;margin-bottom:2px}
 .ft-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:22px;margin-top:18px}
@@ -475,9 +475,21 @@ footer p{margin:0 0 6px}
 .ft-src li{display:flex;gap:8px;align-items:baseline;padding:3px 0}
 .ft-src .ab{flex:0 0 auto;font-size:11px;font-weight:800;color:#4b5563;background:#eef0f3;border-radius:5px;padding:0 6px;line-height:18px}
 .ft-hint{font-size:12px;color:var(--faint);margin-top:8px!important}
-footer .credit{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-weight:700;color:var(--ink);text-align:center}
+footer .credit{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);font-weight:700;color:var(--ink);text-align:center}
 footer .credit a{color:var(--ink)}
 @media (max-width:600px){.ft-grid{grid-template-columns:1fr;gap:16px}}
+.ft-line{margin:0 0 10px!important;font-size:12.5px}
+.ft-line b{color:var(--ink)}
+.ft-row{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start}
+details.ft{flex:0 1 auto}
+details.ft[open]{flex:1 1 100%;background:#f7f8fa;border-radius:12px;padding:0 12px 12px}
+details.ft summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:99px;padding:4px 12px;font-size:12.5px;font-weight:700;color:var(--ink);background:#fff;margin-top:0}
+details.ft[open] summary{margin:10px 0 8px}
+details.ft summary::-webkit-details-marker{display:none}
+details.ft summary::after{content:"▾";color:var(--faint)}
+details.ft[open] summary::after{content:"▴"}
+details.ft summary .safe{padding:0 6px 0 4px;font-size:11.5px}
+details.ft p{margin:6px 0 0}
 
 #admin{display:none}
 #admin.on{display:block}
@@ -884,10 +896,9 @@ table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align
 
 <footer>
   <div class="wrap">
-    <div class="ft-notice"><b>비공식 참고용 사이트입니다.</b> 전남광주통합특별시교육청·광주동·서부교육지원청의 공식 사이트가 아니며, 공개 자료를 읽기 쉽게 정리했습니다. 실제 전보 결과와 다를 수 있으니 최종 기준은 공문과 교육지원청 안내를 따라 주세요.</div>
-    <div class="ft-grid">
-      <div>
-        <h4>근거 자료</h4>
+    <p class="ft-line"><b>비공식 참고용 사이트</b> · 교육청·교육지원청 공식 사이트가 아니며, 최종 기준은 공문과 교육지원청 안내를 따라요.</p>
+    <div class="ft-row">
+      <details class="ft"><summary>근거 자료 8종</summary>
         <ul class="ft-src">
           <li><span class="ab">기준</span>2027학년도 초등 교육공무원 인사관리기준(광주)</li>
           <li><span class="ab">지침</span>같은 기준 업무처리지침(광주동·서부교육지원청)</li>
@@ -899,13 +910,10 @@ table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px;text-align
           <li><span class="ab">요령</span>2026학년도 초등 교원 전보서류 작성 요령(동·서부교육지원청) — 서식 번호·증빙 방법·한국어학급 운영 학교</li>
         </ul>
         <p class="ft-hint">본문의 ‘기준 제19조 6항’은 인사관리기준 조항, ‘지침 6.카’는 동·서부 업무처리지침 항목, ‘서식7’은 2026 작성 요령의 서식 번호예요.</p>
-      </div>
-      <div>
-        <h4>개인정보</h4>
-        <p><span class="safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없는 사이트</span></p>
-        <p>이 사이트는 서버 없이 브라우저 안에서만 작동해요. 입력한 정보(집 위치, 체크 항목, 희망학교, 성명·생년월일 등)는 어디로도 전송되지 않고, 저장되지도 않아 새로고침하면 사라집니다.</p>
-        <p>엑셀 파일도 내 기기 안에서 만들어져 바로 내려받아져요(엑셀 생성 도구: ExcelJS, MIT 라이선스). 지도 표시와 주소 검색에는 카카오맵을 사용하며, 이때 주소 검색어만 카카오맵으로 전달돼요.</p>
-      </div>
+      </details>
+      <details class="ft"><summary><span class="safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없는 사이트</span> 개인정보</summary>
+        <p>이 사이트는 서버 없이 브라우저 안에서만 작동해요. 입력한 정보(집 위치, 체크 항목, 희망학교, 성명·생년월일 등)는 어디로도 전송되지 않고, 저장되지도 않아 새로고침하면 사라집니다.</p><p>엑셀 파일도 내 기기 안에서 만들어져 바로 내려받아져요(엑셀 생성 도구: ExcelJS, MIT 라이선스). 지도 표시와 주소 검색에는 카카오맵을 사용하며, 이때 주소 검색어만 카카오맵으로 전달돼요.</p>
+      </details>
     </div>
     <div class="credit">만든이 2026 최창훈 · <a href="https://edu-hub-alpha-ten.vercel.app/" target="_blank" rel="noopener">학교 연장통의 도구</a></div>
   </div>
