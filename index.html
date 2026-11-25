@@ -364,8 +364,9 @@ body.fsmode .toast{z-index:95}
 .sheet.on{transform:translate(-50%,0);visibility:visible;transition:transform .25s ease}
 .grip{width:40px;height:5px;border-radius:9px;background:#d5d9e0;margin:2px auto 10px}
 .sh-btns{display:flex;gap:6px;flex-shrink:0}
-.btn.rst{color:var(--sub);border-color:transparent;background:transparent;font-weight:600}
-.btn.rst:hover{color:#b42318;background:#fef3f2}
+.btn.rst{display:inline-flex;align-items:center;gap:4px;color:#b42318;border:1px solid #f5c2bd;background:#fff;font-weight:700}
+.btn.rst svg{width:15px;height:15px}
+.btn.rst:hover{background:#fef3f2;border-color:#e8a29a}
 .sh-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .sh-name{font-size:19px;font-weight:800;letter-spacing:-.3px}
 .kv{display:grid;grid-template-columns:96px 1fr;gap:6px 10px;font-size:14px;margin-top:10px}
@@ -602,6 +603,15 @@ body.srch-on{overflow:hidden}
 .ymrow-l{display:flex;flex-direction:column;gap:2px;padding-top:9px}
 .ymrow-r{display:flex;flex-direction:column;gap:4px;min-width:0}
 @media (max-width:520px){.ymrow{grid-template-columns:1fr}.ymrow-l{padding-top:0}}
+
+/* 구역 색 */
+.ztag{display:inline-block;background:var(--zc);color:#fff;font-weight:800;font-size:11px;line-height:1;padding:3px 6px;border-radius:6px;vertical-align:1px;white-space:nowrap}
+.wish li{border-left:5px solid var(--zc,#e4e7ec);padding-left:9px;border-radius:2px}
+.zorder span.zo,.zlist .zo{display:inline-flex;align-items:center;gap:4px;background:var(--zc);color:#fff;border-radius:8px;padding:3px 8px 3px 4px;font-weight:800;font-size:13px}
+.zo b,.zs b{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;border-radius:99px;background:rgba(255,255,255,.92);color:var(--ink);font-size:11px}
+.zlist{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.zlist .zs{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-left:4px solid var(--zc);border-radius:8px;padding:2px 8px 2px 4px;font-size:13px;font-weight:600;background:#fff}
+.zs b{background:#f1f3f6}
 </style>
 </head>
 <body data-tab="map">
@@ -1064,6 +1074,8 @@ ZONES.forEach(z=>{
 });
 SCHOOLS.forEach(s=>{ const c=COORDS[s.name]; if(c){ s.lat=c[0]; s.lng=c[1]; } });
 const ZMAP = Object.fromEntries(ZONES.map(z=>[z.id,z]));
+const zTag=zid=>{ const z=ZMAP[zid]; return z? `<span class="ztag" style="--zc:${z.color}">${zid}</span>` : esc(zid||''); };
+const schZone=nm=>{ const x=SCHOOLS.find(y=>y.name===nm||y.name===nm+'초'||y.name===nm+'학교'); return x? x.zone : ''; };
 
 /* ---------- 상태 (저장하지 않음) ---------- */
 const st = { office:'all', zonesOff:new Set(), types:new Set(), showSp:false, q:'',
@@ -1416,7 +1428,7 @@ $('#autoFill').onclick=()=>{
 function wishHtml(){
   if(!st.wish.length) return '<p class="muted small" style="margin:6px 0 0">아직 선택한 희망학교가 없어요. 지도나 목록에서 희망학교를 선택하세요.</p>';
   return '<ol>'+st.wish.map((id,i)=>{const s=SCHOOLS[id]; const d=distKm(st.home,s);
-    return `<li><span class="no">${i+1}</span><span class="nm">${esc(s.name)}<small>${s.zone}${s.inn?' · 혁신':''}${s.tg?' · 특구':''}${s.ru?' · 농촌':''}${s.kr?' · 한국어학급':''}${st.homeZone===s.zone?' · 거주지 구역':''}${d!=null?' · '+fmtKm(d):''}</small></span>
+    return `<li style="--zc:${ZMAP[s.zone]?ZMAP[s.zone].color:'#ccc'}"><span class="no">${i+1}</span><span class="nm">${esc(s.name)}<small>${zTag(s.zone)}${s.inn?' · 혁신':''}${s.tg?' · 특구':''}${s.ru?' · 농촌':''}${s.kr?' · 한국어학급':''}${st.homeZone===s.zone?' · 거주지 구역':''}${d!=null?' · '+fmtKm(d):''}</small></span>
       <span class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm" data-a="up" data-i="${i}" ${i===0?'disabled':''} aria-label="위로">▲</button><button class="btn sm" data-a="dn" data-i="${i}" ${i===st.wish.length-1?'disabled':''} aria-label="아래로">▼</button><button class="btn sm" data-a="rm" data-i="${i}">빼기</button></span></li>`;}).join('')+'</ol>';
 }
 
@@ -1985,7 +1997,7 @@ function personFromPlan(){
 function stepBtn(n,t,sub,done){ return `<button class="${plan.step===n?'on':''} ${done?'done':''}" data-s="${n}">${n}. ${t}<small>${sub}</small></button>`; }
 function openWish(){
   const z=plan.zones.length, w=st.wish.length;
-  const head=`<div class="sh-head"><div><div class="sh-name">희망 내신 정리</div><div style="margin-top:4px">${'<span class="safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없음 · 입력 정보는 전송되지 않아요</span>'}</div></div><div class="sh-btns"><button class="btn sm rst" data-reset title="희망학교·구역·내 정보를 처음 상태로">모두 지우기</button><button class="btn sm" data-x>닫기</button></div></div>
+  const head=`<div class="sh-head"><div><div class="sh-name">희망 내신 정리</div><div style="margin-top:4px">${'<span class="safe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>서버 없음 · 입력 정보는 전송되지 않아요</span>'}</div></div><div class="sh-btns"><button class="btn sm rst" data-reset title="희망학교·구역·내 정보를 처음 상태로"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg>모두 지우기</button><button class="btn sm" data-x>닫기</button></div></div>
     <div class="steps">${stepBtn(1,'학교',w+'/10',w===10)}${stepBtn(2,'구역',z+'/10',z===10)}${stepBtn(3,'내 정보',plan.name?'입력함':'선택 입력',!!plan.name)}${stepBtn(4,'내려받기','엑셀',false)}</div>`;
   let body='';
   if(plan.step===1) body=step1();
@@ -2011,7 +2023,7 @@ function step1(){
   if(!st.wish.length) return '<p class="muted small">아직 담은 학교가 없어요. 지도나 목록에서 학교를 눌러 <b>최대 10곳</b>까지 담고, 여기서 1~10희망 순서를 정하세요.</p><button class="btn" data-go-map>학교 고르러 가기</button>';
   return `<div class="row" style="margin-bottom:6px"><button class="btn sm" id="wishSort">거리순 정렬</button><button class="btn sm" id="wishPrint">인쇄</button><span class="small faint">▲▼로 희망 순서 조정</span></div>
   <div class="wish"><ol>${st.wish.map((id,i)=>{const s=SCHOOLS[id]; const d=distKm(st.home,s); const ww=wishWarn(s);
-    return `<li><span class="no">${i+1}</span><span class="nm">${esc(s.name)}<small>${s.zone}${s.inn?' · 혁신':''}${s.tg?' · 특구':''}${s.ru?' · 농촌':''}${s.kr?' · 한국어학급':''}${st.homeZone===s.zone?' · 거주지 구역':''}${d!=null?' · '+fmtKm(d):''}</small>${ww.map(x=>`<span class="warn-l">${x}</span>`).join('')}</span>
+    return `<li style="--zc:${ZMAP[s.zone]?ZMAP[s.zone].color:'#ccc'}"><span class="no">${i+1}</span><span class="nm">${esc(s.name)}<small>${zTag(s.zone)}${s.inn?' · 혁신':''}${s.tg?' · 특구':''}${s.ru?' · 농촌':''}${s.kr?' · 한국어학급':''}${st.homeZone===s.zone?' · 거주지 구역':''}${d!=null?' · '+fmtKm(d):''}</small>${ww.map(x=>`<span class="warn-l">${x}</span>`).join('')}</span>
     <span class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm" data-a="up" data-i="${i}" ${i===0?'disabled':''} aria-label="위로">▲</button><button class="btn sm" data-a="dn" data-i="${i}" ${i===st.wish.length-1?'disabled':''} aria-label="아래로">▼</button><button class="btn sm" data-a="rm" data-i="${i}">빼기</button></span></li>`;}).join('')}</ol></div>
   ${st.wish.length<10?`<p class="small muted" style="margin:8px 0 0">${10-st.wish.length}곳 더 담을 수 있어요. 서식1에는 1~10희망 칸이 있어요.</p>`:''}
   <div class="row" style="justify-content:flex-end;margin-top:10px"><button class="btn pri" data-next>다음: 구역 순서 ›</button></div>`;
@@ -2035,7 +2047,7 @@ function bind1(){
 function step2(){
   return `<p class="small muted" style="margin-top:0">구역을 누르는 순서대로 1~10희망이 매겨져요. 다시 누르면 빠져요. (11개 구역 중 10개)</p>
   <div class="zpick">${ZONES.map(z=>{const k=plan.zones.indexOf(z.id); return `<button data-z="${z.id}" style="background:${z.color}" class="${k<0&&plan.zones.length>=10?'off':''}">${z.id}${k>=0?`<span class="o">${k+1}</span>`:''}</button>`;}).join('')}</div>
-  <div class="zorder">${plan.zones.length? plan.zones.map((z,i)=>`<span>${i+1}. ${z}</span>`).join('') : '<span class="faint" style="background:none">아직 고른 구역이 없어요</span>'}</div>
+  <div class="zorder">${plan.zones.length? plan.zones.map((z,i)=>`<span class="zo" style="--zc:${ZMAP[z].color}"><b>${i+1}</b>${z}</span>`).join('') : '<span class="faint" style="background:none">아직 고른 구역이 없어요</span>'}</div>
   <div class="row" style="margin-top:10px"><button class="btn sm" id="zFill">희망학교 순서로 채우기</button><button class="btn sm" id="zClear">비우기</button></div>
   <div class="fsec">희망 순서 (서식1 ‘희망순서 ○ 표시’)</div>
   <div class="row">${[['many','학급 수 많은 학교'],['few','학급 수 적은 학교'],['','선택 안 함']].map(([v,l])=>`<button class="chip ${plan.size===v?'on':''}" data-size="${v}">${l}</button>`).join('')}</div>
@@ -2062,7 +2074,7 @@ function ymRow(k,label,help){
 const normSch=v=>{ v=(v||'').replace(/\s+/g,'').replace(/등학교$/,''); const c=[v, v+'초', v.replace(/초$/,'')]; const x=SCHOOLS.find(y=>c.includes(y.name)); return x? x.name : ''; };
 function schHelp(){
   const t=(plan.schoolTxt||'').trim();
-  if(plan.school){ const x=SCHOOLS.find(y=>y.name===plan.school); return `✓ ${esc(plan.school)} · ${x?x.zone:''}`; }
+  if(plan.school){ const x=SCHOOLS.find(y=>y.name===plan.school); return `✓ ${esc(plan.school)} ${x?zTag(x.zone):''}`; }
   return t? '<em>목록에서 학교를 골라 주세요</em>' : '두 글자만 쳐도 목록이 나와요';
 }
 function composeKin(){
@@ -2185,8 +2197,8 @@ function step4(){
   const rows=[
     ['양식', `서식${P.role==='el'?'1-1':P.role==='sp'?'1-3':'1-2'}${P.pref?' + 서식3':''}${P.defer?' + 서식4':''}${P.role==='sp'?' + 서식6':''}${P.role==='co'?' + 서식11':''}`],
     ['직위·구분', `${ROLE_INFO[P.role][1]} · ${P.kind}`],
-    ['희망학교', chk(P.wishes.length===10, `${P.wishes.length}/10 ${P.wishes.length?'('+P.wishes.join(', ')+')':''}`)],
-    ['희망 구역', chk(P.zones.length===10, `${P.zones.length}/10 ${P.zones.join(' ')}`)],
+    ['희망학교', chk(P.wishes.length===10, `${P.wishes.length}/10`+(P.wishes.length?`<div class="zlist">${P.wishes.map((w,i)=>`<span class="zs" style="--zc:${(ZMAP[schZone(w)]||{}).color||'#ccc'}"><b>${i+1}</b>${esc(w)}</span>`).join('')}</div>`:''))],
+    ['희망 구역', chk(P.zones.length===10, `${P.zones.length}/10`+(P.zones.length?`<div class="zlist">${P.zones.map((z,i)=>`<span class="zo" style="--zc:${ZMAP[z].color}"><b>${i+1}</b>${z}</span>`).join('')}</div>`:''))],
     ['경력점', P.months===''?'<span class="faint">비움</span>':Math.min(48,+P.months)+'점'],
     ['동점자', `직무연수 ${t.train===''?'-':t.train+'점'} · 중증 ${t.severe?'O':'X'} · 3세 미만 ${t.under3?'O':'X'} · 3자녀 ${t.kids3?'O':'X'} · 6학년 등 ${t.g6?'O':'X'}`],
     ['성명', P.name||'<span class="faint">비움</span>']
@@ -2375,7 +2387,7 @@ function sRun(){
   const qn=q.replace(/\s+/g,'').replace(/초(등학교)?$/,'');
   const sch=qn.length>=1? SCHOOLS.filter(x=>x.name.includes(qn)||(x.name+'초').includes(q.replace(/\s+/g,''))).slice(0,8):[];
   let h='';
-  if(sch.length) h+=`<h5>학교 <span class="n">${sch.length}</span></h5>`+sch.map(x=>`<button class="sr" data-sid="${x.id}"><div class="w">학교 지도 · ${x.zone} · ${x.office}</div><div class="x"><b>${esc(x.name)}</b>${x.closed?' (휴교)':''}${x.inn?' · 혁신':''}${x.tg?' · 인사특구':''}${x.ru?' · 농촌':''}${x.kr?' · 한국어학급':''}${x.cls?` · 일반 ${x.cls.g}학급`:''}</div></button>`).join('');
+  if(sch.length) h+=`<h5>학교 <span class="n">${sch.length}</span></h5>`+sch.map(x=>`<button class="sr" data-sid="${x.id}"><div class="w">학교 지도 · ${zTag(x.zone)} · ${x.office}</div><div class="x"><b>${esc(x.name)}</b>${x.closed?' (휴교)':''}${x.inn?' · 혁신':''}${x.tg?' · 인사특구':''}${x.ru?' · 농촌':''}${x.kr?' · 한국어학급':''}${x.cls?` · 일반 ${x.cls.g}학급`:''}</div></button>`).join('');
   const alts=T.flat();
   const best=t=>Math.max(-99,...rows.filter(r=>r.e.tab===t).map(r=>r.score));
   Object.keys(S_TABN).sort((a,b)=>best(b)-best(a)).forEach(tab=>{
