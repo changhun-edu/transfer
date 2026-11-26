@@ -76,9 +76,9 @@ h3{font-size:16px;margin:0 0 8px;letter-spacing:-.2px}
 .tag.sp{background:#f1ecfb;color:#6d28d9}
 .tag.home{background:#fff1d6;color:#9a5b00}
 .tag.soon{background:#f1f3f5;color:#4b5563}
-.tag.new{background:#fde8e8;color:#b91c1c}
+.tag.new{background:#e3f5ea;color:#047857}
 .tag.mod{background:#e8eefc;color:#1d4ed8}
-.tag.del{background:#eef0f3;color:#4b5563}
+.tag.del{background:#fde8e8;color:#b91c1c;text-decoration:line-through}
 .tag.kr{background:#e0f4f7;color:#0e7490}
 .fm{display:inline-block;font-size:11px;font-weight:800;color:#6d28d9;background:#f1ebfd;border-radius:5px;padding:0 5px;margin-left:4px;white-space:nowrap;line-height:17px;vertical-align:1px}
 .chk-out{margin-top:10px}
@@ -651,6 +651,46 @@ ol.rsteps li small{display:block;font-size:12px;color:var(--faint)}
 .rchain span+span{margin-left:14px}
 .rnote{margin:6px 0 0;font-size:12.5px;color:var(--sub)}
 .rlinks{display:flex;flex-wrap:wrap;gap:6px;padding-top:12px;border-top:1px solid var(--line)}
+
+/* 달라진 점 */
+.dchips{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:4px!important}
+.dchips span{font-size:12px;background:#fff;border:1px solid var(--line);border-radius:99px;padding:2px 9px;color:var(--sub)}
+.dchips b{color:var(--ink);font-weight:700}
+.hl3{border-radius:16px;background:var(--accent-soft);padding:14px;margin-bottom:12px;display:flex;flex-direction:column;gap:8px}
+.hl-h{font-size:13px;font-weight:800;color:var(--accent)}
+.hl-i{background:#fff;border-radius:12px;padding:11px 12px;border:0;font:inherit;color:var(--ink);text-align:left}
+.hl-i b{font-size:14.5px}
+.hl-btn{display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer}
+.hl-btn span{color:var(--faint);font-weight:700}
+.hl-btn:hover{box-shadow:0 0 0 1px var(--accent) inset}
+.hl-48{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:8px}
+.hl-48 button{display:flex;flex-direction:column;align-items:flex-start;gap:3px;border:1px solid var(--line);background:#fafbfc;border-radius:10px;padding:8px 9px;font:inherit;font-size:12.5px;font-weight:700;color:var(--ink);text-align:left;cursor:pointer;line-height:1.35;min-width:0;overflow-wrap:anywhere}
+.hl-48 em{font-style:normal;font-size:16px;font-weight:900;color:var(--accent)}
+.hl-48 button:hover{border-color:var(--accent)}
+.cfil{display:flex;flex-direction:column;gap:6px;margin-bottom:6px}
+.cfil .chip .n{font-weight:600;opacity:.7;margin-left:2px}
+.cfil .chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.cg-h{display:flex;align-items:center;gap:7px;font-size:15.5px;margin:16px 0 8px}
+.cg-h svg{width:19px;height:19px;color:var(--accent)}
+.cg-h .n{font-size:12px;font-weight:800;background:var(--accent);color:#fff;border-radius:99px;padding:1px 8px}
+.chg.first{border-top:0;padding-top:2px}
+.chg .cdate{margin-left:auto;font-size:11.5px;color:var(--faint);font-weight:600;white-space:nowrap}
+.csum{margin:4px 0 6px;font-size:14.5px;font-weight:700;line-height:1.5}
+.cwho{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.cwho i{font-style:normal;font-size:11.5px;font-weight:700;background:#f1f3f6;color:var(--sub);border-radius:6px;padding:2px 7px}
+.cba{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:6px 0}
+.cba div{border-radius:10px;padding:7px 9px;font-size:12.5px;line-height:1.45;background:#f6f7f9;color:var(--sub);min-width:0;overflow-wrap:anywhere}
+.cba div+div{background:#eef6f1;color:#065f46;font-weight:600}
+.cba span{display:block;font-size:11px;font-weight:800;margin-bottom:2px;color:var(--faint)}
+.cba div+div span{color:#047857}
+@media (max-width:420px){.cba{grid-template-columns:1fr}}
+details.cdet summary{list-style:none;cursor:pointer;font-size:12.5px;font-weight:700;color:var(--sub);display:inline-flex;gap:4px}
+details.cdet summary::-webkit-details-marker{display:none}
+details.cdet summary::after{content:"▾"}
+details.cdet[open] summary::after{content:"▴"}
+details.cdet p{margin:6px 0 0;font-size:13.5px;line-height:1.6}
+details.cdet .cref{font-size:11.5px;color:var(--faint)}
+.cgo{margin-top:8px}
 </style>
 </head>
 <body data-tab="map">
@@ -992,11 +1032,10 @@ ol.rsteps li small{display:block;font-size:12px;color:var(--faint)}
 <!-- ===================== 달라진 점 ===================== -->
 <section class="page" id="p-changes">
   <div class="ph"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"/></svg></div>
-    <div><h2>2027학년도 달라진 점</h2><p>2026. 7. 20.·11. 20.(시교육청) · 2026. 8. 24.(동·서부 지침) 개정분</p></div></div>
-  <div class="grp-t" style="margin-top:4px">일반 교사에게 영향</div>
-  <div class="card" id="chgA"></div>
-  <div class="grp-t">특정 직위·행정</div>
-  <div class="card" id="chgB"></div>
+    <div><h2>2027학년도 달라진 점</h2><p class="dchips"><span>시교육청 기준 <b>2026. 7. 20.·11. 20.</b></span><span>동·서부 지침 <b>2026. 8. 24.</b></span></p></div></div>
+  <div class="hl3" id="chgHL"></div>
+  <div class="cfil" id="chgFil"></div>
+  <div id="chgList"></div>
   <p class="fn">개정 표시(&lt;개정·신설 2026.○.○.&gt;)가 붙은 조항을 기준으로 골랐어요. 문구 정비만 된 조항은 뺐고, 놓친 항목이 있을 수 있으니 원문을 함께 확인하세요.</p>
 </section>
 
@@ -1877,24 +1916,73 @@ $('#birth').onchange=e=>{
 /* =========================================================
    달라진 점
    ========================================================= */
-const CHG_A=[
- ['mod','적용 대상 명확화','전남광주통합특별시 출범 이후 종전 광주 관할로 신규 임용된 교원과, 타 시·도나 종전 관할구역 간 교류로 전입한 교원도 이 기준을 똑같이 적용받아요. 적용 학교와 인사구역은 종전 광주 관할구역(‘관내’)이에요(2026. 11. 20. 개정).','기준 제3조'],
- ['new','보결전담 순회교사 48점','보결전담 순회(겸임)교사로 1년 근무하면 만료자와 같은 48점, 동점자 기준 ‘6학년 담임 경력’과 동순위를 줍니다(2026학년도 선발에 한함).','기준 제19조 14항'],
- ['mod','정원 감축 학교 48점','폐교·휴교·학급 감축으로 정원 조정이 불가피한 학교의 교사는 48점을 주고 전보합니다(2027. 3. 1.자 전보부터). 이때 복직(귀)자는 근무 1년 미만이면 복직자 배치 기준, 1년 이상이면 일반 희망 기준을 적용해요.','기준 제19조 7항 · 지침 6.카'],
- ['mod','늘봄지원연구사 복귀','임기 2년을 마치고 교원으로 복귀하면 48점과 동점자 기준 ‘보직교사 2년’과 동순위를 줍니다.','기준 제31조 8항'],
- ['mod','보직교사 1명 추가 임용','학교장이 학교 구성원 의견을 모아 별도 승인 없이 배치 기준 외 보직교사 1명을 더 임용할 수 있어요.','지침 4'],
- ['del','우대 전보 ‘나’항 삭제','동·서부 업무처리지침의 우대 전보 ‘나’항이 삭제됐어요.','지침 7.나']
-];
-const CHG_B=[
- ['new','영양교사 직전 학교 금지','직전에 근무한 학교로는 인사상 부득이한 경우가 아니면 전보하지 않아요. 36학급 이상 학교(영양교사 1인 배치) 3년 이상, 공동 급식 운영학교(광주산수초) 4년 이상 근무자 우선 전보 규정도 정비됐어요.','기준 제19조의7'],
- ['mod','전문상담교사 우선 전보','순회교사 2년 이상, 36학급 이상 학교 4년 이상 근무자 우선 전보와 순회교사 배치 순서를 정비했어요.','기준 제19조의8 2항'],
- ['mod','신규 수석교사 배치','선발 당시 소속 학교 배치가 원칙이에요. 이미 수석교사가 있는 학교에서 선발되면 희망 학교·대규모 학교·연구(혁신)학교 등을 참고해 정합니다.','기준 제6조 3항'],
- ['mod','적용 범위','전남광주통합특별시 출범에 따라 ‘종전 광주광역시 관내’ 학교·기관으로 적용 범위를 정리했어요. 인사지역은 종전 광주광역시 관내 공립 초등학교 전체(단일 인사지역)입니다.','기준 제3조 · 제17조 1항'],
- ['mod','관련 지침 이름','기간제교사·원로교사·초빙교사 관련 지침 이름이 ‘전남광주통합특별시교육청’으로 바뀌었어요.','기준 제7조 3항 · 제10조 3항 · 제27조']
+const CHG=[
+ {id:'c1',k:'mod',sc:'A',t:'적용 대상 명확화',sum:'통합 이후 신규 임용·교류 전입 교사도 이 기준을 똑같이 적용받아요',who:['신규 임용','교류 전입'],
+  det:'전남광주통합특별시 출범 이후 선발 공고에 따라 종전 광주 관할로 신규 임용된 교원, 타 시·도나 종전 관할구역 간 교류로 전입한 교원도 적용 대상이에요. 적용 학교와 인사구역은 종전 광주 관할구역(‘관내’)이고, 인사지역은 관내 공립 초등학교 전체(단일 인사지역)예요.',
+  ba:['광주광역시 관내 학교·기관 근무 교원','종전 광주 관할(‘관내’) + 통합 후 신규·전입 교원까지'],ref:'기준 제3조 · 제17조 1항',date:'7. 20.·11. 20.'},
+ {id:'c2',k:'new',sc:'A',t:'보결전담 순회교사 48점',sum:'보결전담 순회(겸임)교사로 1년 근무하면 48점을 받아요',who:['보결전담 순회교사'],
+  det:'만료자와 같은 48점을 받고, 동점자 기준에서는 ‘6학년 담임 경력’과 같은 순위로 봐요. 2026학년도 선발자에 한해요.',ref:'기준 제19조 14항',date:'7. 20.',go:['score','서열 탭에서 내 순위 보기']},
+ {id:'c3',k:'mod',sc:'A',t:'정원 감축 학교 48점',sum:'폐교·휴교·학급 감축으로 정원이 줄어든 학교 교사는 48점을 받고 전보돼요',who:['폐교·휴교·학급 감축 학교','복직(귀)자'],
+  det:'2027. 3. 1.자 전보부터 적용해요. 이때 복직(귀)자는 근무 1년 미만이면 복직자 배치 기준, 1년 이상이면 일반 희망 기준을 적용해요.',ref:'기준 제19조 7항 · 지침 6.카',date:'7. 20.·8. 24.',go:['score','서열 탭에서 내 순위 보기']},
+ {id:'c4',k:'mod',sc:'A',t:'늘봄지원연구사 복귀',sum:'늘봄지원연구사 임기 2년을 마치고 복귀하면 48점을 받아요',who:['늘봄지원연구사'],
+  det:'48점과 함께 동점자 기준에서는 ‘보직교사 2년’과 같은 순위로 봐요.',ref:'기준 제31조 8항',date:'7. 20.',go:['score','서열 탭에서 내 순위 보기']},
+ {id:'c5',k:'mod',sc:'A',t:'보직교사 1명 추가 임용',sum:'학교장이 보직교사 1명을 더 임용할 수 있어요',who:['보직교사','학교장'],
+  det:'학교 구성원 의견을 모으면 별도 승인 없이 배치 기준 외 보직교사 1명을 더 임용할 수 있어요.',ref:'지침 4',date:'8. 24.'},
+ {id:'c6',k:'del',sc:'A',t:'우대 전보 ‘나’항 삭제',sum:'우대 전보(기준 제9조) 업무처리지침의 ‘나’항이 없어졌어요',who:['우대 전보 대상'],
+  det:'동·서부 업무처리지침에는 ‘나. 삭제 &lt;2026.8.24.&gt;’로만 적혀 있어서, 없어진 항이 어떤 내용이었는지는 이 사이트가 받은 자료에 없어요. 우대 전보 대상이라면 교육지원청 안내로 확인하세요.',
+  ba:['지침 7. 우대 전보 ‘나’항 있음','‘나’항 삭제'],ref:'지침 7.나',date:'8. 24.'},
+ {id:'c7',k:'new',sc:'B',t:'영양교사 직전 학교 금지',sum:'영양교사는 직전에 근무한 학교로 전보하지 않아요',who:['영양교사'],
+  det:'인사상 부득이한 경우는 예외예요. 36학급 이상 학교(영양교사 1인 배치) 3년 이상, 공동 급식 운영학교(광주산수초) 4년 이상 근무자 우선 전보 규정도 함께 정비됐어요.',ref:'기준 제19조의7',date:'7. 20.',go:['role:nu','다른 직위에서 영양교사 보기']},
+ {id:'c8',k:'mod',sc:'B',t:'전문상담교사 우선 전보',sum:'전문상담교사 우선 전보와 순회교사 배치 순서가 정비됐어요',who:['전문상담교사'],
+  det:'순회교사 2년 이상, 36학급 이상 학교 4년 이상 근무자를 우선 전보하고, 순회교사 배치 순서를 새로 정했어요.',ref:'기준 제19조의8 2항',date:'7. 20.',go:['role:co','다른 직위에서 전문상담교사 보기']},
+ {id:'c9',k:'mod',sc:'B',t:'신규 수석교사 배치',sum:'신규 수석교사는 선발 당시 학교에 배치하는 게 원칙이에요',who:['수석교사'],
+  det:'이미 수석교사가 있는 학교에서 선발되면 희망 학교·대규모 학교·연구(혁신)학교 등을 참고해 정해요.',ref:'기준 제6조 3항',date:'7. 20.',go:['role:hd','다른 직위에서 수석교사 보기']},
+ {id:'c10',k:'mod',sc:'B',t:'관련 지침 이름',sum:'기간제·원로·초빙교사 관련 지침 이름이 바뀌었어요',who:['기간제교사','원로교사','초빙교사'],
+  det:'내용 변경 없이 지침 이름만 통합 교육청 이름으로 바뀌었어요.',ba:['광주광역시교육청 ○○ 지침','전남광주통합특별시교육청 ○○ 지침'],ref:'기준 제7조 3항 · 제10조 3항 · 제27조',date:'7. 20.'}
 ];
 const BADGE={new:'<span class="tag new">신설</span>',mod:'<span class="tag mod">개정</span>',del:'<span class="tag del">삭제</span>'};
-const chgHtml=arr=>arr.map(([k,t,b,r])=>`<div class="chg"><div class="top">${BADGE[k]}<span class="tt">${t}</span><span class="ref">${r}</span></div><div>${b}</div></div>`).join('');
-$('#chgA').innerHTML=chgHtml(CHG_A); $('#chgB').innerHTML=chgHtml(CHG_B);
+const chgF={k:'',sc:''};
+function chgItem(c){
+  return `<div class="chg" id="${c.id}" data-k="${c.k}" data-sc="${c.sc}">
+    <div class="top">${BADGE[c.k]}<span class="tt">${c.t}</span><span class="cdate">${c.date} 개정</span></div>
+    <p class="csum">${c.sum}</p>
+    <div class="cwho">${c.who.map(w=>`<i>${w}</i>`).join('')}</div>
+    ${c.ba?`<div class="cba"><div><span>전</span>${c.ba[0]}</div><div><span>후</span>${c.ba[1]}</div></div>`:''}
+    <details class="cdet"><summary>자세히</summary><p>${c.det}</p><p class="cref">${c.ref}</p></details>
+    ${c.go?`<button class="btn sm cgo" data-go="${c.go[0]}">${c.go[1]} ›</button>`:''}
+  </div>`;
+}
+function renderChg(){
+  const cnt=f=>CHG.filter(f).length;
+  $('#chgHL').innerHTML=`<div class="hl-h">한눈에 보는 핵심 3가지</div>
+    <div class="hl-i"><b>① 48점 받는 경우가 늘었어요</b><div class="hl-48">${['c2','c3','c4'].map(id=>{const c=CHG.find(x=>x.id===id); return `<button data-j="${id}"><em>48점</em>${c.t.replace(' 48점','')}</button>`;}).join('')}</div></div>
+    <button class="hl-i hl-btn" data-j="c1"><b>② 통합 이후 신규·전입 교사도 같은 기준이에요</b><span>›</span></button>
+    <button class="hl-i hl-btn" data-j="c6"><b>③ 우대 전보 ‘나’항이 없어졌어요</b><span>›</span></button>`;
+  const chip=(grp,v,l,n)=>`<button class="chip ${chgF[grp]===v?'on':''}" data-g="${grp}" data-v="${v}">${l} <span class="n">${n}</span></button>`;
+  $('#chgFil').innerHTML=`<div class="row">${chip('k','','전체',CHG.length)}${chip('k','new','신설',cnt(c=>c.k==='new'))}${chip('k','mod','개정',cnt(c=>c.k==='mod'))}${chip('k','del','삭제',cnt(c=>c.k==='del'))}</div>
+    <div class="row">${chip('sc','','모든 대상',CHG.length)}${chip('sc','A','일반 교사',cnt(c=>c.sc==='A'))}${chip('sc','B','특정 직위·행정',cnt(c=>c.sc==='B'))}</div>`;
+  const G=[['A','일반 교사에게 영향','<path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0"/>'],['B','특정 직위·행정','<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/>']];
+  $('#chgList').innerHTML=G.map(([sc,l,ic])=>{ const a=CHG.filter(c=>c.sc===sc); return `<div class="cgrp" data-grp="${sc}"><h3 class="cg-h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">${ic}</svg>${l}<span class="n" data-n="${sc}">${a.length}</span></h3><div class="card">${a.map(chgItem).join('')}</div></div>`; }).join('');
+  chgApply();
+  $('#chgFil').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{ chgF[b.dataset.g]=b.dataset.v; $('#chgFil').querySelectorAll(`.chip[data-g="${b.dataset.g}"]`).forEach(x=>x.classList.toggle('on',x===b)); chgApply(); });
+  document.querySelectorAll('#p-changes [data-j]').forEach(b=>b.onclick=()=>chgJump(b.dataset.j));
+  $('#chgList').querySelectorAll('.cgo').forEach(b=>b.onclick=()=>{
+    const g=b.dataset.go;
+    if(g==='score'){ showTab('score',true); return; }
+    const k=g.split(':')[1]; showTab('roles',true); roleOn=k; renderRoles(); setTimeout(()=>{ const d=document.getElementById('role-'+k); if(d) d.scrollIntoView({behavior:'smooth',block:'start'}); },60);
+  });
+}
+function chgApply(){
+  $('#chgList').querySelectorAll('.chg').forEach(e=>{ e.hidden=!((!chgF.k||e.dataset.k===chgF.k)&&(!chgF.sc||e.dataset.sc===chgF.sc)); });
+  $('#chgList').querySelectorAll('.cgrp').forEach(g=>{ const v=g.querySelectorAll('.chg:not([hidden])'); g.hidden=!v.length; g.querySelector('[data-n]').textContent=v.length; v.forEach((e,i)=>e.classList.toggle('first',i===0)); });
+}
+function chgReset(){ chgF.k=''; chgF.sc=''; $('#chgFil').querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x.dataset.v==='')); chgApply(); }
+function chgJump(id){
+  chgReset(); const e=document.getElementById(id); if(!e) return;
+  const d=e.querySelector('details'); if(d) d.open=true;
+  e.scrollIntoView({behavior:'smooth',block:'center'}); e.classList.remove('sflash'); void e.offsetWidth; e.classList.add('sflash');
+}
+renderChg();
 
 /* =========================================================
    다른 직위
@@ -2479,7 +2567,7 @@ function sClose(navigating, tab){
 }
 function sGo(e){
   const keyTx=e.tx.slice(0,120), tab=e.tab;
-  sClose(true, tab); showTab(tab,false);
+  sClose(true, tab); showTab(tab,false); if(tab==='changes') chgReset();
   const sec=document.getElementById('p-'+tab);
   const el=sCands(sec).find(x=>sText(x).startsWith(keyTx)) || e.el;
   let d=el.closest('details'); while(d){ d.open=true; d=d.parentElement&&d.parentElement.closest('details'); }
