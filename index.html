@@ -2584,7 +2584,11 @@ document.addEventListener('keydown',e=>{
   if(e.key==='/' && !e.ctrlKey && !e.metaKey && !/^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement||{}).tagName||'')){ e.preventDefault(); sOpen(); }
 },true);
 
-setView('map'); renderHomeStat(); renderHomeMethods(); refresh(); renderTie(); renderTieResult(); renderDefer(); renderRoles(); renderDocs(); initNav(); loadKakao();
+setView('map'); renderHomeStat();
+/* 주소에 ?q=검색어 가 붙어 오면(학교 연장통 검색 등) 사이트 검색을 바로 열어요 */
+(()=>{ const u=new URL(location.href), q=(u.searchParams.get('q')||'').trim(); if(!q) return;
+  u.searchParams.delete('q'); history.replaceState(history.state,'',u.pathname+u.search);
+  setTimeout(()=>{ sOpen(); $('#srchQ').value=q.slice(0,60); sRun(); },120); })(); renderHomeMethods(); refresh(); renderTie(); renderTieResult(); renderDefer(); renderRoles(); renderDocs(); initNav(); loadKakao();
 io.observe($('#tieResult')); io.observe($('#deferResult'));
 </script>
 </body>
